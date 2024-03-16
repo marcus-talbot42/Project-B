@@ -2,6 +2,5 @@ namespace ProjectB.io;
 
 public interface IFileReader<T>
 {
-    T ReadObject();
-    ICollection<T> ReadAllObjects();
+    ICollection<T> ReadAllObjects(string fileName);
 }
