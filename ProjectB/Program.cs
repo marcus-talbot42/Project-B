@@ -1,3 +1,10 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using ProjectB.ui;
 
-Console.WriteLine("Hello, World!");
+MainMenu menu = new ();
+
+while (true)
+{
+    menu.ShowMenu();
+    menu.HandleInput(Console.ReadKey().KeyChar);
+}
+
