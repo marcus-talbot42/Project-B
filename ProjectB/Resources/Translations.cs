@@ -32,6 +32,18 @@ public class Translations
 
     private const string LANGUAGE_CHANGED_EN = "Language changed to English.\n";
 
+    private const string LOGIN_PROMPT_GUEST_NL = "Geef uw ticket-nummer in:";
+
+    private const string LOGIN_PROMPT_GUEST_EN = "Please enter your ticket-number";
+    
+    private const string LOGIN_PROMPT_EMPLOYEE_NL = "Geef uw gebruikersnaam in:";
+
+    private const string LOGIN_PROMPT_EMPLOYEE_EN = "Enter your username:";
+
+    private const string LOGIN_PROMPT_EMPLOYEE_PASSWORD_NL = "Geef uw wachtwoord in:";
+
+    private const string LOGIN_PROMPT_EMPLOYEE_PASSWORD_EN = "Enter your password:";
+
     public static string translation(string name)
     {
         if (Settings.Language == Language.NL)
@@ -44,8 +56,14 @@ public class Translations
                     return NOT_IMPLEMENTED_NL;
                 case "LANGUAGE_CHANGED":
                     return LANGUAGE_CHANGED_NL;
+                case "LOGIN_PROMPT_GUEST":
+                    return LOGIN_PROMPT_GUEST_NL;
+                case "LOGIN_PROMPT_EMPLOYEE":
+                    return LOGIN_PROMPT_EMPLOYEE_NL;
+                case "LOGIN_PROMPT_EMPLOYEE_PASSWORD":
+                    return LOGIN_PROMPT_EMPLOYEE_PASSWORD_NL;
                 default:
-                    return String.Format("Error: Translation not found for {name}", name);
+                    return String.Format("Error: Translation not found for {0}", name);
             }
         }
         
@@ -59,6 +77,12 @@ public class Translations
                     return NOT_IMPLEMENTED_EN;
                 case "LANGUAGE_CHANGED":
                     return LANGUAGE_CHANGED_EN;
+                case "LOGIN_PROMPT_GUEST":
+                    return LOGIN_PROMPT_GUEST_EN;
+                case "LOGIN_PROMPT_EMPLOYEE":
+                    return LOGIN_PROMPT_EMPLOYEE_EN;
+                case "LOGIN_PROMPT_EMPLOYEE_PASSWORD":
+                    return LOGIN_PROMPT_EMPLOYEE_PASSWORD_EN;
                 default:
                     return String.Format("Error: Translation not found for {name}", name);
             }

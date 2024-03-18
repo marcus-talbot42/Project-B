@@ -1,3 +1,4 @@
+using ProjectB.login;
 using ProjectB.Resources;
 using ProjectB.settings;
 
@@ -17,10 +18,10 @@ public class MainMenu
         switch (input)
         {
             case '1':
-                Console.WriteLine(Translations.translation("NOT_IMPLEMENTED"));
+                Settings.CurrentSession = new GuestLoginStrategy().Handle();
                 break;
             case '2':
-                Console.WriteLine(Translations.translation("NOT_IMPLEMENTED"));
+                Settings.CurrentSession = new EmployeeLoginStrategy().Handle();
                 break;
             case '3':
                 Settings.Language = Settings.Language == Language.NL ? Language.EN : Language.NL;
