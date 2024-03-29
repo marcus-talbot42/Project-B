@@ -27,5 +27,7 @@ public class JsonFileReaderTest
         {
             Assert.IsTrue(userList.Contains(user));
         }
+        
+        File.Delete(fileName);
     }
 }

@@ -4,5 +4,8 @@
     &lt;TestId&gt;MSTest::30DFCAE0-5221-440C-8C75-963D08834F19::net8.0::ProjectBTest.UnitTest1&lt;/TestId&gt;
     &lt;TestId&gt;MSTest::30DFCAE0-5221-440C-8C75-963D08834F19::net8.0::ProjectBTest.IO.JsonFileReaderTest.ShouldJsonToFileWhenPassedAListOfUsers&lt;/TestId&gt;
     &lt;TestId&gt;MSTest::30DFCAE0-5221-440C-8C75-963D08834F19::net8.0::ProjectBTest.IO.JsonFileReaderTest&lt;/TestId&gt;
+    &lt;TestId&gt;MSTest::30DFCAE0-5221-440C-8C75-963D08834F19::net8.0::ProjectBTest.Repositories.UserRepositoryTest.FindAllShouldFindNEntities&lt;/TestId&gt;
+    &lt;TestId&gt;MSTest::30DFCAE0-5221-440C-8C75-963D08834F19::net8.0::ProjectBTest.Repositories.UserRepositoryTest.PersistShouldSaveNewUsersToFile&lt;/TestId&gt;
+    &lt;TestId&gt;MSTest::30DFCAE0-5221-440C-8C75-963D08834F19::net8.0::ProjectBTest.Repositories.UserRepositoryTest&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

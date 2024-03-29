@@ -4,22 +4,20 @@ namespace ProjectB.Models;
 
 using BCrypt.Net;
 
-public class User : IEquatable<User>
+public class User(string username, string password, UserRole role) : IEquatable<User>, Entity<string>
 {
-    [JsonProperty] private readonly string _username;
-    [JsonProperty] private readonly string _password;
-    [JsonProperty] private readonly UserRole _role;
-
-    public User(string username, string password, UserRole role)
-    {
-        this._username = username;
-        this._password = password;
-        this._role = role;
-    }
+    [JsonProperty] private readonly string _username = username;
+    [JsonProperty] private readonly string _password = password;
+    [JsonProperty] private readonly UserRole _role = role;
 
     public bool IsPasswordCorrect(string password)
     {
         return this._password == BCrypt.HashPassword(password);
+    }
+
+    public UserRole GetUserRole()
+    {
+        return this._role;
     }
 
     public new string? ToString()
@@ -63,6 +61,8 @@ public class User : IEquatable<User>
         if (ReferenceEquals(this, other)) return true;
         return _password == other._password && _role == other._role && _username == other._username;
     }
+
+    public string GetId() => _username;
 
     public override bool Equals(object? obj)
     {
