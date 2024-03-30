@@ -148,9 +148,9 @@ class Program
 
         Participant participant = new Participant(ticketNumber, selectedTour.Time);
         signupsByTourTime[selectedTour.Time].Add(participant);
-        selectedTour.ParticipantsCount++; // Increment count for the new sign-up
+        selectedTour.ParticipantsCount++;
 
-        SaveParticipantsToJson(); // Save immediately after sign-up
+        SaveParticipantsToJson();
 
         Console.WriteLine($"You have successfully signed up for the tour at {selectedTour.Time.ToString("HH:mm")}.");
     }
@@ -177,7 +177,7 @@ class Program
                     tourToUpdate.ParticipantsCount--;
                 }
 
-                SaveParticipantsToJson(); // Save immediately after deletion
+                SaveParticipantsToJson();
 
                 Console.WriteLine($"Your sign-up for the tour at {tourTime.ToString("HH:mm")} has been deleted.");
                 return;
