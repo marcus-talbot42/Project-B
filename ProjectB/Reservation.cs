@@ -138,7 +138,7 @@ class Program
             if (response == "Y")
             {
                 signupsByTourTime[selectedTour.Time].Remove(existingParticipant);
-                selectedTour.ParticipantsCount--; // Decrement count for the old sign-up
+                selectedTour.ParticipantsCount--;
             }
             else
             {
