@@ -4,54 +4,28 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 
-class Tour
-{
-    public DateTime Time { get; set; }
-    public string Location { get; set; }
-    public int Capacity { get; set; }
-    public int ParticipantsCount { get; set; }
-
-    public Tour(DateTime time, string location, int capacity)
-    {
-        Time = time;
-        Location = location;
-        Capacity = capacity;
-        ParticipantsCount = 0;
-    }
-}
-
-class Participant
-{
-    public int TicketNumber { get; set; }
-    public DateTime TourTime { get; set; }
-
-    public Participant(int ticketNumber, DateTime tourTime)
-    {
-        TicketNumber = ticketNumber;
-        TourTime = tourTime;
-    }
-}
-
 class Program
 {
-    static List<Tour> tours = new List<Tour>();
-    static Dictionary<DateTime, List<Participant>> signupsByTourTime = new Dictionary<DateTime, List<Participant>>();
-    static string jsonFilePath = "signups.json";
+    static List<Tour> tours = new List<Tour>(); // List to store available tours
+    static Dictionary<DateTime, List<Participant>> signupsByTourTime = new Dictionary<DateTime, List<Participant>>(); // Dictionary to store sign-ups for each tour time
+    static string jsonFilePath = "signups.json"; // File path to store sign-up data in JSON format
 
     static void Main(string[] args)
     {
-        LoadParticipantsFromJson();
+        LoadParticipantsFromJson(); // Load sign-up data from JSON file, if exists
 
+        // Create tours for each hour from 9 AM to 8 PM
         for (int hour = 9; hour <= 20; hour++)
         {
             DateTime tourTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, hour, 0, 0);
-            tours.Add(new Tour(tourTime, "Your Tour Location", 13));
+            tours.Add(new Tour(tourTime, "Your Tour Location", 13)); // Initialize tours with default capacity of 13
             if (!signupsByTourTime.ContainsKey(tourTime))
             {
-                signupsByTourTime.Add(tourTime, new List<Participant>());
+                signupsByTourTime.Add(tourTime, new List<Participant>()); // Initialize sign-up list for each tour time
             }
         }
 
+        // Register event handler to save sign-up data on application exit
         AppDomain.CurrentDomain.ProcessExit += new EventHandler(CurrentDomain_ProcessExit);
 
         bool exit = false;
@@ -87,7 +61,7 @@ class Program
 
     static void CurrentDomain_ProcessExit(object sender, EventArgs e)
     {
-        SaveParticipantsToJson();
+        SaveParticipantsToJson(); // Save sign-up data on application exit
     }
 
     static void SignUpForTour()
@@ -109,7 +83,7 @@ class Program
 
         if (tourNumber == 0)
         {
-            return;
+            return; // Go back to main menu
         }
 
         Tour selectedTour = tours[tourNumber - 1];
@@ -137,20 +111,20 @@ class Program
             string response = Console.ReadLine().Trim().ToUpper();
             if (response == "Y")
             {
-                signupsByTourTime[selectedTour.Time].Remove(existingParticipant);
-                selectedTour.ParticipantsCount--;
+                signupsByTourTime[selectedTour.Time].Remove(existingParticipant); // Remove existing sign-up
+                selectedTour.ParticipantsCount--; // Decrement count for the old sign-up
             }
             else
             {
-                return;
+                return; // Go back to main menu
             }
         }
 
         Participant participant = new Participant(ticketNumber, selectedTour.Time);
-        signupsByTourTime[selectedTour.Time].Add(participant);
-        selectedTour.ParticipantsCount++;
+        signupsByTourTime[selectedTour.Time].Add(participant); // Add new sign-up
+        selectedTour.ParticipantsCount++; // Increment count for the new sign-up
 
-        SaveParticipantsToJson();
+        SaveParticipantsToJson(); // Save immediately after sign-up
 
         Console.WriteLine($"You have successfully signed up for the tour at {selectedTour.Time.ToString("HH:mm")}.");
     }
@@ -169,15 +143,14 @@ class Program
             Participant participantToDelete = signupsByTourTime[tourTime].FirstOrDefault(p => p.TicketNumber == ticketNumberToDelete);
             if (participantToDelete != null)
             {
-                signupsByTourTime[tourTime].Remove(participantToDelete);
-
+                signupsByTourTime[tourTime].Remove(participantToDelete); // Remove sign-up
                 var tourToUpdate = tours.FirstOrDefault(t => t.Time == tourTime);
                 if (tourToUpdate != null)
                 {
-                    tourToUpdate.ParticipantsCount--;
+                    tourToUpdate.ParticipantsCount--; // Decrement count for the deleted sign-up
                 }
 
-                SaveParticipantsToJson();
+                SaveParticipantsToJson(); // Save immediately after deletion
 
                 Console.WriteLine($"Your sign-up for the tour at {tourTime.ToString("HH:mm")} has been deleted.");
                 return;
@@ -200,20 +173,20 @@ class Program
                 {
                     if (signupsByTourTime.ContainsKey(kvp.Key))
                     {
-                        signupsByTourTime[kvp.Key].Add(participant);
+                        signupsByTourTime[kvp.Key].Add(participant); // Add participant to existing tour time
                         var tourToUpdate = tours.FirstOrDefault(t => t.Time == kvp.Key);
                         if (tourToUpdate != null)
                         {
-                            tourToUpdate.ParticipantsCount++;
+                            tourToUpdate.ParticipantsCount++; // Increment count for loaded sign-up
                         }
                     }
                     else
                     {
-                        signupsByTourTime[kvp.Key] = new List<Participant> { participant };
+                        signupsByTourTime[kvp.Key] = new List<Participant> { participant }; // Initialize new tour time
                         var tourToUpdate = tours.FirstOrDefault(t => t.Time == kvp.Key);
                         if (tourToUpdate != null)
                         {
-                            tourToUpdate.ParticipantsCount++;
+                            tourToUpdate.ParticipantsCount++; // Increment count for loaded sign-up
                         }
                     }
                 }
@@ -231,6 +204,6 @@ class Program
         }
 
         string json = JsonSerializer.Serialize(dataToSerialize);
-        File.WriteAllText(jsonFilePath, json);
+        File.WriteAllText(jsonFilePath, json); // Write sign-up data to JSON file
     }
 }
