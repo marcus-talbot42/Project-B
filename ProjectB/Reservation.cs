@@ -14,8 +14,11 @@ class Program
     {
         LoadParticipantsFromJson(); // Load sign-up data from JSON file, if exists
 
-        // Create tours for each hour from 9 AM to 8 PM
-        for (int hour = 9; hour <= 20; hour++)
+        // Get the current hour
+        int currentHour = DateTime.Now.Hour;
+
+        // Create tours for each hour from the current hour to 8 PM
+        for (int hour = currentHour; hour <= 20; hour++)
         {
             DateTime tourTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, hour, 0, 0);
             tours.Add(new Tour(tourTime, "Your Tour Location", 13)); // Initialize tours with default capacity of 13
