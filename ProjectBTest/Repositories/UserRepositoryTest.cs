@@ -9,7 +9,7 @@ namespace ProjectBTest.Repositories;
 public class UserRepositoryTest
 {
 
-    private readonly UserRepository _repository = UserRepository.Instance;
+    private readonly EmployeeRepository _repository = EmployeeRepository.Instance;
 
     [TestCleanup]
     public void Cleanup()
@@ -20,27 +20,27 @@ public class UserRepositoryTest
     [TestInitialize]
     public void Prepare()
     {
-        using (File.Create(".//users.json"))
+        using (File.Create(_repository.GetFileLocation()))
         {
         }
     }
 
     [DataTestMethod]
-    [DataRow(".//users.json", 1)]
-    [DataRow(".//users.json", 10)]
-    [DataRow(".//users.json", 100)]
-    public void FindAllShouldFindNEntities(string fileName, int amount)
+    [DataRow(1)]
+    [DataRow(10)]
+    [DataRow(100)]
+    public void FindAllShouldFindNEntities(int amount)
     {
-        ICollection<User> users =  UserFixtures.GenerateCollection(amount);
-        JsonFileWriter<User> writer = new JsonFileWriter<User>();
-        writer.WriteObjects(fileName, users);
+        ICollection<Employee> users =  EmployeeFixtures.GenerateCollection(amount);
+        JsonFileWriter<Employee> writer = new();
+        writer.WriteObjects(_repository.GetFileLocation(), users);
         
         _repository.Refresh();
-        IEnumerable<User> result = _repository.FindAll();
+        IEnumerable<Employee> result = _repository.FindAll();
         
         Assert.AreEqual(amount, result.Count());
         
-        File.Delete(fileName);
+        File.Delete(_repository.GetFileLocation());
     }
 
     [DataTestMethod]
@@ -49,8 +49,8 @@ public class UserRepositoryTest
     [DataRow(100)]
     public void PersistShouldSaveNewUsersToFile(int amount)
     {
-        ICollection<User> users = UserFixtures.GenerateCollection(amount);
-        foreach (User user in users)
+        ICollection<Employee> users = EmployeeFixtures.GenerateCollection(amount);
+        foreach (Employee user in users)
         {
             _repository.Save(user);
         }
@@ -59,16 +59,16 @@ public class UserRepositoryTest
         
         _repository.Persist();
 
-        JsonFileReader<User> reader = new JsonFileReader<User>();
-        ICollection<User>? result = reader.ReadAllObjects(".//users.json");
+        JsonFileReader<Employee> reader = new();
+        ICollection<Employee>? result = reader.ReadAllObjects(_repository.GetFileLocation());
         
         Assert.AreEqual(amount, result!.Count);
-        foreach (User user in result)
+        foreach (Employee user in result)
         {
             Assert.AreEqual(_repository.FindById(user.GetId()), user);    
         }
         
-        File.Delete(".//users.json");
+        File.Delete(_repository.GetFileLocation());
     }
     
 }

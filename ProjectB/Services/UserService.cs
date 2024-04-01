@@ -4,7 +4,7 @@ using ProjectB.Repositories;
 
 namespace ProjectB.Services;
 
-public class UserService: IService<User, string>
+public class UserService: IService<AbstractUser, string>
 {
 
     private static readonly Lazy<UserService> Lazy = new (() => new UserService());
@@ -20,7 +20,7 @@ public class UserService: IService<User, string>
         Console.WriteLine(_repository.FindAll());
     }
 
-    public void Create(User entity)
+    public void Create(AbstractUser entity)
     {
         if (_repository.FindById(entity.GetId()) != null)
         {
@@ -29,7 +29,7 @@ public class UserService: IService<User, string>
         _repository.Save(entity);
     }
 
-    public void Update(User entity, string id)
+    public void Update(AbstractUser entity, string id)
     {
         throw new NotImplementedException();
     }

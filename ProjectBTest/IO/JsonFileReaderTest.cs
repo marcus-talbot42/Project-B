@@ -14,12 +14,12 @@ public class JsonFileReaderTest
     [DataRow(".//test.json", 100)]
     public void ShouldJsonToFileWhenPassedAListOfUsers(string fileName, int amount)
     {
-        ICollection<User> userList = UserFixtures.GenerateCollection(amount);
-        JsonFileWriter<User> writer = new JsonFileWriter<User>();
+        ICollection<Employee> userList = EmployeeFixtures.GenerateCollection(amount);
+        JsonFileWriter<Employee> writer = new();
         writer.WriteObjects(fileName, userList);
 
-        JsonFileReader<User> reader = new JsonFileReader<User>();
-        ICollection<User>? result = reader.ReadAllObjects(fileName);
+        JsonFileReader<Employee> reader = new();
+        ICollection<Employee>? result = reader.ReadAllObjects(fileName);
         Assert.IsNotNull(result);
         
         Assert.AreEqual(amount, result.Count);

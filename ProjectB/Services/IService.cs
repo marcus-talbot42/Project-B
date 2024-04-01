@@ -3,7 +3,8 @@ using ProjectB.Models;
 namespace ProjectB.Services;
 
 public interface IService<TEntity, TId>
-    where TEntity : Entity<TId>
+    where TEntity : IEntity<TId>
+    where TId : class
 {
 
     void Create(TEntity entity);

@@ -6,7 +6,7 @@ namespace ProjectB.Repositories;
  * Base for every repository used in this program.
  */
 public interface IRepository<TEntity, in TId>
-    where TEntity : Entity<TId> 
+    where TEntity : IEntity<TId> 
     where TId : class
 {
 
@@ -36,5 +36,7 @@ public interface IRepository<TEntity, in TId>
     void Persist();
 
     int Count();
+    
+    string GetFileLocation();
 
 }

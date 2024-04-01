@@ -1,9 +1,10 @@
+using ProjectB.IO;
 using ProjectB.Models;
 
 namespace ProjectB.Repositories;
 
 public abstract class AbstractRepository<TEntity, TId>: IRepository<TEntity, TId>
-    where TEntity: Entity<TId>
+    where TEntity: IEntity<TId>
     where TId: class
 {
 
@@ -18,8 +19,27 @@ public abstract class AbstractRepository<TEntity, TId>: IRepository<TEntity, TId
 
     public void RemoveAll() => Repository.Clear();
     
-    public abstract void Refresh();
+    public void Refresh()
+    {
+        JsonFileReader<TEntity> reader = new();
+        ICollection<TEntity>? entities = reader.ReadAllObjects(GetFileLocation());
+        if (entities != null)
+        {
+            Repository.Clear();
+            foreach (TEntity entity in entities)
+            {
+                Repository.Add(entity.GetId(), entity);
+            }
+        }
+    }
+
+    public void Persist()
+    {
+        JsonFileWriter<TEntity> writer = new();
+        writer.WriteObjects(GetFileLocation(), Repository.Values);
+    }
+
+    public abstract string GetFileLocation();
     
-    public abstract void Persist();
     public int Count() => Repository.Count;
 }
