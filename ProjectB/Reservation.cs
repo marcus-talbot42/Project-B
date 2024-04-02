@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 
-class Program
+class Reservation
 {
     static List<Tour> tours = new List<Tour>(); // List to store available tours
     static Dictionary<DateTime, List<Participant>> signupsByTourTime = new Dictionary<DateTime, List<Participant>>(); // Dictionary to store sign-ups for each tour time
