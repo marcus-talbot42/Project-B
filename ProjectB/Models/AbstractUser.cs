@@ -1,19 +1,22 @@
-using Newtonsoft.Json;
-
-namespace ProjectB.Models;
-
 using BCrypt.Net;
+using Newtonsoft.Json;
+using ProjectB.Models;
+using System;
 
 /// <summary>
 /// Blueprint for users, containing the fields shared by all user types. This class should be implemented by sub-classes,
 /// which specify the type of user, and implement unique functionality and fields based on that type.
 /// </summary>
-/// <param name="username">The username assigned to the user.</param>
-/// <param name="role">The role assigned to a user, used to determine what functionality should be available to said user.</param>
-public abstract class AbstractUser(string username, UserRole role) : IEquatable<AbstractUser>, IEntity<string>
+public abstract class AbstractUser : IEquatable<AbstractUser>, IEntity<string>
 {
-    [JsonProperty] protected readonly string Username = username;
-    [JsonProperty] protected readonly UserRole Role = role;
+    [JsonProperty] protected readonly string Username;
+    [JsonProperty] protected readonly UserRole Role;
+
+    public AbstractUser(string username, UserRole role)
+    {
+        Username = username;
+        Role = role;
+    }
 
     /// <summary>
     /// Gets the role assigned to the user.
@@ -36,7 +39,7 @@ public abstract class AbstractUser(string username, UserRole role) : IEquatable<
     /// <param name="other">The object which will be checked for equality with the object this method is called on.</param>
     /// <returns>True if the objects are equal, false if not.</returns>
     public abstract bool Equals(AbstractUser? other);
-    
+
     /// <summary>
     /// Provides a more generic way to check for equality between an AbstractUser-instance and an instance of an unknown
     /// type.
@@ -65,9 +68,10 @@ public abstract class AbstractUser(string username, UserRole role) : IEquatable<
     private class Builder
     {
         private string? _username;
-        private string? _password;
+        private int _ticketNumber; // Add ticketNumber field
         private UserRole _role;
         private DateOnly _validForDate;
+        private string? _password; // Add password field
 
         /// <summary>
         /// Sets the username that will be set, when the Builder.Build()-method is called.
@@ -81,15 +85,26 @@ public abstract class AbstractUser(string username, UserRole role) : IEquatable<
         }
 
         /// <summary>
+        /// Sets the ticket number for the guest user.
+        /// </summary>
+        /// <param name="ticketNumber">The ticket number of the guest user.</param>
+        /// <returns>This instance of the Builder-pattern.</returns>
+        public Builder WithTicketNumber(int ticketNumber)
+        {
+            _ticketNumber = ticketNumber;
+            return this;
+        }
+
+        /// <summary>
         /// Sets the password that will be set, when the Builder.Build()-method is called. Before setting the password,
-        /// the given value is hashed, using BCrypt's EnhancedHashPassword-method. If the role of the user is
+        /// the given value is hashed, using BCrypt's HashPassword-method. If the role of the user is
         /// UserRole.Guest, the password will be ignored.
         /// </summary>
         /// <param name="password">The password that will be set.</param>
         /// <returns>This instance of the Builder.</returns>
         public Builder WithPassword(string password)
         {
-            _password = BCrypt.EnhancedHashPassword(password);
+            _password = BCrypt.HashPassword(password); // Change to BCrypt.HashPassword
             return this;
         }
 
@@ -125,7 +140,7 @@ public abstract class AbstractUser(string username, UserRole role) : IEquatable<
         {
             if (_role == UserRole.Guest)
             {
-                return new Guest(_username!, _validForDate);
+                return new Guest(_username!, _validForDate, _ticketNumber); // Include ticketNumber
             }
 
             return new Employee(_username!, _role, _password!);
