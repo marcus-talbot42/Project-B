@@ -1,6 +1,7 @@
-using ProjectB.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using ProjectB.Models;
 
 namespace ProjectBTest.Fixtures
 {
@@ -11,10 +12,8 @@ namespace ProjectBTest.Fixtures
             ICollection<Guest> userList = new List<Guest>();
             for (int i = 0; i < amount; i++)
             {
-                // Generate a unique ticket number for each guest
                 int ticketNumber = i + 1;
-                
-                userList.Add(new Guest(Guid.NewGuid().ToString(), DateOnly.FromDateTime(DateTime.Today), ticketNumber));
+                userList.Add(new Guest(Guid.NewGuid().ToString(), DateOnly.FromDateTime(DateTime.Today), ticketNumber.ToString()));
             }
 
             return userList;
