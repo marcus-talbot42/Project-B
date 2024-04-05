@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using ProjectB.IO;
 using ProjectB.Models;
 
-class Reservation
+public class Reservation
 {
-    static List<Tour> tours = new List<Tour>(); // List to store available tours
+    public static List<Tour> tours = new List<Tour>(); // List to store available tours
     static string jsonFilePath = "signups.json";
 
     static void Main(string[] args)
@@ -64,7 +65,7 @@ class Reservation
         SaveParticipantsToJson(); // Save sign-up data on application exit
     }
 
-    static void SignUpForTour()
+    public static void SignUpForTour()
     {
         Console.WriteLine("Available Tours:");
         for (int i = 0; i < tours.Count; i++)
@@ -94,23 +95,18 @@ class Reservation
             return;
         }
 
-        Console.Write("Enter your ticket number: ");
-        int ticketNumber;
-        while (!int.TryParse(Console.ReadLine(), out ticketNumber) || ticketNumber <= 0)
-        {
-            Console.WriteLine("Invalid input. Ticket number must be a positive integer.");
-            Console.Write("Enter your ticket number: ");
-        }
+        Console.Write("Enter your username: "); // Changed prompt from "Enter your ticket number" to "Enter your username"
+        string? username = Console.ReadLine(); // Changed variable name from ticketNumber to username
 
-        if (selectedTour.Participants.Any(p => p.TicketNumber == ticketNumber))
+        if (selectedTour.Participants.Any(p => p.GetId() == username))
         {
-            Console.WriteLine($"Ticket number {ticketNumber} is already signed up for a tour.");
+            Console.WriteLine($"Username {username} is already signed up for a tour.");
 
             Console.Write("Do you want to change your sign-up (Y/N)? ");
             string? response = Console.ReadLine()!.Trim().ToUpper();
             if (response == "Y")
             {
-                var guestToRemove = selectedTour.Participants.FirstOrDefault(p => p.TicketNumber == ticketNumber);
+                var guestToRemove = selectedTour.Participants.FirstOrDefault(p => p.GetId() == username);
                 if (guestToRemove != null)
                 {
                     selectedTour.Participants.Remove(guestToRemove); // Remove existing sign-up
@@ -122,8 +118,7 @@ class Reservation
             }
         }
 
-        // Modify this line to create a Guest object instead of a Participant
-        Guest guest = new Guest("username", DateOnly.FromDateTime(DateTime.Today), ticketNumber);
+        Guest guest = new Guest(username!, DateOnly.FromDateTime(DateTime.Today), username!);
         selectedTour.Participants.Add(guest); // Add new sign-up
 
         SaveParticipantsToJson(); // Save immediately after sign-up
@@ -131,39 +126,35 @@ class Reservation
         Console.WriteLine($"You have successfully signed up for the tour at {selectedTour.Time.ToString("HH:mm")}.");
     }
 
-    static void DeleteSignUpForTour()
-{
-    Console.Write("Enter your ticket number to delete your sign-up: ");
-    int ticketNumberToDelete;
-    while (!int.TryParse(Console.ReadLine(), out ticketNumberToDelete) || ticketNumberToDelete <= 0)
+    public static void DeleteSignUpForTour()
     {
-        Console.WriteLine("Invalid input. Ticket number must be a positive integer.");
-    }
+        Console.Write("Enter your username to delete your sign-up: "); // Changed prompt from "Enter your ticket number to delete your sign-up" to "Enter your username to delete your sign-up"
+        string? usernameToDelete = Console.ReadLine();
 
-    foreach (var tour in tours)
-    {
-        var guestToRemove = tour.Participants.FirstOrDefault(p => p.TicketNumber == ticketNumberToDelete);
-        if (guestToRemove != null)
+        foreach (var tour in tours)
         {
-            tour.Participants.Remove(guestToRemove); // Remove sign-up
+            var guestToRemove = tour.Participants.FirstOrDefault(p => p.GetId() == usernameToDelete);
+            if (guestToRemove != null)
+            {
+                tour.Participants.Remove(guestToRemove); // Remove sign-up
 
-            SaveParticipantsToJson(); // Save immediately after deletion
+                SaveParticipantsToJson(); // Save immediately after deletion
 
-            Console.WriteLine($"Your sign-up for the tour at {tour.Time.ToString("HH:mm")} has been deleted.");
-            return;
+                Console.WriteLine($"Your sign-up for the tour at {tour.Time.ToString("HH:mm")} has been deleted.");
+                return;
+            }
         }
+
+        Console.WriteLine($"No sign-up found for username {usernameToDelete}.");
     }
 
-    Console.WriteLine($"No sign-up found for ticket number {ticketNumberToDelete}.");
-}
 
-
-    static void LoadParticipantsFromJson()
+ static void LoadParticipantsFromJson()
     {
         if (File.Exists(jsonFilePath))
         {
             string json = File.ReadAllText(jsonFilePath);
-            var dictionary = JsonConvert.DeserializeObject<Dictionary<string, List<int>>>(json); // Use JsonConvert.DeserializeObject from Newtonsoft.Json
+            var dictionary = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(json);
 
             foreach (var kvp in dictionary!)
             {
@@ -171,10 +162,9 @@ class Reservation
                 Tour? tour = tours.FirstOrDefault(t => t.Time == tourTime);
                 if (tour != null)
                 {
-                    foreach (var ticketNumber in kvp.Value)
+                    foreach (var username in kvp.Value)
                     {
-                        // Modify this line to create a Guest object instead of a Participant
-                        Guest guest = new Guest("username", DateOnly.FromDateTime(DateTime.Today), ticketNumber);
+                        Guest guest = new Guest(username, DateOnly.FromDateTime(DateTime.Today), username);
                         tour.Participants.Add(guest); // Add guest to existing tour
                     }
                 }
@@ -183,15 +173,8 @@ class Reservation
     }
 
     static void SaveParticipantsToJson()
-    {
-        var dataToSerialize = new Dictionary<string, List<int>>();
+    {   var filewriter = new JsonFileWriter<Tour>();
 
-        foreach (var tour in tours)
-        {
-            dataToSerialize.Add(tour.Time.ToString(), tour.Participants.Select(p => p.TicketNumber).ToList());
-        }
-
-        string json = JsonConvert.SerializeObject(dataToSerialize); // Use JsonConvert.SerializeObject from Newtonsoft.Json
-        File.WriteAllText(jsonFilePath, json); // Write sign-up data to JSON file
+        filewriter.WriteObjects(jsonFilePath, tours);
     }
 }

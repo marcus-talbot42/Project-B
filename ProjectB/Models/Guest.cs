@@ -6,13 +6,13 @@ namespace ProjectB.Models
     {
         [JsonProperty]
         private readonly DateOnly _validForDate;
-        
-        public int TicketNumber { get; set; }
 
-        public Guest(string username, DateOnly validForDate, int ticketNumber) : base(username, UserRole.Guest)
+        public new string GetId() => Username;
+
+        public Guest(string username, DateOnly validForDate, string usernameParam) : base(username, UserRole.Guest)
         {
             _validForDate = validForDate;
-            TicketNumber = ticketNumber;
+            this.Username = username;
         }
 
         public bool IsValid() => _validForDate.CompareTo(DateTime.Today) == 0;
@@ -22,7 +22,7 @@ namespace ProjectB.Models
             if (ReferenceEquals(other, this)) return true;
             if (ReferenceEquals(other, null)) return false;
             if (other.GetType() != GetType()) return false;
-            return Username == other.GetId();
+            return GetId() == other.GetId();
         }
     }
 }

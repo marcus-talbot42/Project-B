@@ -7,16 +7,13 @@ using System;
 /// Blueprint for users, containing the fields shared by all user types. This class should be implemented by sub-classes,
 /// which specify the type of user, and implement unique functionality and fields based on that type.
 /// </summary>
-public abstract class AbstractUser : IEquatable<AbstractUser>, IEntity<string>
+/// <param name="username">The username assigned to the user.</param>
+/// <param name="role">The role assigned to a user, used to determine what functionality should be available to said user.</param>
+public abstract class AbstractUser(string username, UserRole role) : IEquatable<AbstractUser>, IEntity<string>
 {
-    [JsonProperty] protected readonly string Username;
-    [JsonProperty] protected readonly UserRole Role;
 
-    public AbstractUser(string username, UserRole role)
-    {
-        Username = username;
-        Role = role;
-    }
+    [JsonProperty] protected string Username = username;
+    [JsonProperty] protected UserRole Role = role;
 
     /// <summary>
     /// Gets the role assigned to the user.
@@ -68,10 +65,9 @@ public abstract class AbstractUser : IEquatable<AbstractUser>, IEntity<string>
     private class Builder
     {
         private string? _username;
-        private int _ticketNumber; // Add ticketNumber field
         private UserRole _role;
         private DateOnly _validForDate;
-        private string? _password; // Add password field
+        private string? _password;
 
         /// <summary>
         /// Sets the username that will be set, when the Builder.Build()-method is called.
@@ -83,18 +79,6 @@ public abstract class AbstractUser : IEquatable<AbstractUser>, IEntity<string>
             _username = username;
             return this;
         }
-
-        /// <summary>
-        /// Sets the ticket number for the guest user.
-        /// </summary>
-        /// <param name="ticketNumber">The ticket number of the guest user.</param>
-        /// <returns>This instance of the Builder-pattern.</returns>
-        public Builder WithTicketNumber(int ticketNumber)
-        {
-            _ticketNumber = ticketNumber;
-            return this;
-        }
-
         /// <summary>
         /// Sets the password that will be set, when the Builder.Build()-method is called. Before setting the password,
         /// the given value is hashed, using BCrypt's HashPassword-method. If the role of the user is
@@ -104,7 +88,7 @@ public abstract class AbstractUser : IEquatable<AbstractUser>, IEntity<string>
         /// <returns>This instance of the Builder.</returns>
         public Builder WithPassword(string password)
         {
-            _password = HashPassword(password); // Change to BCrypt.HashPassword
+            _password = EnhancedHashPassword(password);
             return this;
         }
 
@@ -140,7 +124,7 @@ public abstract class AbstractUser : IEquatable<AbstractUser>, IEntity<string>
         {
             if (_role == UserRole.Guest)
             {
-                return new Guest(_username!, _validForDate, _ticketNumber); // Include ticketNumber
+                return new Guest(_username!, _validForDate, _username!);
             }
 
             return new Employee(_username!, _role, _password!);
