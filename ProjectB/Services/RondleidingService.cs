@@ -45,8 +45,8 @@ namespace ProjectB.Services
             }
 
             string jsonData = File.ReadAllText(filePath);
-            T deserializedData = JsonConvert.DeserializeObject<T>(jsonData);
-            return deserializedData;
+            T deserializedData = JsonConvert.DeserializeObject<T>(jsonData)!;
+            return deserializedData!;
         }
     }
 }

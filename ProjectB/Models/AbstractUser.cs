@@ -1,4 +1,4 @@
-using BCrypt.Net;
+using static BCrypt.Net.BCrypt;
 using Newtonsoft.Json;
 using ProjectB.Models;
 using System;
@@ -104,7 +104,7 @@ public abstract class AbstractUser : IEquatable<AbstractUser>, IEntity<string>
         /// <returns>This instance of the Builder.</returns>
         public Builder WithPassword(string password)
         {
-            _password = BCrypt.HashPassword(password); // Change to BCrypt.HashPassword
+            _password = HashPassword(password); // Change to BCrypt.HashPassword
             return this;
         }
 

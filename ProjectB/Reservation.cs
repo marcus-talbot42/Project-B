@@ -8,7 +8,7 @@ using ProjectB.Models;
 class Reservation
 {
     static List<Tour> tours = new List<Tour>(); // List to store available tours
-    static string jsonFilePath = "signups.json"; // File path to store sign-up data in JSON format
+    static string jsonFilePath = "signups.json";
 
     static void Main(string[] args)
     {
@@ -107,7 +107,7 @@ class Reservation
             Console.WriteLine($"Ticket number {ticketNumber} is already signed up for a tour.");
 
             Console.Write("Do you want to change your sign-up (Y/N)? ");
-            string response = Console.ReadLine().Trim().ToUpper();
+            string? response = Console.ReadLine()!.Trim().ToUpper();
             if (response == "Y")
             {
                 var guestToRemove = selectedTour.Participants.FirstOrDefault(p => p.TicketNumber == ticketNumber);
@@ -165,10 +165,10 @@ class Reservation
             string json = File.ReadAllText(jsonFilePath);
             var dictionary = JsonConvert.DeserializeObject<Dictionary<string, List<int>>>(json); // Use JsonConvert.DeserializeObject from Newtonsoft.Json
 
-            foreach (var kvp in dictionary)
+            foreach (var kvp in dictionary!)
             {
                 DateTime tourTime = DateTime.Parse(kvp.Key);
-                Tour tour = tours.FirstOrDefault(t => t.Time == tourTime);
+                Tour? tour = tours.FirstOrDefault(t => t.Time == tourTime);
                 if (tour != null)
                 {
                     foreach (var ticketNumber in kvp.Value)
