@@ -14,7 +14,7 @@ public class EmployeeLoginStrategy: ILoginStrategy
         
         // TODO: Check password, and get UserRole from file.
 
-        return new Session(username, UserRole.GUIDE); // TODO: user proper UserRole.
+        return new Session(username!, UserRole.GUIDE); // TODO: user proper UserRole.
     }
     
     private SecureString GetPassword()

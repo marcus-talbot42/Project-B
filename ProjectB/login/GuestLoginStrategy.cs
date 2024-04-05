@@ -4,6 +4,9 @@ namespace ProjectB.login;
 
 public class GuestLoginStrategy: ILoginStrategy
 {
+    
+    
+    
     public Session Handle()
     {
         Console.WriteLine(Translations.translation("LOGIN_PROMPT_GUEST"));
@@ -11,6 +14,6 @@ public class GuestLoginStrategy: ILoginStrategy
         
         // TODO: Check whether ticket is valid
 
-        return new Session(ticketNumber, UserRole.GUEST);
+        return new Session(ticketNumber!, UserRole.GUEST);
     }
 }
