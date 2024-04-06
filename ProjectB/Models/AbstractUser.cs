@@ -1,8 +1,7 @@
+using static BCrypt.Net.BCrypt;
 using Newtonsoft.Json;
-
-namespace ProjectB.Models;
-
-using BCrypt.Net;
+using ProjectB.Models;
+using System;
 
 /// <summary>
 /// Blueprint for users, containing the fields shared by all user types. This class should be implemented by sub-classes,
@@ -12,8 +11,9 @@ using BCrypt.Net;
 /// <param name="role">The role assigned to a user, used to determine what functionality should be available to said user.</param>
 public abstract class AbstractUser(string username, UserRole role) : IEquatable<AbstractUser>, IEntity<string>
 {
-    [JsonProperty] protected readonly string Username = username;
-    [JsonProperty] protected readonly UserRole Role = role;
+
+    [JsonProperty] protected string Username = username;
+    [JsonProperty] protected UserRole Role = role;
 
     /// <summary>
     /// Gets the role assigned to the user.
@@ -36,7 +36,7 @@ public abstract class AbstractUser(string username, UserRole role) : IEquatable<
     /// <param name="other">The object which will be checked for equality with the object this method is called on.</param>
     /// <returns>True if the objects are equal, false if not.</returns>
     public abstract bool Equals(AbstractUser? other);
-    
+
     /// <summary>
     /// Provides a more generic way to check for equality between an AbstractUser-instance and an instance of an unknown
     /// type.
@@ -65,9 +65,9 @@ public abstract class AbstractUser(string username, UserRole role) : IEquatable<
     private class Builder
     {
         private string? _username;
-        private string? _password;
         private UserRole _role;
         private DateOnly _validForDate;
+        private string? _password;
 
         /// <summary>
         /// Sets the username that will be set, when the Builder.Build()-method is called.
@@ -79,17 +79,16 @@ public abstract class AbstractUser(string username, UserRole role) : IEquatable<
             _username = username;
             return this;
         }
-
         /// <summary>
         /// Sets the password that will be set, when the Builder.Build()-method is called. Before setting the password,
-        /// the given value is hashed, using BCrypt's EnhancedHashPassword-method. If the role of the user is
+        /// the given value is hashed, using BCrypt's HashPassword-method. If the role of the user is
         /// UserRole.Guest, the password will be ignored.
         /// </summary>
         /// <param name="password">The password that will be set.</param>
         /// <returns>This instance of the Builder.</returns>
         public Builder WithPassword(string password)
         {
-            _password = BCrypt.EnhancedHashPassword(password);
+            _password = EnhancedHashPassword(password);
             return this;
         }
 
@@ -125,7 +124,7 @@ public abstract class AbstractUser(string username, UserRole role) : IEquatable<
         {
             if (_role == UserRole.Guest)
             {
-                return new Guest(_username!, _validForDate);
+                return new Guest(_username!, _validForDate, _username!);
             }
 
             return new Employee(_username!, _role, _password!);
