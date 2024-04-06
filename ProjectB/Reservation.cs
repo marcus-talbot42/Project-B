@@ -95,8 +95,8 @@ public class Reservation
             return;
         }
 
-        Console.Write("Enter your username: "); // Changed prompt from "Enter your ticket number" to "Enter your username"
-        string? username = Console.ReadLine(); // Changed variable name from ticketNumber to username
+        Console.Write("Enter your username: ");
+        string? username = Console.ReadLine();
 
         if (selectedTour.Participants.Any(p => p.GetId() == username))
         {
@@ -128,7 +128,7 @@ public class Reservation
 
     public static void DeleteSignUpForTour()
     {
-        Console.Write("Enter your username to delete your sign-up: "); // Changed prompt from "Enter your ticket number to delete your sign-up" to "Enter your username to delete your sign-up"
+        Console.Write("Enter your username to delete your sign-up: ");
         string? usernameToDelete = Console.ReadLine();
 
         foreach (var tour in tours)
@@ -154,23 +154,11 @@ public class Reservation
         if (File.Exists(jsonFilePath))
         {
             string json = File.ReadAllText(jsonFilePath);
-            var dictionary = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(json);
-
-            foreach (var kvp in dictionary!)
-            {
-                DateTime tourTime = DateTime.Parse(kvp.Key);
-                Tour? tour = tours.FirstOrDefault(t => t.Time == tourTime);
-                if (tour != null)
-                {
-                    foreach (var username in kvp.Value)
-                    {
-                        Guest guest = new Guest(username, DateOnly.FromDateTime(DateTime.Today), username);
-                        tour.Participants.Add(guest); // Add guest to existing tour
-                    }
-                }
+            tours = JsonConvert.DeserializeObject<List<Tour>>(json)!;
+            
             }
         }
-    }
+    
 
     static void SaveParticipantsToJson()
     {   var filewriter = new JsonFileWriter<Tour>();
