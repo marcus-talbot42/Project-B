@@ -6,27 +6,32 @@ using Newtonsoft.Json;
 using ProjectB.IO;
 using ProjectB.Models;
 
-public partial class Reservation
+public class Reservation
 {
     public static List<Tour> tours = new List<Tour>();
     static string jsonFilePath = "signups.json";
     static TourSignUp? tourSignUp;
 
     static void Main(string[] args)
+{
+    LoadParticipantsFromJson();
+
+    int currentHour = DateTime.Now.Hour;
+
+    for (int hour = currentHour; hour <= 20; hour++)
     {
-        LoadParticipantsFromJson();
-
-        int currentHour = DateTime.Now.Hour;
-
-        for (int hour = currentHour; hour <= 20; hour++)
+        DateTime tourTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, hour, 0, 0);
+        
+        // Check if a tour with the same time already exists in the list
+        bool tourExists = tours.Any(tour => tour.Time == tourTime);
+        
+        // If a tour with the same time doesn't exist, add it to the list
+        if (!tourExists)
         {
-            DateTime tourTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, hour, 0, 0);
             Tour tour = new Tour(tourTime, "Your Tour Location", 13);
             tours.Add(tour);
         }
-
-        AppDomain.CurrentDomain.ProcessExit += new EventHandler(CurrentDomain_ProcessExit);
-        tourSignUp = LoadTourSignUp();
+    }
 
         bool exit = false;
         while (!exit)
@@ -263,9 +268,18 @@ static void CreateDefaultSignUpFile()
                 var guestToRemove = selectedTour.Participants.FirstOrDefault(p => p.GetId() == usernameToDelete);
                 if (guestToRemove != null)
                 {
-                    selectedTour.Participants.Remove(guestToRemove);
-                    SaveParticipantsToJson();
-                    Console.WriteLine($"Guest {usernameToDelete} deleted from the tour at {selectedTour.Time.ToString("HH:mm")}.");
+                    Console.WriteLine($"Are you sure you want to delete guest {usernameToDelete}? (Y/N)");
+                    string? confirmation = Console.ReadLine()?.Trim().ToUpper();
+                    if (confirmation == "Y")
+                    {
+                        selectedTour.Participants.Remove(guestToRemove);
+                        SaveParticipantsToJson();
+                        Console.WriteLine($"Guest {usernameToDelete} deleted from the tour at {selectedTour.Time.ToString("HH:mm")}.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Deletion cancelled.");
+                    }
                 }
                 else
                 {
