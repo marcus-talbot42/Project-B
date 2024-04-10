@@ -263,9 +263,18 @@ static void CreateDefaultSignUpFile()
                 var guestToRemove = selectedTour.Participants.FirstOrDefault(p => p.GetId() == usernameToDelete);
                 if (guestToRemove != null)
                 {
-                    selectedTour.Participants.Remove(guestToRemove);
-                    SaveParticipantsToJson();
-                    Console.WriteLine($"Guest {usernameToDelete} deleted from the tour at {selectedTour.Time.ToString("HH:mm")}.");
+                    Console.WriteLine($"Are you sure you want to delete guest {usernameToDelete}? (Y/N)");
+                    string? confirmation = Console.ReadLine()?.Trim().ToUpper();
+                    if (confirmation == "Y")
+                    {
+                        selectedTour.Participants.Remove(guestToRemove);
+                        SaveParticipantsToJson();
+                        Console.WriteLine($"Guest {usernameToDelete} deleted from the tour at {selectedTour.Time.ToString("HH:mm")}.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Deletion cancelled.");
+                    }
                 }
                 else
                 {
