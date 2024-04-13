@@ -5,33 +5,15 @@ using System.Linq;
 using Newtonsoft.Json;
 using ProjectB.IO;
 using ProjectB.Models;
+using ProjectB.Repositories;
 
 public class Reservation
 {
-    public static List<Tour> tours = new List<Tour>();
+    static TourRepository repository = TourRepository.Instance;
     static string jsonFilePath = "signups.json";
-    static TourSignUp? tourSignUp;
 
     static void Main(string[] args)
-{
-    LoadParticipantsFromJson();
-
-    int currentHour = DateTime.Now.Hour;
-
-    for (int hour = currentHour; hour <= 20; hour++)
     {
-        DateTime tourTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, hour, 0, 0);
-        
-        // Check if a tour with the same time already exists in the list
-        bool tourExists = tours.Any(tour => tour.Time == tourTime);
-        
-        // If a tour with the same time doesn't exist, add it to the list
-        if (!tourExists)
-        {
-            Tour tour = new Tour(tourTime, "Your Tour Location", 13);
-            tours.Add(tour);
-        }
-    }
 
         bool exit = false;
         while (!exit)
@@ -73,64 +55,15 @@ public class Reservation
         }
     }
 
-    static void CurrentDomain_ProcessExit(object? sender, EventArgs e)
-    {
-        SaveParticipantsToJson();
-    }
-
-    static void LoadParticipantsFromJson()
-    {
-        if (File.Exists(jsonFilePath))
-        {
-            string json = File.ReadAllText(jsonFilePath);
-            tours = JsonConvert.DeserializeObject<List<Tour>>(json)!;
-        }
-    }
-
-    static void SaveParticipantsToJson()
-    {
-        var filewriter = new JsonFileWriter<Tour>();
-        filewriter.WriteObjects(jsonFilePath, tours);
-    }
-
-    static TourSignUp LoadTourSignUp()
-{
-    if (!File.Exists(jsonFilePath))
-    {
-        Console.WriteLine("Sign-up file not found. Creating a new one.");
-        SaveParticipantsToJson(); // Create an empty sign-up file
-    }
-
-    IFileReader<Tour> fileReader = new JsonFileReader<Tour>();
-    var signUps = fileReader.ReadAllObjects(jsonFilePath);
-
-    if (signUps != null)
-    {
-        return new TourSignUp(signUps);
-    }
-    else
-    {
-        Console.WriteLine("Failed to read sign-ups file.");
-        return new TourSignUp(new List<Tour>());
-    }
-}
-
-
-static void CreateDefaultSignUpFile()
-{
-    // Create a default sign-up file with empty data
-    var emptySignUps = new List<Tour>();
-    var fileWriter = new JsonFileWriter<Tour>();
-    fileWriter.WriteObjects(jsonFilePath, emptySignUps);
-}
-
     public static void SignUpForTour()
     {
         Console.WriteLine("Available Tours:");
-        for (int i = 0; i < tours.Count; i++)
+        ICollection<Tour> tours = (ICollection<Tour>) repository.FindAll();
+        for (int i = 0; i < tours.Count(); i++)
         {
-            int spotsLeft = tours[i].Capacity - tours[i].Participants.Count;
-            Console.WriteLine($"{i + 1}. Tour at {tours[i].Time.ToString("HH:mm")}, {spotsLeft} spots left");
+            Tour tour = tours.ElementAt(i);
+            int spotsLeft = tour.Capacity - tour.Participants.Count();
+            Console.WriteLine($"{i + 1}. Tour at {tour.Time.ToString("HH:mm")}, {spotsLeft} spots left");
         }
         Console.WriteLine("0. Go back");
 
@@ -146,7 +79,7 @@ static void CreateDefaultSignUpFile()
             return; // Go back to main menu
         }
 
-        Tour selectedTour = tours[tourNumber - 1];
+        Tour selectedTour = tours.ElementAt(tourNumber - 1);
 
         if (selectedTour.Participants.Count >= selectedTour.Capacity)
         {
@@ -169,6 +102,7 @@ static void CreateDefaultSignUpFile()
                 if (guestToRemove != null)
                 {
                     selectedTour.Participants.Remove(guestToRemove); // Remove existing sign-up
+                    repository.Persist();
                 }
             }
             else
@@ -179,8 +113,7 @@ static void CreateDefaultSignUpFile()
 
         Guest guest = new Guest(username!, DateOnly.FromDateTime(DateTime.Today), username!);
         selectedTour.Participants.Add(guest); // Add new sign-up
-
-        SaveParticipantsToJson(); // Save immediately after sign-up
+        repository.Persist();
 
         Console.WriteLine($"You have successfully signed up for the tour at {selectedTour.Time.ToString("HH:mm")}.");
     }
@@ -190,15 +123,13 @@ static void CreateDefaultSignUpFile()
         Console.Write("Enter your username to delete your sign-up: ");
         string? usernameToDelete = Console.ReadLine();
 
-        foreach (var tour in tours)
+        foreach (var tour in repository.FindAll())
         {
             var guestToRemove = tour.Participants.FirstOrDefault(p => p.GetId() == usernameToDelete);
             if (guestToRemove != null)
             {
                 tour.Participants.Remove(guestToRemove); // Remove sign-up
-
-                SaveParticipantsToJson(); // Save immediately after deletion
-
+                repository.Persist();
                 Console.WriteLine($"Your sign-up for the tour at {tour.Time.ToString("HH:mm")} has been deleted.");
                 return;
             }
@@ -211,19 +142,20 @@ static void CreateDefaultSignUpFile()
     {
         Console.WriteLine("Choose a tour to adjust:");
 
-        for (int i = 0; i < tours.Count; i++)
+        var tours = repository.FindAll();
+        for (int i = 0; i < repository.Count(); i++)
         {
-            Console.WriteLine($"{i + 1}. Tour at {tours[i].Time.ToString("HH:mm")}");
+            Console.WriteLine($"{i + 1}. Tour at {tours.ElementAt(i).Time:HH:mm}");
         }
 
         Console.Write("Enter the number of the tour you want to adjust: ");
         int tourIndex;
-        while (!int.TryParse(Console.ReadLine(), out tourIndex) || (tourIndex < 1 || tourIndex > tours.Count))
+        while (!int.TryParse(Console.ReadLine(), out tourIndex) || (tourIndex < 1 || tourIndex > repository.Count()))
         {
-            Console.WriteLine($"Invalid input. Please enter a number between 1 and {tours.Count}.");
+            Console.WriteLine($"Invalid input. Please enter a number between 1 and {repository.Count()}.");
         }
 
-        Tour selectedTour = tours[tourIndex - 1];
+        Tour selectedTour = tours.ElementAt(tourIndex - 1);
 
         Console.WriteLine($"Participants for the tour at {selectedTour.Time.ToString("HH:mm")}:");
         foreach (var participant in selectedTour.Participants)
@@ -256,8 +188,7 @@ static void CreateDefaultSignUpFile()
 
                 Guest newGuest = new Guest(usernameToAdd!, DateOnly.FromDateTime(DateTime.Today), usernameToAdd!);
                 selectedTour.Participants.Add(newGuest);
-
-                SaveParticipantsToJson();
+                repository.Persist();
 
                 Console.WriteLine($"Guest {usernameToAdd} added to the tour at {selectedTour.Time.ToString("HH:mm")}.");
                 break;
@@ -273,7 +204,6 @@ static void CreateDefaultSignUpFile()
                     if (confirmation == "Y")
                     {
                         selectedTour.Participants.Remove(guestToRemove);
-                        SaveParticipantsToJson();
                         Console.WriteLine($"Guest {usernameToDelete} deleted from the tour at {selectedTour.Time.ToString("HH:mm")}.");
                     }
                     else
@@ -298,7 +228,7 @@ static void CreateDefaultSignUpFile()
 
         if (DateTime.TryParse(Console.ReadLine(), out DateTime tourTime))
         {
-            var participants = tourSignUp!.GetParticipants(new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, tourTime.Hour, tourTime.Minute, 0));
+            var participants = repository.GetParticipants(tourTime);
 
             if (participants.Count == 0)
             {

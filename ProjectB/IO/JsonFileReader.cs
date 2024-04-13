@@ -28,6 +28,9 @@ public class JsonFileReader<T> : IFileReader<T>
     /// <returns>A collection containing the deserialized objects.</returns>
     public ICollection<T>? ReadAllObjects(string fileName)
     {
+        if (!File.Exists(fileName)) {
+            File.Create(fileName).Close();
+        }
         using StreamReader reader = new StreamReader(fileName);
         string json = reader.ReadToEnd();
         return JsonConvert.DeserializeObject<List<T>>(json);

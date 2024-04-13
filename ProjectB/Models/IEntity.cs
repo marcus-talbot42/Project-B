@@ -6,7 +6,7 @@ namespace ProjectB.Models;
 /// </summary>
 /// 
 /// <typeparam name="TId">The type of the ID of the entity.</typeparam>
-public interface IEntity<out TId> where TId : class
+public interface IEntity<TId>
 {
     /// <summary>
     /// Returns the ID of the object it is called on. Mainly used to determine whether an ID is already taken, resulting

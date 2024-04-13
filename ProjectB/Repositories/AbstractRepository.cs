@@ -4,13 +4,21 @@ using ProjectB.Models;
 namespace ProjectB.Repositories;
 
 public abstract class AbstractRepository<TEntity, TId>: IRepository<TEntity, TId>
-    where TEntity: IEntity<TId>
-    where TId: class
+where TEntity : IEntity<TId>
+where TId : notnull
 {
 
     protected readonly Dictionary<TId, TEntity> Repository = new();
 
-    public void Save(TEntity entity) => Repository.TryAdd(entity.GetId(), entity);
+    protected AbstractRepository() {
+        this.Refresh();
+    }
+
+    public void Save(TEntity entity)
+    {
+        Repository.TryAdd(entity.GetId(), entity);
+        this.Persist();
+    }
 
     public TEntity? FindById(TId id) => Repository[id];
 
@@ -37,6 +45,10 @@ public abstract class AbstractRepository<TEntity, TId>: IRepository<TEntity, TId
     {
         JsonFileWriter<TEntity> writer = new();
         writer.WriteObjects(GetFileLocation(), Repository.Values);
+    }
+
+    public bool Exists(TId id) {
+        return this.Repository.ContainsKey(id);
     }
 
     public abstract string GetFileLocation();

@@ -5,9 +5,9 @@ namespace ProjectB.Repositories;
 /**
  * Base for every repository used in this program.
  */
-public interface IRepository<TEntity, in TId>
-    where TEntity : IEntity<TId> 
-    where TId : class
+public interface IRepository<TEntity, TId>
+    where TEntity : IEntity<TId>
+    where TId : notnull
 {
 
     /**
@@ -38,5 +38,7 @@ public interface IRepository<TEntity, in TId>
     int Count();
     
     string GetFileLocation();
+
+    bool Exists(TId id) => FindById(id) != null;
 
 }
