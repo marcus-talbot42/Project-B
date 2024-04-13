@@ -20,11 +20,23 @@ class Tour
     }
 }
 
-class Participant
+public class Participant
 {
-    public int TicketNumber { get; set; }
+    private int ticketNumber;
+
+    public int TicketNumber
+    {
+        get { return ticketNumber; }
+        set
+        {
+            ticketNumber = value;
+            Program.PrintTicketNumber(this);
+        }
+    }
+
     public DateTime TourTime { get; set; }
 
+    // Constructor that takes two arguments
     public Participant(int ticketNumber, DateTime tourTime)
     {
         TicketNumber = ticketNumber;
@@ -90,6 +102,17 @@ class Program
         SaveParticipantsToJson();
     }
 
+    public static void PrintTicketNumber(Participant participant)
+    {
+        if (participant.TicketNumber == 0)
+        {
+            Console.WriteLine("Ticket number is not set.");
+        }
+        else
+        {
+            Console.WriteLine($"Current ticket number: {participant.TicketNumber}");
+        }
+    }
     static void SignUpForTour()
     {
         Console.WriteLine("Available Tours:");
@@ -231,6 +254,4 @@ class Program
         }
 
         string json = JsonSerializer.Serialize(dataToSerialize);
-        File.WriteAllText(jsonFilePath, json);
-    }
-}
+     
