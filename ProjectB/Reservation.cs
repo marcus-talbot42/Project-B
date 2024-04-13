@@ -254,4 +254,6 @@ class Program
         }
 
         string json = JsonSerializer.Serialize(dataToSerialize);
-     
+        File.WriteAllText(jsonFilePath, json);
+    }
+}
