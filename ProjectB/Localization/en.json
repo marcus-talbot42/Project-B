@@ -3,7 +3,7 @@
     "enterUsername": "Enter your username:",
     "enterPassword": "Enter your password:",
     "loginSuccessful": "Login successful!",
-    "invalidCredentials": "Invalid username or password! Attempt {0} of {1}.",
+    "invalidCredentials": "Invalid username or password! Attempt {0} of 3.",
     "tryAgain": "Please try again...",
     "maxAttemptsReached": "Login failed. Maximum attempts reached.",
     "mainMenuTitle": "Main Menu",

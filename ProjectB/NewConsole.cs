@@ -62,7 +62,8 @@ namespace ProjectB
                             "3: Adjust tour",
                             "4: View guest for a tour",
                             "5: FAQ",
-                            "6: Exit"
+                            "6: Logout",
+                            "9: Exit"
                         }));
 
                 switch (choice)
@@ -82,8 +83,11 @@ namespace ProjectB
                     case "5: FAQ":
                         FaqViewer.Process();
                         break;
-                    case "6: Exit":
-                        running = false;
+                    case "6: Logout":
+                        Logout.Process();
+                        break;
+                    case "9: Exit":
+                        Exit.Process();
                         break;
                 }
 
@@ -95,25 +99,49 @@ namespace ProjectB
             }
         }
 
-        private static bool PerformLogin()
+        private static int loginAttempts = 0;
+        public static bool PerformLogin()
         {
-            AnsiConsole.Write(new Rule(loc.Get("loginTitle")).RuleStyle("grey"));
+            const int maxAttempts = 3;
 
-            var username = AnsiConsole.Ask<string>(loc.Get("enterUsername"));
-            var password = AnsiConsole.Prompt(
-                new TextPrompt<string>(loc.Get("enterPassword"))
-                    .Secret());
+            for (int attempt = 1; attempt <= maxAttempts; attempt++)
+            {
+                AnsiConsole.Write(new Rule(loc.Get("loginTitle")).RuleStyle("grey"));
 
-            if (username == "admin" && password == "admin")
-            {
-                AnsiConsole.Markup(loc.Get("loginSuccessful") + "\n");
-                return true;
+                var username = AnsiConsole.Ask<string>(loc.Get("enterUsername"));
+                var password = AnsiConsole.Prompt(
+                    new TextPrompt<string>(loc.Get("enterPassword"))
+                        .Secret());
+
+                // Login out process
+
+
+                if (username == "admin" && password == "admin")
+                {
+                    AnsiConsole.Status()
+                        .Start("[green]Logging in...[/]\n", ctx =>
+                        {
+                            // Simulate login
+                            AnsiConsole.MarkupLine("Authenticating...");
+                            Thread.Sleep(5000);
+
+                        });
+                    AnsiConsole.Markup(loc.Get("loginSuccessful") + "\n");
+                    return true;
+                }
+                else
+                {
+                    AnsiConsole.Markup(string.Format(loc.Get("invalidCredentials"), attempt) + "\n");
+
+                    if (attempt == maxAttempts)
+                    {
+                        AnsiConsole.Markup(loc.Get("maxAttemptsReached") + "\n");
+                        return false;
+                    }
+                }
             }
-            else
-            {
-                AnsiConsole.Markup(loc.Get("invalidCredentials") + "\n");
-                return false;
-            }
+
+            return false;
         }
     }
 
@@ -155,6 +183,33 @@ namespace ProjectB
         public static void Process()
         {
             AnsiConsole.Markup("[green]Displaying FAQs...[/]\n");
+        }
+    }
+
+    public static class Logout
+    {
+        public static void Process()
+        {
+            // Login out process
+            AnsiConsole.Status()
+                .Start("[green]Logging out...[/]\n", ctx =>
+                {
+                    // Simulate logout
+                    AnsiConsole.MarkupLine("Logging out...");
+                    Thread.Sleep(10000);
+                });
+            // Return to login screen
+            // bool running = false;
+            Program.PerformLogin();
+        }
+    }
+
+    public static class Exit
+    {
+        public static void Process()
+        {
+            AnsiConsole.Markup("[green]Exiting program...[/]\n");
+            Environment.Exit(0);
         }
     }
 }
