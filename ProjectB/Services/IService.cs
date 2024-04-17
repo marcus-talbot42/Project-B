@@ -4,7 +4,6 @@ namespace ProjectB.Services;
 
 public interface IService<TEntity, TId>
     where TEntity : IEntity<TId>
-    where TId : class
 {
 
     void Create(TEntity entity);

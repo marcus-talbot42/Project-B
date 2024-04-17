@@ -1,5 +1,4 @@
 using ProjectB.Exceptions;
-using ProjectB.Models;
 using ProjectB.Repositories;
 
 namespace ProjectB.Services;
