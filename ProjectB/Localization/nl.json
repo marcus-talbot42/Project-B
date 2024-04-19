@@ -1,0 +1,11 @@
+{
+    "loginTitle": "Inloggen op systeem",
+    "enterUsername": "Voer uw gebruikersnaam in:",
+    "enterPassword": "Voer uw wachtwoord in:",
+    "loginSuccessful": "Inloggen geslaagd!",
+    "invalidCredentials": "Ongeldige gebruikersnaam of wachtwoord! Poging {0} van 3.",
+    "tryAgain": "Probeer het opnieuw...",
+    "maxAttemptsReached": "Inloggen mislukt. Maximaal aantal pogingen bereikt.",
+    "mainMenuTitle": "Hoofdmenu",
+    "warningApplicationIsInBeta": "Waarschuwing: deze applicatie is nog in beta-fase en niet volledig operationeel!"
+}
