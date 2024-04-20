@@ -17,5 +17,5 @@ public interface IEntity<out TId>
     /// <returns>The ID of the object it is called on.</returns>
     /// <typeparam name="TId">The type of the ID.</typeparam>
     /// 
-    TId GetId();
+    TId? GetId();
 }

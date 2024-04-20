@@ -1,7 +1,7 @@
 using static BCrypt.Net.BCrypt;
 using Newtonsoft.Json;
-using ProjectB.Models;
-using System;
+
+namespace ProjectB.Models;
 
 /// <summary>
 /// Blueprint for users, containing the fields shared by all user types. This class should be implemented by sub-classes,
@@ -9,11 +9,8 @@ using System;
 /// </summary>
 /// <param name="username">The username assigned to the user.</param>
 /// <param name="role">The role assigned to a user, used to determine what functionality should be available to said user.</param>
-public abstract class AbstractUser(string username, UserRole role) : IEquatable<AbstractUser>, IEntity<string>
+public abstract class AbstractUser([JsonProperty] string username, [JsonProperty] UserRole role) : IEquatable<AbstractUser>, IEntity<string>
 {
-
-    [JsonProperty] protected string Username = username;
-    [JsonProperty] protected UserRole Role = role;
 
     /// <summary>
     /// Gets the role assigned to the user.
@@ -21,14 +18,14 @@ public abstract class AbstractUser(string username, UserRole role) : IEquatable<
     /// <returns>The role assigned to the user.</returns>
     public UserRole GetUserRole()
     {
-        return Role;
+        return role;
     }
 
     /// <summary>
     /// Gets the ID assigned to the user. In this case, simply returns the username.
     /// </summary>
     /// <returns>The username of the user.</returns>
-    public string GetId() => Username;
+    public string GetId() => username;
 
     /// <summary>
     /// Implements a way to check for equality between two instances of AbstractUser,
@@ -54,7 +51,7 @@ public abstract class AbstractUser(string username, UserRole role) : IEquatable<
     /// <returns>The hashcode of the user.</returns>
     public override int GetHashCode()
     {
-        return HashCode.Combine(Username, (int)Role);
+        return HashCode.Combine(username, (int) role);
     }
 
     /// <summary>
@@ -124,7 +121,7 @@ public abstract class AbstractUser(string username, UserRole role) : IEquatable<
         {
             if (_role == UserRole.Guest)
             {
-                return new Guest(_username!, _validForDate, _username!);
+                return new Guest(_username!, _validForDate);
             }
 
             return new Employee(_username!, _role, _password!);

@@ -1,0 +1,507 @@
+[
+  {
+    "username": "688bada5-d538-416c-9d32-835634839467",
+    "password": "731ebbc9-56ad-4776-91a0-39c6d471dc6b",
+    "role": 0
+  },
+  {
+    "username": "53fb2ce4-40aa-4cc1-968b-765c2720000c",
+    "password": "1f78d1f0-0019-4485-acf8-20511a9a5a48",
+    "role": 1
+  },
+  {
+    "username": "1255c07f-24eb-4301-911e-aa90164c3319",
+    "password": "9e40aa64-3531-4ada-b8d5-2ebe991af77b",
+    "role": 1
+  },
+  {
+    "username": "74451ece-5484-4811-8259-16ee0401bc85",
+    "password": "3295b574-6517-4aa7-9122-a1fc5a21c67b",
+    "role": 0
+  },
+  {
+    "username": "ff9364b2-7ca8-4900-85e9-5a8f4fb6ebc4",
+    "password": "19085706-ed04-4e09-a551-c6b484f9a92d",
+    "role": 2
+  },
+  {
+    "username": "849492b4-c248-4059-ba07-52ebea4a49bd",
+    "password": "98ad5684-53bc-49b5-b40f-e02b58b96de3",
+    "role": 2
+  },
+  {
+    "username": "74d800a2-5514-464b-9167-32cc4a4641be",
+    "password": "ae6d8582-5780-4d91-866f-ed1bccbbf474",
+    "role": 1
+  },
+  {
+    "username": "8e2dedef-62b1-45b6-a4c6-0b929f945cc2",
+    "password": "bb5f42a2-ef02-443a-9fd0-595d541c279b",
+    "role": 1
+  },
+  {
+    "username": "991af328-b96b-4621-acd6-7879e67414ba",
+    "password": "d32cd12e-a97f-4685-ad15-51372fb602fd",
+    "role": 0
+  },
+  {
+    "username": "3eacf6eb-b6b9-4f3b-a949-35039cdc8fd0",
+    "password": "ed72a548-52fa-4ee2-a376-9250bf21ec08",
+    "role": 0
+  },
+  {
+    "username": "3f70f258-7d4b-4016-8e1d-9dc2151c761d",
+    "password": "35eb66b6-5ac3-4b5e-8db1-fa6e224d4947",
+    "role": 2
+  },
+  {
+    "username": "2cc506c8-4532-473a-adbf-38d0cf4e231e",
+    "password": "2dbf888b-4b15-4075-876a-4fe87594db41",
+    "role": 0
+  },
+  {
+    "username": "99e333f1-f644-4970-b152-0580edad510e",
+    "password": "8d37dd67-6966-4e97-bd1f-9b74492d1b63",
+    "role": 2
+  },
+  {
+    "username": "dc2ea968-3fab-4177-a473-4c4594950640",
+    "password": "60c12821-ce53-434c-868b-8dd1f2e6a271",
+    "role": 1
+  },
+  {
+    "username": "b4dce5ca-63f4-49d0-ae0a-688d5044eade",
+    "password": "a4c4385a-5ed5-46e0-be48-0347637112ae",
+    "role": 2
+  },
+  {
+    "username": "dbf1f4ae-653f-4e41-9334-ee3cebd86864",
+    "password": "e2c60347-d5b5-47f2-87f2-635afc060698",
+    "role": 2
+  },
+  {
+    "username": "d0ca49fc-293b-41ac-a5fd-bb6cb3548bbd",
+    "password": "e82a0b1b-442b-4998-8700-dc596de70756",
+    "role": 2
+  },
+  {
+    "username": "9c00c063-400b-4d4e-852f-a2d3ab530f8d",
+    "password": "933008ef-696a-4376-8d9a-778eabed38e5",
+    "role": 1
+  },
+  {
+    "username": "e2ae5ad2-7a8c-4296-a00d-df8b9f178bee",
+    "password": "9c2db891-9d24-449b-9a96-6331fdd370ee",
+    "role": 0
+  },
+  {
+    "username": "e93f48f3-24b9-4f64-a4eb-133398ccaf49",
+    "password": "c7fb8c3c-6a25-4f99-aad1-9fc1c9b0efe0",
+    "role": 2
+  },
+  {
+    "username": "5da0bb4f-4aac-4323-83dc-9dd745a73fc5",
+    "password": "37d97c51-e1a5-4f2b-9920-dcf4e8fd814f",
+    "role": 0
+  },
+  {
+    "username": "66617749-8c64-48f4-87c4-622b37c6277d",
+    "password": "f50097e7-1cc3-4715-b421-6136fe1e9145",
+    "role": 2
+  },
+  {
+    "username": "629cb83f-7c7b-4de0-b880-b5f2dc4bf22d",
+    "password": "2b0a97a8-90f8-4304-b033-82e2864bf1ba",
+    "role": 0
+  },
+  {
+    "username": "70d7cc08-98fc-4c3a-98ed-c9920c9b4e33",
+    "password": "bfd05f52-a009-421a-b481-c5a745285592",
+    "role": 0
+  },
+  {
+    "username": "2be7e083-b072-43ca-9a6c-1f0f62bbf069",
+    "password": "3fa38e95-56c3-4e86-9359-60f4c519c989",
+    "role": 1
+  },
+  {
+    "username": "28a7d5f6-1e90-441d-afc4-70831975916c",
+    "password": "d49b2088-718e-48a2-b8e0-02988d9290bc",
+    "role": 2
+  },
+  {
+    "username": "bdc1ccb2-d68c-47a6-a567-80f85169c1c9",
+    "password": "4c226098-aa84-4cc0-b3c1-1fcd31baa806",
+    "role": 1
+  },
+  {
+    "username": "2f81b3b6-40f2-4942-82e8-8fd1b6c36fef",
+    "password": "43f6064c-7291-41b9-bab8-e35d66b08798",
+    "role": 0
+  },
+  {
+    "username": "655c7d4e-48ee-48a0-bac6-a6eb7d2893ab",
+    "password": "edb43e25-3fbf-40ce-80cb-64b52dcfc6c5",
+    "role": 2
+  },
+  {
+    "username": "1d09adda-6c81-45a6-b99f-3b24ae4e0296",
+    "password": "3d9e037f-766b-4b1a-a9ad-12a1ca42f425",
+    "role": 2
+  },
+  {
+    "username": "872a9f3d-eed5-4f28-9a97-d0de13beb2a6",
+    "password": "d1f93203-f1be-48b6-8f78-a5e6ffcc8b6a",
+    "role": 2
+  },
+  {
+    "username": "62800bf3-c3b5-488c-a496-f5114e9386cd",
+    "password": "ee8fa742-3654-4fdf-91ee-29fbd3f84a9f",
+    "role": 0
+  },
+  {
+    "username": "9503bcbc-890a-42ae-a078-b736eb864757",
+    "password": "e95b37be-f540-4cb3-bc6a-8e21fcb93b57",
+    "role": 0
+  },
+  {
+    "username": "a64eb44f-aab6-46ad-b20a-27c8e3844313",
+    "password": "1da35543-a1d6-4fc6-8f90-a1cd0f7169cf",
+    "role": 0
+  },
+  {
+    "username": "acdde23f-6013-48ff-a03c-4927477ca1ba",
+    "password": "9eb86232-f550-4ad0-9cd9-47d7c587a565",
+    "role": 2
+  },
+  {
+    "username": "04ea0f30-70de-4e84-84db-e26792ae65c0",
+    "password": "ff8ca3db-5f0e-45e2-b637-72b2a5ac73e7",
+    "role": 1
+  },
+  {
+    "username": "3c5bf2e1-2d4e-4739-8f2e-10fbbd571cdd",
+    "password": "b366cc0f-6c85-44ef-ad01-7bf8ac976d0f",
+    "role": 1
+  },
+  {
+    "username": "5ac58006-5d37-4dd5-81e5-c108a4da67db",
+    "password": "42e91448-8290-4278-ab5d-8f074e22ab9d",
+    "role": 1
+  },
+  {
+    "username": "b9d7f69e-b1cb-41a7-aa0c-197e9ea44c33",
+    "password": "b5708584-19c9-4dcb-98b5-4839c2cae292",
+    "role": 1
+  },
+  {
+    "username": "6a9ec2cf-3f84-4f3e-99d8-4325f778e6b1",
+    "password": "7072397c-829d-442c-9a82-f473e3ca39ea",
+    "role": 0
+  },
+  {
+    "username": "bb9df738-b13f-43da-8ef0-dd84276bd169",
+    "password": "181bca82-f35d-4f25-9e8f-a0a1830c697c",
+    "role": 0
+  },
+  {
+    "username": "2bada415-4b3e-4a87-9054-c73bb14e162f",
+    "password": "97997aa5-a3f9-4386-aa01-52c5b5c33947",
+    "role": 0
+  },
+  {
+    "username": "e0d16b3a-ced3-4798-afa8-611780bef73c",
+    "password": "1922bfe4-1078-4b07-a361-28a1d0eabc79",
+    "role": 2
+  },
+  {
+    "username": "2b818335-10fb-4196-aea9-8be4f2ea1252",
+    "password": "1f22258e-962d-4122-ae73-718cb2d04958",
+    "role": 2
+  },
+  {
+    "username": "67059cec-7ead-4d50-bc4d-3c9abcdf81b3",
+    "password": "d4ef7435-c318-4f8b-80fe-be3375d83438",
+    "role": 1
+  },
+  {
+    "username": "e270d712-f488-4272-9d5a-8e2364b716ad",
+    "password": "165cfb6e-d613-4e79-82d5-8f1ad81bf6f9",
+    "role": 2
+  },
+  {
+    "username": "e912821d-227d-4505-9fc2-023dcacc5b13",
+    "password": "9d044b60-4a64-416c-9aaf-c545825f005f",
+    "role": 0
+  },
+  {
+    "username": "7714f0e2-2544-4307-89c0-d59dfdd92326",
+    "password": "2c46645e-b568-4538-88ea-86f56501b050",
+    "role": 1
+  },
+  {
+    "username": "7b692378-6c35-42b9-8db7-38c760e574dd",
+    "password": "cd339e64-f0ff-4853-9413-5919086d1986",
+    "role": 2
+  },
+  {
+    "username": "209f2b74-1cfa-43c2-b4e9-32182f646d05",
+    "password": "e102a55c-4cbd-4d52-8843-0b1259ce3b13",
+    "role": 2
+  },
+  {
+    "username": "04f8565f-c6bc-44a6-a7fd-6cd16773899e",
+    "password": "a34b1523-44cd-4fd7-b80c-c42fc40939f7",
+    "role": 1
+  },
+  {
+    "username": "8dead8a0-adf1-4cfe-a690-0d08582b64fe",
+    "password": "07c82e0a-e095-48f7-9c63-f2af4d7faf8d",
+    "role": 0
+  },
+  {
+    "username": "9c4bace2-0b39-4941-9aa2-d3648e1f8016",
+    "password": "38b98962-118d-4f12-b413-5a300ab4e537",
+    "role": 1
+  },
+  {
+    "username": "68706ddd-c677-4829-b178-e9a17dddf44b",
+    "password": "2600d466-e11e-4625-9906-f5a10a378670",
+    "role": 1
+  },
+  {
+    "username": "31f47216-41e3-41d6-9c43-3be5f7ce2b4b",
+    "password": "001789ea-969d-4cd6-a46c-5a58f4768f70",
+    "role": 2
+  },
+  {
+    "username": "39842ec3-db26-4d31-be68-d69ff1184948",
+    "password": "8d65faf9-1c1e-43e4-826d-b7c70adc3e9d",
+    "role": 1
+  },
+  {
+    "username": "02d698c0-9b00-46f6-a759-4e2155f69685",
+    "password": "fc67afbe-dae6-48c2-b6ed-f467e973f8b7",
+    "role": 0
+  },
+  {
+    "username": "52b9c2bc-c46e-4afc-9980-8b38e652163a",
+    "password": "f52aae8c-c36f-426f-b007-b9c34b5378dc",
+    "role": 2
+  },
+  {
+    "username": "51a9dfc3-e958-46e7-aebe-8f657d9b12eb",
+    "password": "c4833547-b000-404e-9bdf-773e017c42c3",
+    "role": 2
+  },
+  {
+    "username": "214c88f5-88f7-41ba-ab65-0a49e43473b5",
+    "password": "13cc3d4c-5228-44b1-bc7f-457592352d06",
+    "role": 0
+  },
+  {
+    "username": "926ce996-e353-4092-9995-817922ec80d1",
+    "password": "72a7809a-55fe-4de2-95ec-f0f6bf313d18",
+    "role": 1
+  },
+  {
+    "username": "da413844-7c80-4f30-9d75-87f0cfb73742",
+    "password": "696e3d4d-31ab-46ab-9fd3-96175da7b3b4",
+    "role": 2
+  },
+  {
+    "username": "43ac7f10-583e-4f0e-b6c4-1a1e7e9dedf8",
+    "password": "ac44c773-ba86-482c-bbc2-6cdd3ba72039",
+    "role": 0
+  },
+  {
+    "username": "c50a3b3c-03cd-4808-8863-c8e99c411a81",
+    "password": "f2bc8aba-b08d-4779-9292-bf5b11e05fb9",
+    "role": 0
+  },
+  {
+    "username": "b2fa733c-94fe-4e38-8a39-978c4e93239e",
+    "password": "486c6559-9fe0-45f3-9fb1-f53f8740cae1",
+    "role": 1
+  },
+  {
+    "username": "9397495b-1a4f-4d99-9d80-cec7d6e15614",
+    "password": "e17e7eba-f976-46c0-b61e-53e97c9601c3",
+    "role": 0
+  },
+  {
+    "username": "fcefb878-34a9-4c84-bdf5-c78ee5156c76",
+    "password": "d70f9cd8-90a5-45ac-8a00-2ea685431510",
+    "role": 2
+  },
+  {
+    "username": "8ea678d0-5876-4299-bf68-91156e0a721b",
+    "password": "67f2f70b-d6ac-4e18-802d-4e643d628eb8",
+    "role": 2
+  },
+  {
+    "username": "7f374a6c-e177-4294-9ddd-971244128abf",
+    "password": "2d7dd031-d7f1-4089-b8b8-f30a0c0f18c2",
+    "role": 2
+  },
+  {
+    "username": "3d99663d-5229-462d-a624-c8f1b233dbfa",
+    "password": "9deb9a80-6a85-4da7-b1df-2a0cf35afa5f",
+    "role": 1
+  },
+  {
+    "username": "91ba2239-0159-4bab-8600-bfe852f86343",
+    "password": "8a8c2575-4505-4de1-b6f3-09cdc91bffd2",
+    "role": 0
+  },
+  {
+    "username": "c11aae56-5b61-425a-97d4-aac1158cdc4d",
+    "password": "b268c8c0-3881-4936-8883-6e45c3f05938",
+    "role": 1
+  },
+  {
+    "username": "09251c38-2a4f-4223-bf01-e07cef6e45c5",
+    "password": "cb846b31-a78d-455f-990f-528eb1b1b7ef",
+    "role": 1
+  },
+  {
+    "username": "69c8f55b-6f33-45b9-a906-be694472d921",
+    "password": "60edeef6-f095-40e2-8fa5-c357421ad8b5",
+    "role": 0
+  },
+  {
+    "username": "bd30ef1e-bcf4-43ed-a221-eb64c3772763",
+    "password": "488d4d6b-b709-487c-a2a8-67fb22794e0d",
+    "role": 2
+  },
+  {
+    "username": "e97d059d-2ac1-46b1-ba82-34e8ac385f2d",
+    "password": "a7a024c1-e279-4860-8fac-04e8d4eaa5f4",
+    "role": 1
+  },
+  {
+    "username": "4e70404d-d7bc-4b60-950f-4226adcbfe5b",
+    "password": "50b36b3a-9dd9-4997-921e-cc2f7c49cf8e",
+    "role": 1
+  },
+  {
+    "username": "6789d28d-e577-4a8d-90f7-a68eb61fe57d",
+    "password": "d9d1344c-6562-4059-8d66-2c8ad6c6018b",
+    "role": 2
+  },
+  {
+    "username": "18a0f647-6cb3-4c65-a016-99ec80b496ea",
+    "password": "1ba32dae-8e43-476e-ac96-d24ffb215bb9",
+    "role": 2
+  },
+  {
+    "username": "bce02887-a7c8-4a6d-94ac-836ca8d0a0be",
+    "password": "e5fcc3b4-a0c1-444b-adb7-57fbd3fa5c25",
+    "role": 1
+  },
+  {
+    "username": "5ce1431e-d4ca-411e-a3e9-e0f1814e4044",
+    "password": "1bba1768-92b2-4c32-927c-52a613dd8d77",
+    "role": 1
+  },
+  {
+    "username": "7e08cd40-0980-4a76-b4f0-c28f52d74b2b",
+    "password": "8d636793-e9c3-4f82-97ac-76fdf998b5f9",
+    "role": 2
+  },
+  {
+    "username": "cfe1934b-0e90-471f-94b6-61310467f230",
+    "password": "6e143a4e-9cf7-44f4-8e98-1db1a2850f9c",
+    "role": 0
+  },
+  {
+    "username": "b147f02f-2037-4eb3-ac68-d0dfc615d2d1",
+    "password": "7e6ffaf8-244d-4f69-a49a-69b1bc127541",
+    "role": 0
+  },
+  {
+    "username": "267719ba-dc83-46e7-b285-cc5c927bf25d",
+    "password": "b3d48978-ebd5-4d67-831f-96b7f4a8dea3",
+    "role": 1
+  },
+  {
+    "username": "84b66d00-d5e6-4714-af1f-844c4d832f02",
+    "password": "3df7e7d9-bf0a-44f8-9c24-db19968dfc24",
+    "role": 2
+  },
+  {
+    "username": "57d92267-8b97-44f3-8fa4-50f57e84aa17",
+    "password": "b475d76e-4157-47ef-9d73-687cc0fe6c3f",
+    "role": 1
+  },
+  {
+    "username": "207ff3f5-28fe-4a49-b56c-b25fd2e64883",
+    "password": "db0268c3-1652-4992-adba-91d53f68e5d7",
+    "role": 1
+  },
+  {
+    "username": "21483634-aff1-44f0-945a-17d4fa5cef99",
+    "password": "537d6ccf-6899-4e2c-894e-38fa965a7fbc",
+    "role": 0
+  },
+  {
+    "username": "924c5cbe-98f8-4c3f-b21f-660b11973ae2",
+    "password": "8e03433d-94d1-45a2-9802-705f32349f71",
+    "role": 2
+  },
+  {
+    "username": "ef9a9395-9ffa-4da6-befe-c0dbeb8e6ee6",
+    "password": "17535a35-93bb-46db-b128-868c685ce918",
+    "role": 2
+  },
+  {
+    "username": "f585ca37-d057-40c0-9ccf-cd0da301942a",
+    "password": "ad64e3bb-7c66-4031-8f03-f036a75095a9",
+    "role": 1
+  },
+  {
+    "username": "c0f322c9-491b-4932-bb84-84c30ef7701c",
+    "password": "57a3f9ca-59e7-44fa-bf3f-7a756eebddf4",
+    "role": 2
+  },
+  {
+    "username": "cc6c9b6f-92d4-4908-b7e2-3deac4609257",
+    "password": "eb8e5b19-2868-46ad-b161-2d7474aae0ce",
+    "role": 2
+  },
+  {
+    "username": "01a503fd-cd6e-4437-b791-fecc4e80ca03",
+    "password": "42d67708-bcc5-4ff3-8b63-e8a6632dfc86",
+    "role": 2
+  },
+  {
+    "username": "1dc67bbc-27e6-4875-927e-8c524a4c2c92",
+    "password": "dfc388a7-e48d-42e0-b8e3-61a1a3ea0462",
+    "role": 0
+  },
+  {
+    "username": "3a68cb66-9c41-4268-afd6-279a5fe41199",
+    "password": "fb3b094d-9b11-4808-8eca-8fa84ebbed22",
+    "role": 1
+  },
+  {
+    "username": "ae4d0310-4346-477a-8414-1f0df9a2ea28",
+    "password": "68d883fa-a45d-42bf-a06d-0fd7e3309297",
+    "role": 2
+  },
+  {
+    "username": "87e0f48f-9672-449e-b361-462b11159b7f",
+    "password": "7b67e492-a2ad-4c99-9d4b-c4bdf6b845c9",
+    "role": 1
+  },
+  {
+    "username": "485545f5-898f-407d-a6d3-45f79923c6fd",
+    "password": "76bfb38e-5ece-4787-8113-c1d98d1623b3",
+    "role": 1
+  },
+  {
+    "username": "marcus",
+    "password": "$2a$11$l0L0Vkh7Dz3M2p7WcieaHeVnT/DOA6PgjS8imyS6ANtEpg9M8GbmK",
+    "role": "2"
+  }
+]

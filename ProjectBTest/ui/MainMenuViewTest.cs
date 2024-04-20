@@ -1,22 +1,22 @@
 using ProjectB.Resources;
 using ProjectB.settings;
-using ProjectB.ui;
+using ProjectB.Views;
 using ProjectBTest.utils;
 
 namespace ProjectBTest.ui;
 
 [TestClass]
-public class MainMenuTest
+public class MainMenuViewTest
 {
     
     [TestMethod]
     public void TestMainMenuPrintsInDutch()
     {
         Settings.Language = Language.NL;
-        MainMenu mainMenu = new();
+        MainMenuView mainMenuView = new();
         using (ConsoleOutput consoleOutput = new ())
         {
-            mainMenu.ShowMenu();
+            mainMenuView.Execute();
             Assert.AreEqual(consoleOutput.GetOuput(), Translations.translation("MAIN_MENU") + "\n");
         }
     }
@@ -25,10 +25,10 @@ public class MainMenuTest
     public void TestMainMenuPrintsInEnglish()
     {
         Settings.Language = Language.EN;
-        MainMenu mainMenu = new();
+        MainMenuView mainMenuView = new();
         using (ConsoleOutput consoleOutput = new ())
         {
-            mainMenu.ShowMenu();
+            mainMenuView.Execute();
             Assert.AreEqual(consoleOutput.GetOuput(), Translations.translation("MAIN_MENU") + "\n");
         }
     }

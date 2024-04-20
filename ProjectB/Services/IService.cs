@@ -2,7 +2,7 @@ using ProjectB.Models;
 
 namespace ProjectB.Services;
 
-public interface IService<TEntity, TId>
+public interface IService<in TEntity, in TId>
     where TEntity : IEntity<TId>
 {
 

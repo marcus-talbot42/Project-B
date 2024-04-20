@@ -9,23 +9,34 @@ public class GuestService : IService<Guest, string>
     private static readonly Lazy<GuestService> Lazy = new(() => new GuestService());
     public static GuestService Instance => Lazy.Value;
     
-    private static readonly GuestRepository Repository = GuestRepository.Instance;
+    private readonly GuestRepository _repository = GuestRepository.Instance;
     
     public void Create(Guest entity)
     {
-        if (Repository.FindById(entity.GetId()) == null)
+        if (_repository.FindById(entity.GetId()) == null)
         {
-            Repository.Save(entity);
+            _repository.Save(entity);
         }
     }
 
     public void Update(Guest entity, string id)
     {
-        Repository.Save(entity);
+        _repository.Save(entity);
     }
 
     public void Delete(string id)
     {
         throw new NotImplementedException();
+    }
+
+    public Guest? FindValidGuestById(string id)
+    {
+        if (!_repository.Exists(id))
+        {
+            return null;
+        }
+
+        Guest guest = _repository.FindById(id);
+        return !guest.IsValid() ? null : guest;
     }
 }

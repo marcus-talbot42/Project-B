@@ -23,6 +23,6 @@ public class Employee(string username, UserRole role, string password) : Abstrac
         if (ReferenceEquals(other, this)) return true;
         if (ReferenceEquals(other, null)) return false;
         if (other.GetType() != GetType()) return false;
-        return Username == other.GetId();
+        return username == other.GetId();
     }
 }

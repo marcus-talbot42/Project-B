@@ -2,20 +2,24 @@ using Newtonsoft.Json;
 
 namespace ProjectB.Models
 {
-    public class Guest : AbstractUser
+    public class Guest(string username, [JsonProperty] DateOnly validForDate) : AbstractUser(username, UserRole.Guest)
     {
-        [JsonProperty]
-        private readonly DateOnly _validForDate;
+        [JsonIgnore] private Tour? _tour;
+        [JsonProperty] private readonly string _username = username;
 
-        public new string GetId() => Username;
-
-        public Guest(string username, DateOnly validForDate, string usernameParam) : base(username, UserRole.Guest)
+        public void SetTour(Tour? tour)
         {
-            _validForDate = validForDate;
-            this.Username = username;
+            _tour = tour;
         }
 
-        public bool IsValid() => _validForDate.CompareTo(DateTime.Today) == 0;
+        public Tour? GetTour()
+        {
+            return _tour;
+        }
+
+        public new string GetId() => _username;
+        
+        public bool IsValid() => validForDate.CompareTo(DateTime.Today) == 0;
 
         public override bool Equals(AbstractUser? other)
         {

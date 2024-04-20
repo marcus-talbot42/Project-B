@@ -1,13 +1,11 @@
+using ProjectB.Models;
+
 namespace ProjectB.login;
 
-public class Session
+public class Session(AbstractUser currentUser)
 {
-    public string Username { get; private set; }
-    public UserRole Role { get; private set; }
-
-    public Session(string username, UserRole role)
+    public AbstractUser GetCurrentUser()
     {
-        Username = username;
-        Role = role;
+        return currentUser;
     }
 }

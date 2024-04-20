@@ -11,9 +11,7 @@ public class EmployeeRepository : AbstractRepository<Employee, string>
     private EmployeeRepository()
     {
     }
-
-    public override string GetFileLocation() => ".//employees.json";
-
+    
     public IEnumerable<Employee> FindAllByRole(UserRole role) =>
         from user in Repository.Values
         where user.GetUserRole() == role
