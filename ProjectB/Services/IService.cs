@@ -16,4 +16,6 @@ public interface IService<TEntity, TId>
 
     void Delete(TEntity entity) => Delete(entity.GetId());
 
+    TEntity Read(TId read);
+
 }

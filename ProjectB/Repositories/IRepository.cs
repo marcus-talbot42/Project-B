@@ -37,6 +37,4 @@ public interface IRepository<TEntity, TId>
 
     int Count();
     
-    string GetFileLocation();
-
 }
