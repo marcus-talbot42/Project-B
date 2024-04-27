@@ -35,4 +35,9 @@ public class GuestService(GuestRepository repository) : IService<Guest, string>
 
         return guest;
     }
+
+    public Guest Read(string read)
+    {
+        throw new NotImplementedException();
+    }
 }
