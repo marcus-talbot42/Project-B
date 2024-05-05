@@ -11,7 +11,5 @@ public class GuestRepository : AbstractRepository<Guest, string>
     private GuestRepository()
     {
     }
-
-    public override string GetFileLocation() => ".//guests.json";
     
 }

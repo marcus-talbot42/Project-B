@@ -8,6 +8,10 @@ public abstract class AbstractRepository<TEntity, TId>: IRepository<TEntity, TId
     where TId: class
 {
 
+    protected AbstractRepository() {
+        Refresh();
+    }
+
     protected readonly Dictionary<TId, TEntity> Repository = new();
 
     public void Save(TEntity entity) => Repository.TryAdd(entity.GetId(), entity);
@@ -39,7 +43,11 @@ public abstract class AbstractRepository<TEntity, TId>: IRepository<TEntity, TId
         writer.WriteObjects(GetFileLocation(), Repository.Values);
     }
 
-    public abstract string GetFileLocation();
+    public string GetFileLocation() => $".//{GetType()}.json";
     
     public int Count() => Repository.Count;
+
+    public bool Exists(TEntity entity) {
+        return Repository.ContainsKey(entity.GetId());
+    }
 }

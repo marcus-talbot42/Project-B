@@ -39,4 +39,6 @@ public interface IRepository<TEntity, in TId>
     
     string GetFileLocation();
 
+    bool Exists(TEntity entity);
+
 }

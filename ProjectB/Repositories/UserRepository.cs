@@ -13,8 +13,6 @@ public class UserRepository: AbstractRepository<AbstractUser, string>
         Refresh();
     }
 
-    public override string GetFileLocation() => ".//users.json"; 
-
     public IEnumerable<AbstractUser> FindAllByRole(UserRole role) => 
         from user in Repository.Values 
         where user.GetUserRole() == role 

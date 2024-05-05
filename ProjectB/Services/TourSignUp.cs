@@ -19,7 +19,7 @@ namespace ProjectB.Models
             
             {
             
-                foreach (var participant in tour.Participants)
+                foreach (var participant in tour.GetParticipants())
                 {
                     participants.Add(participant.GetId());
                 }
