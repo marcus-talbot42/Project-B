@@ -1,3 +1,5 @@
+using ProjectB.Models;
+
 namespace ProjectB.login;
 
 public class Session

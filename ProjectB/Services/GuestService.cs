@@ -3,7 +3,7 @@ using ProjectB.Repositories;
 
 namespace ProjectB.Services;
 
-public class GuestService(IRepository<Guest, string> repository) : IService<Guest, string>
+public class GuestService(GuestRepository repository) : IService<Guest, string>
 {
     
     public void Create(Guest entity)
@@ -22,5 +22,9 @@ public class GuestService(IRepository<Guest, string> repository) : IService<Gues
     public void Delete(string id)
     {
         throw new NotImplementedException();
+    }
+
+    public Guest? GetGuest(string id) {
+        return repository.FindById(id);
     }
 }

@@ -27,4 +27,17 @@ public class TourService(TourRepository repository) : IService<Tour, TourComposi
     public IEnumerable<Tour> GetAllToursTodayAfterNow() {
         return repository.GetAllToursTodayAfterNow();
     }
+
+    public bool RegisterUserForTour(Tour tour, Guest guest) {
+        if (tour.RemainingCapacity == 0 || guest.IsGuestInTour)
+        {
+            return false;
+        }
+
+        guest.Tour = tour.GetId();
+        tour.GetParticipants().Add(guest.GetId());
+        repository.Save(tour);
+
+        return true;
+    }
 }

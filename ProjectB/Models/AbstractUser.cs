@@ -124,7 +124,7 @@ public abstract class AbstractUser(string username, UserRole role) : IEquatable<
         {
             if (_role == UserRole.Guest)
             {
-                return new Guest(_username!, _validForDate, _username!);
+                return new Guest(_username!, _validForDate);
             }
 
             return new Employee(_username!, _role, _password!);
