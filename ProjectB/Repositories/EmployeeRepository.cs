@@ -8,7 +8,7 @@ public class EmployeeRepository : AbstractRepository<Employee, string>
     private static readonly Lazy<EmployeeRepository> Lazy = new(() => new EmployeeRepository());
     public static EmployeeRepository Instance => Lazy.Value;
 
-    private EmployeeRepository()
+    private EmployeeRepository() : base()
     {
     }
 

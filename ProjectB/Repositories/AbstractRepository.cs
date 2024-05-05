@@ -4,8 +4,8 @@ using ProjectB.Models;
 namespace ProjectB.Repositories;
 
 public abstract class AbstractRepository<TEntity, TId>: IRepository<TEntity, TId>
-    where TEntity: IEntity<TId>
-    where TId: class
+where TEntity : IEntity<TId>
+where TId : notnull
 {
 
     protected AbstractRepository() {
@@ -14,7 +14,11 @@ public abstract class AbstractRepository<TEntity, TId>: IRepository<TEntity, TId
 
     protected readonly Dictionary<TId, TEntity> Repository = new();
 
-    public void Save(TEntity entity) => Repository.TryAdd(entity.GetId(), entity);
+    public void Save(TEntity entity)
+    {
+        Repository.TryAdd(entity.GetId(), entity);
+        this.Persist();
+    }
 
     public TEntity? FindById(TId id) => Repository[id];
 
