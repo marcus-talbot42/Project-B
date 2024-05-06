@@ -1,10 +1,9 @@
-namespace ProjectB.Views.Reservation;
+namespace ProjectB.Views.Login;
 
-public class DeleteReservationView : AbstractView
+public class EmployeeLoginView() : AbstractView
 {
     public override void Output()
     {
         throw new NotImplementedException();
     }
 }
-

@@ -1,10 +1,9 @@
 namespace ProjectB.Views.Reservation;
 
-public class DeleteReservationView : AbstractView
+public class EditReservationView : AbstractView
 {
     public override void Output()
     {
         throw new NotImplementedException();
     }
 }
-

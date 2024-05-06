@@ -43,6 +43,7 @@ where TId : notnull
 
     public void Persist()
     {
+        File.CreateText(this.GetFileLocation()).Close();
         JsonFileWriter<TEntity> writer = new();
         writer.WriteObjects(GetFileLocation(), Repository.Values);
     }

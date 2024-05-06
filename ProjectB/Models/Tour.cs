@@ -7,32 +7,36 @@ namespace ProjectB.Models;
 public class Tour : IEntity<TourCompositeKey>
 {
 
-    [JsonProperty] private readonly ICollection<string> _participants;
+    [JsonProperty] private readonly ICollection<Guest> _participants;
     [JsonProperty] private readonly int _capacity;
     [JsonProperty] private readonly TourCompositeKey _key;
 
-    public Tour(TourCompositeKey key, int capacity, ICollection<string> participants)
+    public Tour(TourCompositeKey key, int capacity, ICollection<Guest> participants)
     {
         _key = key;
         _capacity = capacity;
         _participants = participants;
     }
 
-    public int RemainingCapacity => _capacity - _participants.Count;
-
     public DateTime GetTourTime() {
         return _key.Time;
+    }
+
+    public int GetRemainingCapacity()
+    {
+        return _capacity - _participants.Count;
     }
 
     public string GetGuide() {
         return _key.Guide;
     }
 
-    public void SetGuide(Employee guide) {
+    public void SetGuide(Employee guide)
+    {
         _key.Guide = guide.GetId();
     }
 
-    public ICollection<string> GetParticipants() {
+    public ICollection<Guest> GetParticipants() {
         return _participants;
     }
 

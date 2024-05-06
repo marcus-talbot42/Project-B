@@ -1,40 +1,42 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Newtonsoft.Json;
-using ProjectB.IO;
-using ProjectB.Models;
-using ProjectB.Repositories;
-
 namespace ProjectB.Views.Reservation;
 
-public class ReservationView(CreateReservationView createReservationView) : IView
+public class ReservationView(
+    CreateReservationView createReservationView,
+    EditReservationView editReservationView,
+    DeleteReservationView deleteReservationView) : AbstractView
 {
+    private const string OPTIONS = """
+                                   1. Inschrijven voor een tour.
+                                   2. Uw inschrijving voor een tour wijzigen.
+                                   3. Verwijder uw inschrijving voor een tour.
+                                   4. Exit
+                                   """;
 
-    private const string OUTPUT = """
-        Welcome to our museum!
-        Please choose an option:
-        1. Sign up for a tour
-        2. Delete your sign-up for a tour
-        3. Adjust Tour
-        4. View participants for a tour
-        5. Exit\n
-        """;
+    private const string OUTPUT = $"""
+                                   Kies een van de onderstaande opties om verder te gaan:
+                                   {OPTIONS}
+                                   """;
 
-    public void Output()
+    public override void Output()
     {
-        int option;
-        Console.WriteLine(OUTPUT);
-        while (!int.TryParse(Console.ReadLine(), out option) || (option < 1 || option > 5))
+        while (true)
         {
-            Console.WriteLine("Invalid input. Please enter a number between 1 and 5.");
-        }
-
-        switch(option) {
-            case 1:
-                createReservationView.Output();
-                break;
+            Console.WriteLine(OUTPUT);
+            int option = ReadUserChoice(1, 4, OUTPUT);
+            switch (option)
+            {
+                case 1:
+                    createReservationView.Output();
+                    break;
+                case 2:
+                    editReservationView.Output();
+                    break;
+                case 3:
+                    deleteReservationView.Output();
+                    break;
+                case 4:
+                    return;
+            }
         }
     }
 }
