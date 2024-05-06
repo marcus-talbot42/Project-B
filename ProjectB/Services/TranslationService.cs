@@ -28,14 +28,18 @@ public class TranslationService(IRepository<Translation, string> repository) : I
     
     public string GetTranslationString(string key)
     {
-        var pairs = repository.FindById(Settings.Language.ToString())!.GetPairs();
-        if (pairs.ContainsKey(key))
+        var lang = Settings.Language.ToString();
+        
+        var translation = repository.FindById(lang);
+        
+        if (translation != null)
         {
-            return pairs[key];
+            var pairs = translation.GetPairs();
+            if (pairs.ContainsKey(key))
+            {
+                return pairs[key];
+            }
         }
-        else
-        {
-            return $"Translation not found: {key}";
-        }
+        return $"Translation not found: {key}";
     }
 }
