@@ -8,7 +8,7 @@ public interface IService<TEntity, TId>
 
     void Create(TEntity entity);
 
-    void Update(TEntity entity) => Update(entity, entity.GetId());
+    public void Update(TEntity entity) => Update(entity, entity.GetId());
 
     void Update(TEntity entity, TId id);
 

@@ -1,14 +1,14 @@
 using Newtonsoft.Json;
-using ProjectB.Exceptions;
 
 namespace ProjectB.Models;
 
 public class TourCompositeKey {
 
     [JsonProperty] public readonly DateTime Time;
-    [JsonProperty] public string Guide;
+    [JsonProperty] public string Guide { get; set; }
 
-    public TourCompositeKey(DateTime time, string guide) {
+    public TourCompositeKey(DateTime time, string guide)
+    {
         Guide = guide;
         Time = time;
     }

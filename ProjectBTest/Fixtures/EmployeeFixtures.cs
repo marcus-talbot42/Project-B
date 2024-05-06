@@ -18,4 +18,18 @@ public class EmployeeFixtures
 
         return userList;
     }
+    
+    public static ICollection<Employee> GenerateGuides(int amount)
+    {
+        ICollection<Employee> userList = new List<Employee>();
+        Random random = new Random();
+        for (int i = 0; i < amount; i++)
+        {
+            // Does not include guest.
+            userList.Add(new Employee(Guid.NewGuid().ToString(), UserRole.Guide, Guid.NewGuid().ToString()));
+        }
+
+        return userList;
+    }
+    
 }

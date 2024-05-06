@@ -16,28 +16,27 @@ public class TourService(TourRepository repository) : IService<Tour, TourComposi
 
     public void Delete(TourCompositeKey id)
     {
-        throw new NotImplementedException();
+        repository.Remove(id);
     }
 
     public void Update(Tour entity, TourCompositeKey id)
     {
-        throw new NotImplementedException();
+        repository.Save(entity);
     }
 
     public IEnumerable<Tour> GetAllToursTodayAfterNow() {
         return repository.GetAllToursTodayAfterNow();
     }
 
-    public bool RegisterUserForTour(Tour tour, Guest guest) {
-        if (tour.RemainingCapacity == 0 || guest.IsGuestInTour)
+    public bool RegisterGuestForTour(Guest guest, Tour tour)
+    {
+        if (tour.GetRemainingCapacity() == 0)
         {
             return false;
         }
-
-        guest.Tour = tour.GetId();
-        tour.GetParticipants().Add(guest.GetId());
+        
+        tour.GetParticipants().Add(guest);
         repository.Save(tour);
-
         return true;
     }
 }

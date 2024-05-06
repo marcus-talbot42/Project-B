@@ -13,7 +13,7 @@ namespace ProjectBTest.Fixtures
             for (int i = 0; i < amount; i++)
             {
                 int ticketNumber = i + 1;
-                userList.Add(new Guest(Guid.NewGuid().ToString(), DateOnly.FromDateTime(DateTime.Today), ticketNumber.ToString()));
+                userList.Add(new Guest(Guid.NewGuid().ToString(), DateOnly.FromDateTime(DateTime.Today)));
             }
 
             return userList;

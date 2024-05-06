@@ -1,19 +1,36 @@
-using ProjectB.login;
-using ProjectB.Models;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using ProjectB.Repositories;
 using ProjectB.Services;
-using ProjectB.settings;
+using ProjectB.Views.Admin;
+using ProjectB.Views.Debug;
+using ProjectB.Views.Login;
+using ProjectB.Views.Main;
 using ProjectB.Views.Reservation;
 
-var guest = new Guest("1234", DateOnly.FromDateTime(DateTime.Now));
+HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
+// Repostitories
+builder.Services.AddSingleton<GuestRepository>();
+builder.Services.AddSingleton<EmployeeRepository>();
+builder.Services.AddSingleton<TourRepository>();
 
-var repo = new TourRepository();
-var guestRepo = new GuestRepository();
-guestRepo.Save(guest);
-Settings.CurrentSession = new Session(guest.GetId(), guest.GetUserRole());
-var guestService = new GuestService(guestRepo);
-var service = new TourService(repo);
-var createView = new CreateReservationView(service, guestService);
-var view = new ReservationView(createView);
+// Services
+builder.Services.AddSingleton<GuestService>();
+builder.Services.AddSingleton<EmployeeService>();
+builder.Services.AddSingleton<TourService>();
 
-view.Output();
+// Views
+builder.Services.AddSingleton<CreateReservationView>();
+builder.Services.AddSingleton<EditReservationView>();
+builder.Services.AddSingleton<DeleteReservationView>();
+builder.Services.AddSingleton<ReservationView>();
+builder.Services.AddSingleton<EmployeeLoginView>();
+builder.Services.AddSingleton<GuestLoginView>();
+builder.Services.AddSingleton<CreateGuestView>();
+builder.Services.AddSingleton<CreateEmployeeView>();
+builder.Services.AddSingleton<DebugView>();
+builder.Services.AddSingleton<MainMenuView>();
+
+using IHost host = builder.Build();
+
+host.Services.GetService<MainMenuView>()!.Output();

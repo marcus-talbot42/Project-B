@@ -1,3 +1,4 @@
+using ProjectB.Exceptions;
 using ProjectB.Models;
 using ProjectB.Repositories;
 
@@ -5,10 +6,9 @@ namespace ProjectB.Services;
 
 public class GuestService(GuestRepository repository) : IService<Guest, string>
 {
-    
     public void Create(Guest entity)
     {
-        if (repository.FindById(entity.GetId()) == null)
+        if (!repository.Exists(entity))
         {
             repository.Save(entity);
         }
@@ -21,10 +21,18 @@ public class GuestService(GuestRepository repository) : IService<Guest, string>
 
     public void Delete(string id)
     {
-        throw new NotImplementedException();
+        repository.Remove(id);
     }
 
-    public Guest? GetGuest(string id) {
-        return repository.FindById(id);
+    public Guest FindValidGuestById(string id)
+    {
+        Guest? guest = repository.FindValidGuestById(id);
+
+        if (guest == null)
+        {
+            throw new EntityNotFoundException($"Could not find Guest with id: {id}");
+        }
+
+        return guest;
     }
 }
