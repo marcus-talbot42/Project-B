@@ -1,5 +1,4 @@
 using ProjectB.Models;
-using System;
 
 namespace ProjectB.Repositories
 {
