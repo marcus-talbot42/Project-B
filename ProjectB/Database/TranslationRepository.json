@@ -24,7 +24,8 @@
       "login": "Login",
       "lang_name_en": "English",
       "lang_name_nl": "Dutch",
-      "spotsLeft": "spots left."
+      "spotsLeft": "spots left.",
+      "test": "This is a test."
     }
   },
   {
@@ -49,7 +50,8 @@
       "login": "Inloggen",
       "lang_name_en": "Engels",
       "lang_name_nl": "Nederlands",
-      "spotsLeft": "plekken over."
+      "spotsLeft": "plekken over.",
+      "test": "This is a test."
     }
   }
 ]
