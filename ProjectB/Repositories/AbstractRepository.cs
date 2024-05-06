@@ -45,7 +45,9 @@ where TId : notnull
     {
         File.CreateText(this.GetFileLocation()).Close();
         JsonFileWriter<TEntity> writer = new();
-        writer.WriteObjects(GetFileLocation(), Repository.Values);
+        writer.WriteObjects(
+                GetFileLocation(), Repository.Values
+            );
     }
 
     public string GetFileLocation() => $".//{GetType().Name}.json";
