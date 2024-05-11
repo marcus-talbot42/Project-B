@@ -1,0 +1,44 @@
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ProjectB.Exceptions;
+using ProjectB.Models;
+using ProjectB.Repositories;
+using ProjectB.Services;
+using System;
+
+namespace ProjectB.Tests
+{
+    [TestClass]
+    public class GuestServiceTests
+    {
+        [TestMethod]
+        public void CreateNewGuest()
+        {
+            // Arrange
+            var repository = new GuestRepositoryMock();
+            var service = new GuestService(repository);
+            var guest = new Guest("testuser", DateOnly.FromDateTime(DateTime.Today));
+
+            // Act
+            service.Create(guest);
+
+            // Assert
+            Assert.IsTrue(repository.Exists(guest));
+        }
+
+        [TestMethod]
+        public void UpdateExistingGuest()
+        {
+            // Arrange
+            var repository = new GuestRepositoryMock();
+            var service = new GuestService(repository);
+            var guest = new Guest("123", DateOnly.FromDateTime(DateTime.Today));
+            repository.Save(guest);
+
+            // Act
+            service.Update(guest, "123");
+
+            // Assert
+            Assert.AreEqual(2, repository.Count());
+        }
+    }
+}
