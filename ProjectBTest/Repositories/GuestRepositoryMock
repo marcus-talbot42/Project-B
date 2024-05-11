@@ -1,0 +1,25 @@
+using ProjectB.Models;
+using ProjectB.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace ProjectB.Tests
+{
+    public class GuestRepositoryMock : GuestRepository
+    {
+        private readonly List<Guest> _guests = new List<Guest>();
+
+        public new void Save(Guest entity)
+        {
+            _guests.Add(entity);
+        }
+
+        public new Guest? FindById(string id)
+        {
+            return _guests.FirstOrDefault(guest => guest.GetId() == id);
+        }
+
+       
+    }
+}
