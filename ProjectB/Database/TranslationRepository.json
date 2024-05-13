@@ -52,7 +52,10 @@
       "deleteReservationView": "Delete sign-up for a tour.",
       "editReservationView": "Edit sign-up for a tour.",
       "return": "Return",
-      "ticketNumber": "Ticket number"
+      "ticketNumber": "Ticket number",
+      "debug": "Debug Menu",
+      "createGuest": "Create guest",
+      "createEmployee": "Create employee",
     }
   },
   {
@@ -96,7 +99,11 @@
       "deleteReservationView": "Inschrijving verwijderen.",
       "editReservationView": "Inschrijving bewerken.",
       "return": "Terug",
-      "ticketNumber": "Ticketnummer"
+      "ticketNumber": "Ticketnummer",
+      "debug": "Debug Menu",
+      "createGuest": "Maak gast aan",
+      "createEmployee": "Maak medewerker aan",
+      
     }
   }
 ]

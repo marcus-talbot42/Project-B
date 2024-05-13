@@ -44,7 +44,6 @@ public class MainMenuView(EmployeeLoginView employeeLoginView, GuestLoginView gu
                 .UseConverter(choice => $"{choice}. {options[choice]}")
         );
         
-        
         while (true)
         {
             switch (option)
@@ -63,7 +62,5 @@ public class MainMenuView(EmployeeLoginView employeeLoginView, GuestLoginView gu
                     break;
             }
         }
-        
-        
     }
 }
