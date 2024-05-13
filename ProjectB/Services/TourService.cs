@@ -18,6 +18,11 @@ public class TourService(TourRepository repository) : IService<Tour, TourComposi
     {
         repository.Remove(id);
     }
+    
+    public Tour Read(TourCompositeKey id)
+    {
+        throw new NotImplementedException();
+    }
 
     public void Update(Tour entity, TourCompositeKey id)
     {
@@ -27,6 +32,7 @@ public class TourService(TourRepository repository) : IService<Tour, TourComposi
     public IEnumerable<Tour> GetAllToursTodayAfterNow() {
         return repository.GetAllToursTodayAfterNow();
     }
+    
 
     public bool RegisterGuestForTour(Guest guest, Tour tour)
     {

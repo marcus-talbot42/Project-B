@@ -62,4 +62,8 @@ public class EmployeeService(EmployeeRepository repository) : IService<Employee,
 
         return employee;
     }
+    public Employee Read(string read)
+    {
+        throw new NotImplementedException();
+    }
 }
