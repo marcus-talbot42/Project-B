@@ -4,6 +4,7 @@ using ProjectB.Repositories;
 using ProjectB.Services;
 using ProjectB.Views.Admin;
 using ProjectB.Views.Debug;
+using ProjectB.Views.Language;
 using ProjectB.Views.Login;
 using ProjectB.Views.Main;
 using ProjectB.Views.Reservation;
@@ -30,6 +31,7 @@ builder.Services.AddSingleton<CreateGuestView>();
 builder.Services.AddSingleton<CreateEmployeeView>();
 builder.Services.AddSingleton<DebugView>();
 builder.Services.AddSingleton<MainMenuView>();
+builder.Services.AddSingleton<LanguageSwitcher>();
 
 using IHost host = builder.Build();
 

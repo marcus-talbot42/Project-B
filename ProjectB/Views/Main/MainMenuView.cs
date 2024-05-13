@@ -1,6 +1,7 @@
 using ProjectB.settings;
 using ProjectB.Views.Debug;
 using ProjectB.Views.Login;
+using ProjectB.Views.Language;
 
 using ProjectB.Models;
 using ProjectB.Repositories;
@@ -9,7 +10,7 @@ using Spectre.Console;
 
 namespace ProjectB.Views.Main;
 
-public class MainMenuView(EmployeeLoginView employeeLoginView, GuestLoginView guestLoginView, DebugView debugView) : AbstractView
+public class MainMenuView(EmployeeLoginView employeeLoginView, GuestLoginView guestLoginView, LanguageSwitcher languageSwitcher, DebugView debugView) : AbstractView
 {
 
     private static IService<Translation, string> _translationService = new TranslationService(new TranslationRepository());
@@ -55,7 +56,7 @@ public class MainMenuView(EmployeeLoginView employeeLoginView, GuestLoginView gu
                     employeeLoginView.Output();
                     break;
                 case 3:
-                    SwitchLanguage();
+                    languageSwitcher.Output();
                     break;
                 case 0:
                     debugView.Output();
@@ -63,28 +64,6 @@ public class MainMenuView(EmployeeLoginView employeeLoginView, GuestLoginView gu
             }
         }
         
-        static void SwitchLanguage()
-        {
-            AnsiConsole.Clear(); // Clear the console screen
-            Dictionary<int, Language> languageOptions = new Dictionary<int, Language>
-            {
-                { 1, Language.EN },
-                { 2, Language.NL }
-            };
-
-            foreach (var option in languageOptions)
-            {
-                AnsiConsole.MarkupLine($"{option.Key}. {option.Value}");
-            }
-
-            int selectedOption;
-            do
-            {
-                selectedOption = AnsiConsole.Ask<int>("Enter your choice:");
-            }
-            while (!languageOptions.ContainsKey(selectedOption));
-
-            Settings.Language = languageOptions[selectedOption];
-        }
+        
     }
 }

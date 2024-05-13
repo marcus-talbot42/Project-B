@@ -33,7 +33,6 @@ public class GuestLoginView(GuestService service, ReservationView guestMenuView)
                 // Console.WriteLine("Dat ticketnummer is niet herkend. Voor alstublieft nogmaals uw ticketnummer in:");
                 AnsiConsole.MarkupLine($"[red]{((TranslationService) _translationService).GetTranslationString("ticketNotFound")}[/]");
                 
-
             }
         } while (guest == null);
 
