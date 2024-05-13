@@ -30,7 +30,7 @@ public class Translations
 
     private const string LANGUAGE_CHANGED_NL = "Taal veranderd naar Nederlands.\n";
 
-    private const string LANGUAGE_CHANGED_EN = "Language changed to English.\n";
+    private const string LANGUAGE_CHANGED_EN = "Lanuage changed to English.\n";
 
     private const string LOGIN_PROMPT_GUEST_NL = "Geef uw ticket-nummer in:";
 
@@ -46,7 +46,7 @@ public class Translations
 
     public static string translation(string name)
     {
-        if (Settings.Language == Language.NL)
+        if (Settings.Lanuage == Lanuage.NL)
         {
             switch(name)
             {
@@ -67,7 +67,7 @@ public class Translations
             }
         }
         
-        if (Settings.Language == Language.EN)
+        if (Settings.Lanuage == Lanuage.EN)
         {
             switch (name)
             {

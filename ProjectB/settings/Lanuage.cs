@@ -1,6 +1,6 @@
 namespace ProjectB.settings;
 
-public enum Language
+public enum Lanuage
 {
     NL,
     EN,

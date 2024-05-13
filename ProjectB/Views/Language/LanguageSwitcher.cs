@@ -14,8 +14,8 @@ public class LanguageSwitcher() : AbstractView
     {
         AnsiConsole.Clear(); // Clear the console screen
         
-        var options = Enum.GetValues(typeof(settings.Language))
-            .Cast<settings.Language>()
+        var options = Enum.GetValues(typeof(settings.Lanuage))
+            .Cast<settings.Lanuage>()
             .Select((value, index) => new { index, value })
             .ToDictionary(pair => pair.index + 1, pair => pair.value);
             
@@ -29,7 +29,7 @@ public class LanguageSwitcher() : AbstractView
         
         try
         {
-            Settings.Language = options[option]; // Attempt to switch the language
+            Settings.Lanuage = options[option]; // Attempt to switch the language
         }
         catch (Exception ex)
         {
@@ -37,7 +37,7 @@ public class LanguageSwitcher() : AbstractView
             Console.WriteLine($"An error occurred while switching languages: {ex.Message}");
 
             // Revert back to the original language
-            Settings.Language = settings.Language.NL;
+            Settings.Lanuage = settings.Lanuage.NL;
         }
         
     }

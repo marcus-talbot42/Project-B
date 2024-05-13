@@ -23,19 +23,19 @@ public class TranslationService(IRepository<Translation, string> repository) : I
 
     public Translation Read(string key)
     {
-        return repository.FindById(Settings.Language.ToString())!;
+        return repository.FindById(Settings.Lanuage.ToString())!;
     }
 
 
     public string GetTranslationString(string key)
     {
-        var lang = Settings.Language.ToString();
+        var lang = Settings.Lanuage.ToString();
 
         var translation = repository.FindById(lang);
 
         if (translation == null)
         {
-            return $"Language not found: {lang}";
+            return $"Lanuage not found: {lang}";
         }
 
         if (!translation.GetPairs().ContainsKey(key))
