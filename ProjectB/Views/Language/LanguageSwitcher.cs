@@ -13,12 +13,12 @@ public class LanguageSwitcher() : AbstractView
     public override void Output()
     {
         AnsiConsole.Clear(); // Clear the console screen
-            
-        var options = new Dictionary<int, settings.Language>
-        {
-            { 1, settings.Language.EN },
-            { 2, settings.Language.NL }
-        };
+        var originalLanguage = Settings.Language; // Store the original language
+
+        var options = Enum.GetValues(typeof(settings.Language))
+            .Cast<settings.Language>()
+            .Select((value, index) => new { index, value })
+            .ToDictionary(pair => pair.index + 1, pair => pair.value);
             
         var option = AnsiConsole.Prompt(
             new SelectionPrompt<int>()
@@ -28,7 +28,19 @@ public class LanguageSwitcher() : AbstractView
                 .UseConverter(choice => $"{choice}. {((TranslationService) _translationService).GetTranslationString("lang_name_" + options[choice].ToString().ToLower())}")
         );
             
-        Settings.Language = options[option];
+        
+        try
+        {
+            Settings.Language = options[option]; // Attempt to switch the language
+        }
+        catch (Exception ex)
+        {
+            // Log the error
+            Console.WriteLine($"An error occurred while switching languages: {ex.Message}");
+
+            // Revert back to the original language
+            Settings.Language = settings.Language.NL;
+        }
         
     }
 }

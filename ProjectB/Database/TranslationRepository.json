@@ -1,4 +1,13 @@
 [
+
+  {
+    "id": "FR",
+    "pairs": {}
+  },
+  {
+    "id": "ES",
+    "pairs": {}
+  },
   {
     "id": "EN",
     "pairs": {
@@ -43,7 +52,7 @@
       "deleteReservationView": "Delete sign-up for a tour.",
       "editReservationView": "Edit sign-up for a tour.",
       "return": "Return",
-      "ticketNumber": "Ticket number",
+      "ticketNumber": "Ticket number"
     }
   },
   {
@@ -87,7 +96,7 @@
       "deleteReservationView": "Inschrijving verwijderen.",
       "editReservationView": "Inschrijving bewerken.",
       "return": "Terug",
-      "ticketNumber": "Ticketnummer",
+      "ticketNumber": "Ticketnummer"
     }
   }
 ]
