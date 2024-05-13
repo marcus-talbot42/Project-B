@@ -1,4 +1,5 @@
 using ProjectB.Resources;
+using ProjectB.Models;
 
 namespace ProjectB.login;
 
@@ -14,6 +15,6 @@ public class GuestLoginStrategy: ILoginStrategy
         
         // TODO: Check whether ticket is valid
 
-        return new Session(ticketNumber!, UserRole.GUEST);
+        return new Session(ticketNumber!, UserRole.Guest);
     }
 }

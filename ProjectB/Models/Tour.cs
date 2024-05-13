@@ -1,21 +1,51 @@
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
-namespace ProjectB.Models
+namespace ProjectB.Models;
+
+public class Tour : IEntity<TourCompositeKey>
 {
-    public class Tour
-    {
-        public DateTime Time { get; set; } // Time of the tour
-        public string Location { get; set; } // Location of the tour
-        public int Capacity { get; set; } // Maximum capacity of the tour
-        public ICollection<Guest> Participants { get; set; } // Collection of participants signed up for the tour
 
-        public Tour(DateTime time, string location, int capacity)
-        {
-            Time = time;
-            Location = location;
-            Capacity = capacity;
-            Participants = new List<Guest>(); // Initialize participant collection
-        }
+    [JsonProperty] private readonly ICollection<Guest> _participants;
+    [JsonProperty] private readonly int _capacity;
+    [JsonProperty] private readonly TourCompositeKey _key;
+
+    public Tour(TourCompositeKey key, int capacity, ICollection<Guest> participants)
+    {
+        _key = key;
+        _capacity = capacity;
+        _participants = participants;
+    }
+
+    public DateTime GetTourTime() {
+        return _key.Time;
+    }
+
+    public int GetRemainingCapacity()
+    {
+        return _capacity - _participants.Count;
+    }
+
+    public string GetGuide() {
+        return _key.Guide;
+    }
+
+    public void SetGuide(Employee guide)
+    {
+        _key.Guide = guide.GetId();
+    }
+
+    public ICollection<Guest> GetParticipants() {
+        return _participants;
+    }
+
+    public int GetCapacity() {
+        return _capacity;
+    }
+
+    public TourCompositeKey GetId()
+    {
+        return _key;
     }
 }

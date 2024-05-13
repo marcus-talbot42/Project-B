@@ -1,31 +1,38 @@
+using ProjectB.Exceptions;
 using ProjectB.Models;
 using ProjectB.Repositories;
 
 namespace ProjectB.Services;
 
-public class GuestService : IService<Guest, string>
+public class GuestService(GuestRepository repository) : IService<Guest, string>
 {
-
-    private static readonly Lazy<GuestService> Lazy = new(() => new GuestService());
-    public static GuestService Instance => Lazy.Value;
-    
-    private static readonly GuestRepository Repository = GuestRepository.Instance;
-    
     public void Create(Guest entity)
     {
-        if (Repository.FindById(entity.GetId()) == null)
+        if (!repository.Exists(entity))
         {
-            Repository.Save(entity);
+            repository.Save(entity);
         }
     }
 
     public void Update(Guest entity, string id)
     {
-        Repository.Save(entity);
+        repository.Save(entity);
     }
 
     public void Delete(string id)
     {
-        throw new NotImplementedException();
+        repository.Remove(id);
+    }
+
+    public Guest FindValidGuestById(string id)
+    {
+        Guest? guest = repository.FindValidGuestById(id);
+
+        if (guest == null)
+        {
+            throw new EntityNotFoundException($"Could not find Guest with id: {id}");
+        }
+
+        return guest;
     }
 }

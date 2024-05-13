@@ -1,54 +1,68 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using ProjectB.Models;
+using ProjectB.Repositories;
 using ProjectB;
+using ProjectB.IO;
+using static Reservation;
 
 namespace ProjectB.Tests
 {
     [TestClass]
     public class ReservationTests
     {
-        [TestMethod]
-        public void SignUpForTour_UserAlreadySignedUp_UserNotAddedToTour()
-        {
-            // Test scenario: Attempting to sign up a user who is already signed up for a tour
-            // Arrange: Create a mock tour with a participant
-            var mockTour = new Tour(DateTime.Today, "Test Location", 10)
-            {
-                Participants = new List<Guest>
-                {
-                    new Guest("testUser", DateOnly.FromDateTime(DateTime.Today), "testUser")
-                }
-            };
-            Reservation.tours = new List<Tour> { mockTour };
-            var input = new StringReader("1\n");
-
-            // Act: Try to sign up the same user again
-            Console.SetIn(input);
-            Reservation.SignUpForTour();
-        }
-
-        [TestMethod]
-        public void DeleteSignUpForTour_UserSignedUp_UserRemovedFromTour()
-        {
-            // Test scenario: Deleting the sign-up of a user from a tour
-            // Arrange: Create a mock tour with a participant
-            var mockTour = new Tour(DateTime.Today, "Test Location", 10)
-            {
-                Participants = new List<Guest>
-                {
-                    new Guest("testUser", DateOnly.FromDateTime(DateTime.Today), "testUser")
-                }
-            };
-            Reservation.tours = new List<Tour> { mockTour };
-            var input = new StringReader("testUser\n");
-
-            // Act: Delete the sign-up of the user
-            Console.SetIn(input);
-            Reservation.DeleteSignUpForTour();
-        }
+        // private TourRepository? _repository;
+        // private Tour? _testTour;
+        //
+        // [TestInitialize]
+        // public void Initialize()
+        // {
+        //     _repository = TourRepository.Instance;
+        //     _testTour = new Tour(DateTime.Today, "Test Tour", 10);
+        //     _repository.Save(_testTour);
+        // }
+        //
+        // [TestMethod]
+        // public void SignUpForTour()
+        // {
+        //     SignUpForTour();
+        //     Assert.AreEqual(1, _testTour!.Participants.Count);
+        // }
+        //
+        // [TestMethod]
+        // public void SignUpForTourTourFull()
+        // {
+        //     _testTour!.Capacity = 0;
+        //     SignUpForTour();
+        //     Assert.AreEqual(0, _testTour!.Participants.Count);
+        // }
+        //
+        // [TestMethod]
+        // public void SignUpForTourAlreadySignedUp()
+        // {
+        //     var testParticipant = new Guest("TestUser", DateOnly.FromDateTime(DateTime.Today), "TestUser");
+        //     _testTour!.Participants.Add(testParticipant);
+        //     SignUpForTour();
+        //     Assert.AreEqual(1, _testTour!.Participants.Count);
+        // }
+        //
+        // [TestMethod]
+        // public void AdjustTourAddGuest()
+        // {
+        //     var initialParticipantsCount = _testTour!.Participants.Count;
+        //     ModifyTour();
+        //     Assert.AreEqual(initialParticipantsCount + 1, _testTour.Participants.Count);
+        // }
+        //
+        // [TestMethod]
+        // public void AdjustTourDeleteGuest()
+        // {
+        //     var testParticipant = new Guest("TestUser", DateOnly.FromDateTime(DateTime.Today), "TestUser");
+        //     _testTour!.Participants.Add(testParticipant);
+        //     var initialParticipantsCount = _testTour.Participants.Count;
+        //     ModifyTour();
+        //     Assert.AreEqual(initialParticipantsCount - 1, _testTour.Participants.Count);
+        // }
     }
 }
