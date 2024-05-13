@@ -13,8 +13,7 @@ public class LanguageSwitcher() : AbstractView
     public override void Output()
     {
         AnsiConsole.Clear(); // Clear the console screen
-        var originalLanguage = Settings.Language; // Store the original language
-
+        
         var options = Enum.GetValues(typeof(settings.Language))
             .Cast<settings.Language>()
             .Select((value, index) => new { index, value })
@@ -27,7 +26,6 @@ public class LanguageSwitcher() : AbstractView
                 .AddChoices(options.Keys)
                 .UseConverter(choice => $"{choice}. {((TranslationService) _translationService).GetTranslationString("lang_name_" + options[choice].ToString().ToLower())}")
         );
-            
         
         try
         {
