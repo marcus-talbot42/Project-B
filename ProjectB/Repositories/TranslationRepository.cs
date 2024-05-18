@@ -4,8 +4,9 @@ namespace ProjectB.Repositories;
 
 public class TranslationRepository : AbstractRepository<Translation, string>
 {
-    public override string GetFileLocation()
-    {
-        return $".//../../../Database/{GetType().Name}.json";
-    }
+    // not needed any more, will be deleted soon
+    // public override string GetFileLocation()
+    // {
+    //     return $".//../../../Database/{GetType().Name}.json";
+    // }
 }
