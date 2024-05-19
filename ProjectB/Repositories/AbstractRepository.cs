@@ -1,31 +1,30 @@
+using Microsoft.EntityFrameworkCore;
+using ProjectB.Database;
 using ProjectB.IO;
 using ProjectB.Models;
 
 namespace ProjectB.Repositories;
 
-public abstract class AbstractRepository<TEntity, TId>: IRepository<TEntity, TId>
-where TEntity : IEntity<TId>
+public abstract class AbstractRepository<TEntity, TId>(DatabaseContext databaseContext): IRepository<TEntity, TId>
+where TEntity : class, IEntity<TId>
 where TId : notnull
 {
 
-    protected AbstractRepository() {
-        Refresh();
-    }
-
-    protected readonly Dictionary<TId, TEntity> Repository = new();
+    protected DbSet<TEntity> DbSet { get; } = databaseContext.GetRelevantDbSet<TEntity, TId>()!;
 
     public void Save(TEntity entity)
     {
-        Repository.TryAdd(entity.GetId(), entity);
-        this.Persist();
+        DbSet.Add(entity: entity);
+        databaseContext.SaveChanges();
+        Persist();
     }
 
-    public TEntity? FindById(TId id) => Repository[id];
+    public TEntity? FindById(TId id) => DbSet.Find(id);
 
-    public IEnumerable<TEntity> FindAll() => Repository.Values;
-    public void Remove(TId id) => Repository.Remove(id);
+    public IEnumerable<TEntity> FindAll() => DbSet.ToList();
+    public void Remove(TId id) => DbSet.Remove(DbSet.Find(id)!);
 
-    public void RemoveAll() => Repository.Clear();
+    public void RemoveAll() => DbSet.RemoveRange(DbSet.ToArray());
     
     public void Refresh()
     {
@@ -33,11 +32,8 @@ where TId : notnull
         ICollection<TEntity>? entities = reader.ReadAllObjects(GetFileLocation());
         if (entities != null)
         {
-            Repository.Clear();
-            foreach (TEntity entity in entities)
-            {
-                Repository.Add(entity.GetId(), entity);
-            }
+            RemoveAll();
+            DbSet.AddRange(entities);
         }
     }
 
@@ -45,17 +41,14 @@ where TId : notnull
     {
         File.CreateText(this.GetFileLocation()).Close();
         JsonFileWriter<TEntity> writer = new();
-        writer.WriteObjects(GetFileLocation(), Repository.Values);
+        writer.WriteObjects(GetFileLocation(), DbSet.ToList());
     }
 
-    private string GetFileLocation()
-    {
-        return $".//../../../Database/{GetType().Name}.json";
-    }
+    public string GetFileLocation() => $".//../../../Database/{typeof(TEntity).Name}.json";
     
-    public int Count() => Repository.Count;
+    public int Count() => DbSet.Count();
 
     public bool Exists(TEntity entity) {
-        return Repository.ContainsKey(entity.GetId());
+        return DbSet.Any(e => e == entity);
     }
 }

@@ -1,21 +1,16 @@
-using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProjectB.Models;
 
-/// <summary>
-/// Class representing an Employee. Implements AbstractUser, and is ready to be saved and read from JSON-files.
-/// </summary>
-/// <param name="username">The username of the employee.</param>
-/// <param name="role">The role of the employee. Should be either Guide or DepartmentHead.</param>
-/// <param name="password">The password assigned to the user. Should never be empty.</param>
-public class Employee(string username, UserRole role, string password) : AbstractUser(username, role)
+public class Employee : AbstractUser
 {
     
-    [JsonProperty] private readonly string _password = password;
+    [MaxLength(72)]
+    public required string Password { get; set; }
 
     public bool IsPasswordCorrect(string password)
     {
-        return BCrypt.Net.BCrypt.EnhancedVerify(password, _password);
+        return BCrypt.Net.BCrypt.EnhancedVerify(password, Password);
     }
 
     public override bool Equals(AbstractUser? other)
@@ -23,6 +18,6 @@ public class Employee(string username, UserRole role, string password) : Abstrac
         if (ReferenceEquals(other, this)) return true;
         if (ReferenceEquals(other, null)) return false;
         if (other.GetType() != GetType()) return false;
-        return Username == other.GetId();
+        return Id == other.GetId();
     }
 }

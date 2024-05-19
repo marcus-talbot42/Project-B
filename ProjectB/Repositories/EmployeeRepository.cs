@@ -1,8 +1,11 @@
+using ProjectB.Database;
 using ProjectB.Models;
 
 namespace ProjectB.Repositories;
 
-public class EmployeeRepository : AbstractRepository<Employee, string>
+public class EmployeeRepository(DatabaseContext context) : AbstractRepository<Employee, long>(context)
 {
-
+    
+    public Employee? FindByUsername(string username) =>
+        (from user in DbSet where user.GetUsername() == username select user).FirstOrDefault();
 }

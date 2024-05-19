@@ -1,15 +1,10 @@
+using ProjectB.Settings;
+
 namespace ProjectB.Models;
 
-public class Translation(string id, Dictionary<string, string> pairs) : IEntity<string>
+public class Translation(string key, string value, Language language) : AbstractEntity
 {
-
-    public Dictionary<string, string> GetPairs()
-    {
-        return pairs;
-    } 
-    
-    public string GetId()
-    {
-        return id;
-    }
+    public string Key { get; set; } = key;
+    public string Value { get; set; } = value;
+    public Language Language { get; set; } = language;
 }
