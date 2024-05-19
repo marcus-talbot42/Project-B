@@ -7,7 +7,7 @@ public class GuestRepository(DatabaseContext context) : AbstractRepository<Guest
 {
     public Guest? FindValidGuestByUsername(string username)
     {
-        return DbSet.ToList().FirstOrDefault(guest => guest.Username == username && guest.IsValid());
+        return DbSet.ToList().FirstOrDefault(guest => guest.Username == username && guest.ValidDate == DateOnly.FromDateTime(DateTime.Now));
     }
 
     
