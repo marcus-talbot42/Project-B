@@ -37,35 +37,49 @@ public class DatabaseContext : DbContext
         SaveChanges();
     }
 
-    private IEnumerable<TEntity> ReadFromJson<TEntity>() where TEntity : class, IEntity
+    public override int SaveChanges()
     {
-        return JsonSerializer.Deserialize<IEnumerable<TEntity>>(
-            File.ReadAllText($"Json/{typeof(TEntity).Name}.json"))!;
+        WriteToJson(Employees);
+        WriteToJson(Guests);
+        WriteToJson(Tours);
+        WriteToJson(Translations);
+
+        return base.SaveChanges();
     }
 
-    public DbSet<TEntity>? GetRelevantDbSet<TEntity>()
-        where TEntity : class, IEntity
+    private IEnumerable<T> ReadFromJson<T>() where T : AbstractEntity
     {
-        if (typeof(TEntity) == typeof(Employee))
+        return JsonSerializer.Deserialize<IEnumerable<T>>(
+            File.ReadAllText($"Json/{typeof(T).Name}.json"))!;
+    }
+
+    private void WriteToJson<T>(IEnumerable<T> entities) where T : AbstractEntity
+    {
+        File.WriteAllText($"Json/{typeof(T).Name}.json", JsonSerializer.Serialize(entities, new JsonSerializerOptions { WriteIndented = true }));
+    }
+
+    public DbSet<T>? GetRelevantDbSet<T>() where T : AbstractEntity
+    {
+        if (typeof(T) == typeof(Employee))
         {
-            return Employees as DbSet<TEntity>;
+            return Employees as DbSet<T>;
         }
 
-        if (typeof(TEntity) == typeof(Guest))
+        if (typeof(T) == typeof(Guest))
         {
-            return Guests as DbSet<TEntity>;
+            return Guests as DbSet<T>;
         }
 
-        if (typeof(TEntity) == typeof(Tour))
+        if (typeof(T) == typeof(Tour))
         {
-            return Tours as DbSet<TEntity>;
-        }
-        
-        if (typeof(TEntity) == typeof(Translation))
-        {
-            return Translations as DbSet<TEntity>;
+            return Tours as DbSet<T>;
         }
 
-        throw new NullReferenceException($"Could not load DbSet<{typeof(TEntity).Name}>...");
+        if (typeof(T) == typeof(Translation))
+        {
+            return Translations as DbSet<T>;
+        }
+
+        throw new NullReferenceException($"Could not load DbSet<{typeof(T).Name}>...");
     }
 }

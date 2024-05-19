@@ -8,7 +8,7 @@ namespace ProjectB.Repositories
     {
         public IEnumerable<Tour> GetAllToursTodayAfterNow() =>
             from tour in DbSet
-            where tour.GetTourTime().Date == DateTime.Today && tour.GetTourTime().CompareTo(DateTime.Now) > 0
+            where tour.Start.Date == DateTime.Today && tour.Start >= DateTime.Now
             select tour;
     }
 }

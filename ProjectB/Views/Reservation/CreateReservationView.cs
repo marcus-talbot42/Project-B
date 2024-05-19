@@ -31,7 +31,7 @@ public class CreateReservationView(TourService tourService, GuestService guestSe
         for (int i = 0; i < tours.Count(); i++)
         {
             var tour = tours.ElementAt(i);
-            builder.Append($"{i + 1}. {((TranslationService) translationService).GetTranslationString("time")} {tour.GetTourTime().Hour:00}:{tour.GetTourTime():00}\t\t{((TranslationService) translationService).GetTranslationString("spots")} {tour.GetRemainingCapacity()}\n");
+            builder.Append($"{i + 1}. {((TranslationService) translationService).GetTranslationString("time")} {tour.Start.Hour:00}:{tour.Start:00}\t\t{((TranslationService) translationService).GetTranslationString("spots")} {tourService.GetRemainingCapacity(tour)}\n");
         }
 
         return builder.ToString();

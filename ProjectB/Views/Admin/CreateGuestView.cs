@@ -11,7 +11,7 @@ public class CreateGuestView(GuestService service) : AbstractView
         string ticketNummer = Console.ReadLine()!;
         Console.WriteLine("Geef de geldigheidsdatum van het ticket in (yyyy-mm-dd): ");
         DateOnly validForDate = DateOnly.Parse(Console.ReadLine()!);
-
-        service.Create(new Guest(validForDate) { Username = ticketNummer, Role = UserRole.Guest});
+        
+        service.Add(new Guest() { Username = ticketNummer, ValidDate = validForDate });
     }
 }
