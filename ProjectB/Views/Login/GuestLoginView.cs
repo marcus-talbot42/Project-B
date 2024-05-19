@@ -20,7 +20,7 @@ public class GuestLoginView(GuestService service, ReservationView guestMenuView,
             try
             {
                 guest = service.FindValidGuestById(ticketNumber);
-                Settings.Settings.CurrentSession = new Session(guest.GetUsername(), UserRole.Guest);
+                Settings.Settings.CurrentSession = new Session(guest.Username, UserRole.Guest);
                 guestMenuView.Output();
             }
             catch (EntityNotFoundException exception)

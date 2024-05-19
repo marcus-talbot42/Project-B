@@ -1,6 +1,3 @@
-using ProjectB.Resources;
-using ProjectB.settings;
-using ProjectB.ui;
 using ProjectBTest.utils;
 
 namespace ProjectBTest.ui;

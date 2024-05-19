@@ -12,12 +12,4 @@ public class Employee : AbstractUser
     {
         return BCrypt.Net.BCrypt.EnhancedVerify(password, Password);
     }
-
-    public override bool Equals(AbstractUser? other)
-    {
-        if (ReferenceEquals(other, this)) return true;
-        if (ReferenceEquals(other, null)) return false;
-        if (other.GetType() != GetType()) return false;
-        return Id == other.GetId();
-    }
 }

@@ -7,5 +7,5 @@ public class EmployeeRepository(DatabaseContext context) : AbstractRepository<Em
 {
     
     public Employee? FindByUsername(string username) =>
-        (from user in DbSet where user.GetUsername() == username select user).FirstOrDefault();
+        (from user in DbSet where user.Username == username select user).FirstOrDefault();
 }

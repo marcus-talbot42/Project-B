@@ -8,14 +8,5 @@ namespace ProjectB.Models;
 /// <typeparam name="TId">The type of the ID of the entity.</typeparam>
 public interface IEntity
 {
-    /// <summary>
-    /// Returns the ID of the object it is called on. Mainly used to determine whether an ID is already taken, resulting
-    /// in a PrimaryKeyConstraintException when attempting to create a new entity with that ID, or to determine which
-    /// object should be updated.
-    /// </summary>
-    /// 
-    /// <returns>The ID of the object it is called on.</returns>
-    /// <typeparam name="TId">The type of the ID.</typeparam>
-    /// 
     long GetId();
 }

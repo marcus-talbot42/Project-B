@@ -39,7 +39,7 @@ public class EmployeeLoginView(EmployeeService service) : AbstractView
                 employee = service.FindValidEmployeeByUsername(username);
                 if (employee.IsPasswordCorrect(password))
                 {
-                    Settings.Settings.CurrentSession = new Session(employee.GetUsername(), employee.GetUserRole());
+                    Settings.Settings.CurrentSession = new Session(employee.Username, employee.Role);
                     Console.WriteLine("Login success...");
                 }
                 else
