@@ -9,4 +9,6 @@ public class GuestRepository : AbstractRepository<Guest, string>
         return Repository.Values
             .FirstOrDefault(guest => guest.GetId() == id && guest.IsValid());
     }
+
+    
 }

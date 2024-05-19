@@ -48,7 +48,10 @@ where TId : notnull
         writer.WriteObjects(GetFileLocation(), Repository.Values);
     }
 
-    public string GetFileLocation() => $".//{GetType().Name}.json";
+    private string GetFileLocation()
+    {
+        return $".//../../../Database/{GetType().Name}.json";
+    }
     
     public int Count() => Repository.Count;
 

@@ -1,0 +1,21 @@
+{
+    "loginTitle": "Inloggen op systeem",
+    "enterUsername": "Voer uw gebruikersnaam in:",
+    "enterPassword": "Voer uw wachtwoord in:",
+    "loginSuccessful": "Inloggen succesvol!",
+    "invalidCredentials": "Ongeldige gebruikersnaam of wachtwoord! Poging {0} van 3.",
+    "tryAgain": "Probeer het opnieuw...",
+    "maxAttemptsReached": "Inloggen mislukt. Maximum aantal pogingen bereikt.",
+    "mainMenuTitle": "Hoofdmenu",
+    "warningApplicationIsInBeta": "Waarschuwing: Deze applicatie is in bèta en niet volledig functioneel.",
+    "welcome": "Welkom bij ons museum!",
+    "chooseOption": "Kies een optie:",
+    "signUp": "1. Schrijf je in voor een rondleiding",
+    "deleteSignUp": "2. Verwijder je inschrijving voor een rondleiding",
+    "exit": "3. Afsluiten",
+    "invalidInput": "Ongeldige invoer. Voer een getal in tussen 1 en 3.",
+    "goodbye": "Bedankt voor uw bezoek aan ons museum! Tot ziens.",
+    "login": "Inloggen",
+    "lang_name_en": "Engels",
+    "lang_name_nl": "Nederlands"
+}

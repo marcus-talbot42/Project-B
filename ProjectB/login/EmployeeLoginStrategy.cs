@@ -1,16 +1,25 @@
 using System.Security;
-using ProjectB.Resources;
 using ProjectB.Models;
+using ProjectB.Repositories;
+using ProjectB.Resources;
+using ProjectB.Services;
+using Spectre.Console;
 
 namespace ProjectB.login;
 
 public class EmployeeLoginStrategy: ILoginStrategy
 {
+    private static IService<Translation, string> _translationService = new TranslationService(new TranslationRepository());
+    // ((TranslationService) _translationService).GetTranslationString("chooseOption")
+    // $"[blue]{((TranslationService) _translationService).GetTranslationString("createReservationView")}[/]"
+        
+
+
+
     public Session Handle()
     {
-        Console.WriteLine(Translations.translation("LOGIN_PROMPT_EMPLOYEE"));
-        string? username = Console.ReadLine();
-        Console.WriteLine(Translations.translation("LOGIN_PROMPT_EMPLOYEE_PASSWORD"));
+        string? username = AnsiConsole.Ask<string>(((TranslationService) _translationService).GetTranslationString("enterUsername"));
+        AnsiConsole.MarkupLine($"[blue]{((TranslationService) _translationService).GetTranslationString("enterPassword")}[/]");
         SecureString? password = GetPassword();
         
         // TODO: Check password, and get UserRole from file.

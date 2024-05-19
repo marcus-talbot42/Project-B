@@ -1,10 +1,9 @@
 using ProjectB.Models;
-using System;
 
 namespace ProjectB.Repositories
 {
-    public class TourRepository : AbstractRepository<Tour, TourCompositeKey>
-    {
+public class TourRepository : AbstractRepository<Tour, TourCompositeKey>
+{
 
         public IEnumerable<Tour> GetAllToursTodayAfterNow() =>
             from tour in Repository.Values

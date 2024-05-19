@@ -12,7 +12,7 @@ public class MainMenuTest
     [TestMethod]
     public void TestMainMenuPrintsInDutch()
     {
-        Settings.Language = Language.NL;
+        Settings.Lanuage = Lanuage.NL;
         MainMenu mainMenu = new();
         using (ConsoleOutput consoleOutput = new ())
         {
@@ -24,7 +24,7 @@ public class MainMenuTest
     [TestMethod]
     public void TestMainMenuPrintsInEnglish()
     {
-        Settings.Language = Language.EN;
+        Settings.Lanuage = Lanuage.EN;
         MainMenu mainMenu = new();
         using (ConsoleOutput consoleOutput = new ())
         {

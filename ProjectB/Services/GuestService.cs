@@ -8,6 +8,8 @@ public class GuestService(GuestRepository repository) : IService<Guest, string>
 {
     public void Create(Guest entity)
     {
+        var guest = entity;
+        
         if (!repository.Exists(entity))
         {
             repository.Save(entity);
@@ -34,5 +36,10 @@ public class GuestService(GuestRepository repository) : IService<Guest, string>
         }
 
         return guest;
+    }
+
+    public Guest Read(string read)
+    {
+        throw new NotImplementedException();
     }
 }

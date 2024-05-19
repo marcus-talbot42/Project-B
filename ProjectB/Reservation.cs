@@ -1,12 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Newtonsoft.Json;
-using ProjectB.IO;
-using ProjectB.Models;
-using ProjectB.Repositories;
-
 public class Reservation
 {
 //     public static List<Tour> tours = new List<Tour>();

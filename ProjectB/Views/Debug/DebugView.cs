@@ -1,22 +1,36 @@
 using ProjectB.Views.Admin;
+using ProjectB.Models;
+using ProjectB.Repositories;
+using ProjectB.Services;
+using Spectre.Console;
 
 namespace ProjectB.Views.Debug;
 
 public class DebugView(CreateGuestView createGuestView, CreateEmployeeView createEmployeeView) : AbstractView
 {
-    private const string DEBUG_VIEW = """
-                                      Welcome to the DebugView. To continue, please select one of the options in the list below.
-                                      1. Create Guest
-                                      2. Create Employee
-                                      3. Exit
-                                      """;
+    private static IService<Translation, string> _translationService = new TranslationService(new TranslationRepository());
+
 
     public override void Output()
     {
+        
+        var options = new Dictionary<int, string>
+        {
+            { 1, $"[blue]{((TranslationService) _translationService).GetTranslationString("createGuest")}[/]"},
+            { 2, $"[blue]{((TranslationService) _translationService).GetTranslationString("createEmployee")}[/]" },
+            { 3, $"[blue]{((TranslationService) _translationService).GetTranslationString("exit")}[/]" },
+        };
+        
+        var option = AnsiConsole.Prompt(
+            new SelectionPrompt<int>()
+                .Title(((TranslationService) _translationService).GetTranslationString("chooseOption"))
+                .PageSize(10)
+                .AddChoices(options.Keys)
+                .UseConverter(choice => $"{choice}. {options[choice]}")
+        );
+        
         while (true)
         {
-            Console.WriteLine(DEBUG_VIEW);
-            int option = ReadUserChoice(1, 3, DEBUG_VIEW);
             switch (option)
             {
                 case 1:
@@ -26,8 +40,10 @@ public class DebugView(CreateGuestView createGuestView, CreateEmployeeView creat
                     createEmployeeView.Output();
                     break;
                 case 3:
-                    return;
+                    break;
+                
             }
         }
+        
     }
 }

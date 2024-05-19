@@ -4,17 +4,19 @@ using ProjectB.Models;
 using ProjectB.Services;
 using ProjectB.settings;
 using ProjectB.Views.Reservation;
+using ProjectB.Repositories;
+using Spectre.Console;
 
 namespace ProjectB.Views.Login;
 
 public class GuestLoginView(GuestService service, ReservationView guestMenuView) : AbstractView
 {
-
-    private const string LOGIN_TEXT = "Geef uw ticketnummer in:";
+    private static IService<Translation, string> _translationService = new TranslationService(new TranslationRepository());
     
     public override void Output()
     {
-        Console.WriteLine(LOGIN_TEXT);
+        AnsiConsole.MarkupLine($"[blue]{((TranslationService) _translationService).GetTranslationString("enterTicketNumber")}[/]");
+
         Guest? guest = null;
         do
         {
@@ -27,7 +29,10 @@ public class GuestLoginView(GuestService service, ReservationView guestMenuView)
             }
             catch (EntityNotFoundException exception)
             {
-                Console.WriteLine("Dat ticketnummer is niet herkend. Voor alstublieft nogmaals uw ticketnummer in:");
+                AnsiConsole.Clear();
+                // Console.WriteLine("Dat ticketnummer is niet herkend. Voor alstublieft nogmaals uw ticketnummer in:");
+                AnsiConsole.MarkupLine($"[red]{((TranslationService) _translationService).GetTranslationString("ticketNotFound")}[/]");
+                
             }
         } while (guest == null);
 
@@ -35,6 +40,7 @@ public class GuestLoginView(GuestService service, ReservationView guestMenuView)
 
     private string? GetTicketNumber()
     {
-        return Console.ReadLine();
+        // return Console.ReadLine();
+        return AnsiConsole.Ask<string>(((TranslationService) _translationService).GetTranslationString("ticketNumber"));
     }
 }
