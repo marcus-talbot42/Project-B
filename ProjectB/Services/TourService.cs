@@ -4,7 +4,7 @@ using ProjectB.Repositories;
 
 namespace ProjectB.Services;
 
-public class TourService(TourRepository repository) : IService<Tour, TourCompositeKey>
+public class TourService(TourRepository repository) : IService<Tour, long>
 {
     public void Create(Tour entity)
     {
@@ -14,17 +14,17 @@ public class TourService(TourRepository repository) : IService<Tour, TourComposi
         repository.Save(entity);
     }
 
-    public void Delete(TourCompositeKey id)
+    public void Delete(long id)
     {
         repository.Remove(id);
     }
     
-    public Tour Read(TourCompositeKey id)
+    public Tour Read(long id)
     {
         throw new NotImplementedException();
     }
 
-    public void Update(Tour entity, TourCompositeKey id)
+    public void Update(Tour entity, long id)
     {
         repository.Save(entity);
     }

@@ -1,26 +1,13 @@
-using Newtonsoft.Json;
-
 namespace ProjectB.Models
 {
-    public class Guest : AbstractUser
+    public class Guest(DateOnly validDate) : AbstractUser
     {
-        [JsonProperty]
-        private readonly DateOnly _validForDate;
-
-        [JsonProperty]
-        public TourCompositeKey? Tour {get; set;}
+        public DateOnly ValidDate { get; set; } = validDate;
+        public Tour? Tour { get; set; }
 
         public bool IsGuestInTour => Tour != null;
 
-        public new string GetId() => Username;
-
-        public Guest(string username, DateOnly validForDate) : base(username, UserRole.Guest)
-        {
-            _validForDate = validForDate;
-            Username = username;
-        }
-
-        public bool IsValid() => _validForDate.CompareTo(DateOnly.FromDateTime(DateTime.Today)) == 0;
+        public bool IsValid() => ValidDate.CompareTo(DateOnly.FromDateTime(DateTime.Today)) == 0;
 
         public override bool Equals(AbstractUser? other)
         {

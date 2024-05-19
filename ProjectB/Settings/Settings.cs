@@ -1,9 +1,9 @@
 using ProjectB.login;
 
-namespace ProjectB.settings;
+namespace ProjectB.Settings;
 
-public class Settings
+public static class Settings
 {
-    public static Lanuage Lanuage = Lanuage.EN;
+    public static Language Language = Language.EN;
     public static Session? CurrentSession;
 }

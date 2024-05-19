@@ -2,7 +2,6 @@ using ProjectB.Exceptions;
 using ProjectB.login;
 using ProjectB.Models;
 using ProjectB.Services;
-using ProjectB.settings;
 
 namespace ProjectB.Views.Login;
 
@@ -40,7 +39,7 @@ public class EmployeeLoginView(EmployeeService service) : AbstractView
                 employee = service.FindValidEmployeeByUsername(username);
                 if (employee.IsPasswordCorrect(password))
                 {
-                    Settings.CurrentSession = new Session(employee.GetId(), employee.GetUserRole());
+                    Settings.Settings.CurrentSession = new Session(employee.GetUsername(), employee.GetUserRole());
                     Console.WriteLine("Login success...");
                 }
                 else

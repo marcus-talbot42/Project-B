@@ -1,51 +1,42 @@
-using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Collections.Immutable;
 
 namespace ProjectB.Models;
 
-public class Tour : IEntity<TourCompositeKey>
+public class Tour(DateTime start, int capacity = 13)
+    : AbstractEntity
 {
+    public ICollection<Guest> Participants { get; set; } = new List<Guest>();
+    public DateTime Start { get; set; } = start;
+    public int Capacity { get; set; } = capacity;
+    public Employee Employee { get; set; }
 
-    [JsonProperty] private readonly ICollection<Guest> _participants;
-    [JsonProperty] private readonly int _capacity;
-    [JsonProperty] private readonly TourCompositeKey _key;
-
-    public Tour(TourCompositeKey key, int capacity, ICollection<Guest> participants)
+    public DateTime GetTourTime()
     {
-        _key = key;
-        _capacity = capacity;
-        _participants = participants;
-    }
-
-    public DateTime GetTourTime() {
-        return _key.Time;
+        return Start;
     }
 
     public int GetRemainingCapacity()
     {
-        return _capacity - _participants.Count;
+        return Capacity - Participants.Count;
     }
 
-    public string GetGuide() {
-        return _key.Guide;
+    public Employee GetGuide()
+    {
+        return Employee;
     }
 
     public void SetGuide(Employee guide)
     {
-        _key.Guide = guide.GetId();
+        Employee = guide;
     }
 
-    public ICollection<Guest> GetParticipants() {
-        return _participants;
-    }
-
-    public int GetCapacity() {
-        return _capacity;
-    }
-
-    public TourCompositeKey GetId()
+    public ICollection<Guest> GetParticipants()
     {
-        return _key;
+        return Participants.ToImmutableList();
+    }
+
+    public int GetCapacity()
+    {
+        return Capacity;
     }
 }

@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace ProjectB.IO;
 
@@ -33,6 +33,6 @@ public class JsonFileReader<T> : IFileReader<T>
         }
         using StreamReader reader = new StreamReader(fileName);
         string json = reader.ReadToEnd();
-        return JsonConvert.DeserializeObject<List<T>>(json);
+        return JsonSerializer.Deserialize<List<T>>(json);
     }
 }

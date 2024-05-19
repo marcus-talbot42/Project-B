@@ -1,13 +1,13 @@
+using ProjectB.Database;
 using ProjectB.Models;
 
 namespace ProjectB.Repositories;
 
-public class GuestRepository : AbstractRepository<Guest, string>
+public class GuestRepository(DatabaseContext context) : AbstractRepository<Guest, long>(context)
 {
-    public Guest? FindValidGuestById(string id)
+    public Guest? FindValidGuestByUsername(string username)
     {
-        return Repository.Values
-            .FirstOrDefault(guest => guest.GetId() == id && guest.IsValid());
+        return DbSet.ToList().FirstOrDefault(guest => guest.GetUsername() == username && guest.IsValid());
     }
 
     
