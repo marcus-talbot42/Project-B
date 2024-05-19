@@ -3,7 +3,7 @@ using ProjectB.Models;
 
 namespace ProjectB.Repositories;
 
-public class EmployeeRepository(DatabaseContext context) : AbstractRepository<Employee, long>(context)
+public class EmployeeRepository(DatabaseContext context) : AbstractRepository<Employee>(context)
 {
     
     public Employee? FindByUsername(string username) =>

@@ -5,12 +5,11 @@ using ProjectB.Models;
 
 namespace ProjectB.Repositories;
 
-public abstract class AbstractRepository<TEntity, TId>(DatabaseContext databaseContext): IRepository<TEntity, TId>
-where TEntity : class, IEntity<TId>
-where TId : notnull
+public abstract class AbstractRepository<TEntity>(DatabaseContext databaseContext): IRepository<TEntity>
+where TEntity : class, IEntity
 {
 
-    protected DbSet<TEntity> DbSet { get; } = databaseContext.GetRelevantDbSet<TEntity, TId>()!;
+    protected DbSet<TEntity> DbSet { get; } = databaseContext.GetRelevantDbSet<TEntity>()!;
 
     public void Save(TEntity entity)
     {
@@ -19,10 +18,10 @@ where TId : notnull
         Persist();
     }
 
-    public TEntity? FindById(TId id) => DbSet.Find(id);
+    public TEntity? FindById(long id) => DbSet.Find(id);
 
     public IEnumerable<TEntity> FindAll() => DbSet.ToList();
-    public void Remove(TId id) => DbSet.Remove(DbSet.Find(id)!);
+    public void Remove(long id) => DbSet.Remove(DbSet.Find(id)!);
 
     public void RemoveAll() => DbSet.RemoveRange(DbSet.ToArray());
     

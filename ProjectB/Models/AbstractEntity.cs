@@ -1,6 +1,6 @@
 namespace ProjectB.Models;
 
-public abstract class AbstractEntity : IEntity<long>
+public abstract class AbstractEntity : IEntity
 {
     public long Id { get; }
 

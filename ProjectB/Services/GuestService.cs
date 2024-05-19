@@ -4,7 +4,7 @@ using ProjectB.Repositories;
 
 namespace ProjectB.Services;
 
-public class GuestService(GuestRepository repository) : IService<Guest, long>
+public class GuestService(GuestRepository repository) : IService<Guest>
 {
     public void Create(Guest entity)
     {

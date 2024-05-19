@@ -30,22 +30,21 @@ public class DatabaseContext : DbContext
 
     private void LoadData()
     {
-        Employees.AddRange(ReadFromJson<Employee, long>());
-        Guests.AddRange(ReadFromJson<Guest, long>());
-        Tours.AddRange(ReadFromJson<Tour, long>());
-        Translations.AddRange(ReadFromJson<Translation, long>());
+        Employees.AddRange(ReadFromJson<Employee>());
+        Guests.AddRange(ReadFromJson<Guest>());
+        Tours.AddRange(ReadFromJson<Tour>());
+        Translations.AddRange(ReadFromJson<Translation>());
         SaveChanges();
     }
 
-    private IEnumerable<TEntity> ReadFromJson<TEntity, TId>() where TEntity : class, IEntity<TId> where TId : notnull
+    private IEnumerable<TEntity> ReadFromJson<TEntity>() where TEntity : class, IEntity
     {
         return JsonSerializer.Deserialize<IEnumerable<TEntity>>(
             File.ReadAllText($".//../../../Database/{typeof(TEntity).Name}.json"))!;
     }
 
-    public DbSet<TEntity>? GetRelevantDbSet<TEntity, TId>()
-        where TEntity : class, IEntity<TId>
-        where TId : notnull
+    public DbSet<TEntity>? GetRelevantDbSet<TEntity>()
+        where TEntity : class, IEntity
     {
         if (typeof(TEntity) == typeof(Employee))
         {

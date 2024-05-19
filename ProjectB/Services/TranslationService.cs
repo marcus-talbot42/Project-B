@@ -3,7 +3,7 @@ using ProjectB.Repositories;
 
 namespace ProjectB.Services;
 
-public class TranslationService(TranslationRepository repository) : IService<Translation, long>
+public class TranslationService(TranslationRepository repository) : IService<Translation>
 {
     public void Create(Translation entity)
     {

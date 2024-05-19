@@ -4,7 +4,7 @@ using ProjectB.Repositories;
 
 namespace ProjectB.Services;
 
-public class TourService(TourRepository repository) : IService<Tour, long>
+public class TourService(TourRepository repository) : IService<Tour>
 {
     public void Create(Tour entity)
     {
