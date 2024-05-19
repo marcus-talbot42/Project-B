@@ -55,4 +55,19 @@
       <PackageReference Include="Spectre.Console.Cli" Version="0.49.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Json\Employee.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Json\Guest.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Json\Tour.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Json\Translation.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

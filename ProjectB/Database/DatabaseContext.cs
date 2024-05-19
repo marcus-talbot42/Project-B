@@ -40,7 +40,7 @@ public class DatabaseContext : DbContext
     private IEnumerable<TEntity> ReadFromJson<TEntity, TId>() where TEntity : class, IEntity<TId> where TId : notnull
     {
         return JsonSerializer.Deserialize<IEnumerable<TEntity>>(
-            File.ReadAllText($".//../../../Database/{typeof(TEntity).Name}.json"))!;
+            File.ReadAllText($"Json/{typeof(TEntity).Name}.json"))!;
     }
 
     public DbSet<TEntity>? GetRelevantDbSet<TEntity, TId>()
