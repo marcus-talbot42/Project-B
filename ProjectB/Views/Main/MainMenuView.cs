@@ -22,7 +22,6 @@ public class MainMenuView(EmployeeLoginView employeeLoginView, GuestLoginView gu
             {
                 ctx.Spinner(Spinner.Known.Material);
                 ctx.Status($"\n {translationService.GetTranslationString("loadingData")}");
-                Thread.Sleep(2000);
             });
             
             var options = new Dictionary<int, string>
