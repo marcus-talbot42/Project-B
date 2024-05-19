@@ -3,7 +3,7 @@ using ProjectB.Models;
 
 namespace ProjectB.Repositories;
 
-public class GuestRepository(DatabaseContext context) : AbstractRepository<Guest, long>(context)
+public class GuestRepository(DatabaseContext context) : AbstractRepository<Guest>(context)
 {
     public Guest? FindValidGuestByUsername(string username)
     {

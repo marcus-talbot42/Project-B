@@ -4,7 +4,7 @@ using ProjectB.Database;
 
 namespace ProjectB.Repositories
 {
-    public class TourRepository(DatabaseContext context) : AbstractRepository<Tour, long>(context)
+    public class TourRepository(DatabaseContext context) : AbstractRepository<Tour>(context)
     {
         public IEnumerable<Tour> GetAllToursTodayAfterNow() =>
             from tour in DbSet

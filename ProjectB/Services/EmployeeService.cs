@@ -7,7 +7,7 @@ namespace ProjectB.Services;
 /// <summary>
 /// Represents a service for managing employees.
 /// </summary>
-public class EmployeeService(EmployeeRepository repository) : IService<Employee, long>
+public class EmployeeService(EmployeeRepository repository) : IService<Employee>
 {
     
     /// <summary>
