@@ -7,24 +7,23 @@ namespace ProjectB.Views.Login;
 
 public class EmployeeLoginView(EmployeeService service) : AbstractView
 {
-    
     // LOGIN_TEXT
     private const string LOGIN_TEXT = "Please enter your username and password to log in:";
-    
+
     // Implement GetUsername
     private string GetUsername()
     {
         Console.Write("Username: ");
         return Console.ReadLine();
     }
-    
+
     // Implement GetPassword
     private string GetPassword()
     {
         Console.Write("Password: ");
         return Console.ReadLine();
     }
-    
+
     public override void Output()
     {
         // Implement
@@ -36,8 +35,8 @@ public class EmployeeLoginView(EmployeeService service) : AbstractView
             string password = GetPassword()!;
             try
             {
-                employee = service.FindValidEmployeeByUsername(username);
-                if (employee.IsPasswordCorrect(password))
+                employee = service.FindValidEmployeeByUsernameAndPassword(username, password);
+                if (employee != null)
                 {
                     Settings.Settings.CurrentSession = new Session(employee.Username, employee.Role);
                     Console.WriteLine("Login success...");
@@ -47,7 +46,7 @@ public class EmployeeLoginView(EmployeeService service) : AbstractView
                     Console.WriteLine("Incorrect password. Please try again.");
                 }
             }
-            catch (EntityNotFoundException exception)
+            catch (EntityNotFoundException)
             {
                 Console.WriteLine("That username is not recognized. Please try again.");
             }
