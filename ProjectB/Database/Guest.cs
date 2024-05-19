@@ -1,8 +1,8 @@
 namespace ProjectB.Models
 {
-    public class Guest(DateOnly validDate) : AbstractUser
+    public class Guest : AbstractUser
     {
-        public DateOnly ValidDate { get; set; } = validDate;
+        public DateOnly ValidDate { get; set; }
         public Tour? Tour { get; set; }
     }
 }

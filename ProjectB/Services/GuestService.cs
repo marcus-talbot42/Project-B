@@ -4,28 +4,8 @@ using ProjectB.Repositories;
 
 namespace ProjectB.Services;
 
-public class GuestService(GuestRepository repository) : IService<Guest>
+public class GuestService(GuestRepository repository) : AbstractService<Guest>(repository), IGuestService
 {
-    public void Create(Guest entity)
-    {
-        var guest = entity;
-        
-        if (!repository.Exists(entity))
-        {
-            repository.Save(entity);
-        }
-    }
-
-    public void Update(Guest entity, long id)
-    {
-        repository.Save(entity);
-    }
-
-    public void Delete(long id)
-    {
-        repository.Remove(id);
-    }
-
     public Guest FindValidGuestById(string username)
     {
         Guest? guest = repository.FindValidGuestByUsername(username);
@@ -36,10 +16,5 @@ public class GuestService(GuestRepository repository) : IService<Guest>
         }
 
         return guest;
-    }
-
-    public Guest Read(long read)
-    {
-        throw new NotImplementedException();
     }
 }
