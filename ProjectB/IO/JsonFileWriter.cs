@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace ProjectB.IO;
 
@@ -21,7 +21,7 @@ public class JsonFileWriter<T> : IFileWriter<T>
     {
         // If the file exists, we simply open a StreamWriter. If not, we create the file, and convert the resulting FileStream to a StreamWriter.
         using StreamWriter writer = File.Exists(fileName) ? new StreamWriter(fileName) : new StreamWriter(File.Create(fileName));
-        string json = JsonConvert.SerializeObject(objects);
+        string json = JsonSerializer.Serialize(objects);
         writer.Write(json);
     }
 }

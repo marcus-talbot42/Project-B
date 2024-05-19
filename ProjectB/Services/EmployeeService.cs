@@ -7,7 +7,7 @@ namespace ProjectB.Services;
 /// <summary>
 /// Represents a service for managing employees.
 /// </summary>
-public class EmployeeService(EmployeeRepository repository) : IService<Employee, string>
+public class EmployeeService(EmployeeRepository repository) : IService<Employee, long>
 {
     
     /// <summary>
@@ -32,7 +32,7 @@ public class EmployeeService(EmployeeRepository repository) : IService<Employee,
     /// <param name="id">The id of the employee to update.</param>
     /// <exception cref="ArgumentNullException">Thrown if the entity is null.</exception>
     /// <exception cref="ArgumentNullException">Thrown if the id is null.</exception>
-    public void Update(Employee entity, string id)
+    public void Update(Employee entity, long id)
     {
         repository.Save(entity);
     }
@@ -41,7 +41,7 @@ public class EmployeeService(EmployeeRepository repository) : IService<Employee,
     /// Deletes an employee identified by the specified id.
     /// </summary>
     /// <param name="id">The id of the employee to delete.</param>
-    public void Delete(string id)
+    public void Delete(long id)
     {
         repository.Remove(id);
     }
@@ -54,7 +54,7 @@ public class EmployeeService(EmployeeRepository repository) : IService<Employee,
     /// <exception cref="EntityNotFoundException">Thrown if an employee with the specified username is not found.</exception>
     public Employee? FindValidEmployeeByUsername(string username)
     {
-        Employee employee = repository.FindById(username);
+        Employee employee = repository.FindByUsername(username);
         if (employee == null)
         {
             throw new EntityNotFoundException($"Employee with username {username} not found.");
@@ -62,7 +62,7 @@ public class EmployeeService(EmployeeRepository repository) : IService<Employee,
 
         return employee;
     }
-    public Employee Read(string read)
+    public Employee Read(long read)
     {
         throw new NotImplementedException();
     }

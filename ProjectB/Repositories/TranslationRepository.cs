@@ -1,12 +1,12 @@
+using ProjectB.Database;
 using ProjectB.Models;
+using ProjectB.Settings;
 
 namespace ProjectB.Repositories;
 
-public class TranslationRepository : AbstractRepository<Translation, string>
+public class TranslationRepository(DatabaseContext context) : AbstractRepository<Translation, long>(context)
 {
-    // not needed any more, will be deleted soon
-    // public override string GetFileLocation()
-    // {
-    //     return $".//../../../Database/{GetType().Name}.json";
-    // }
+    public Translation FindByKeyAndLanguage(string key, Language language) => (from translation in DbSet.ToList()
+        where translation.Language == language && translation.Key == key
+        select translation).FirstOrDefault();
 }

@@ -1,48 +1,40 @@
 using ProjectB.Models;
 using ProjectB.Repositories;
-using ProjectB.settings;
 
 namespace ProjectB.Services;
 
-public class TranslationService(IRepository<Translation, string> repository) : IService<Translation, string>
+public class TranslationService(TranslationRepository repository) : IService<Translation, long>
 {
     public void Create(Translation entity)
     {
         repository.Save(entity);
     }
 
-    public void Update(Translation entity, string id)
+    public void Update(Translation entity, long id)
     {
         repository.Save(entity);
     }
 
-    public void Delete(string id)
+    public void Delete(long id)
     {
         repository.Remove(id);
     }
 
-    public Translation Read(string key)
+    public Translation Read(long key)
     {
-        return repository.FindById(Settings.Lanuage.ToString())!;
+        return repository.FindById(key)!;
     }
 
 
-    public string GetTranslationString(string key)
+    public string? GetTranslationString(string key)
     {
-        var lang = Settings.Lanuage.ToString();
-
-        var translation = repository.FindById(lang);
+        var translation = repository.FindByKeyAndLanguage(key, Settings.Settings.Language);
 
         if (translation == null)
         {
-            return $"Lanuage not found: {lang}";
+            return $"Language not found: {Settings.Settings.Language}:{key}";
         }
 
-        if (!translation.GetPairs().ContainsKey(key))
-        {
-            return $"Translation not found: {key}";
-        }
-
-        return translation.GetPairs()[key];
+        return translation.Value;
     }
 }

@@ -1,6 +1,4 @@
 
-using ProjectB.Models;
-using ProjectB.Repositories;
 using ProjectB.Services;
 using Spectre.Console;
 
@@ -9,12 +7,9 @@ namespace ProjectB.Views.Reservation;
 public class ReservationView(
     CreateReservationView createReservationView,
     EditReservationView editReservationView,
-    DeleteReservationView deleteReservationView) : AbstractView
+    DeleteReservationView deleteReservationView,
+    TranslationService translationService) : AbstractView
 {
-    private static IService<Translation, string> _translationService = new TranslationService(new TranslationRepository());
-    // ((TranslationService) _translationService).GetTranslationString("chooseOption")
-    // $"[blue]{((TranslationService) _translationService).GetTranslationString("createReservationView")}[/]"
-
 
     public override void Output()
     {
@@ -22,15 +17,15 @@ public class ReservationView(
         {
             var options = new Dictionary<int, string>
             {
-                { 1, $"[blue]{((TranslationService) _translationService).GetTranslationString("createReservationView")}[/]"},
-                { 2, $"[blue]{((TranslationService) _translationService).GetTranslationString("editReservationView")}[/]" },
-                { 3, $"[blue]{((TranslationService) _translationService).GetTranslationString("deleteReservationView")}[/]" },
-                { 0, $"[blue]{((TranslationService) _translationService).GetTranslationString("return")}[/]" }
+                { 1, $"[blue]{translationService.GetTranslationString("createReservationView")}[/]"},
+                { 2, $"[blue]{translationService.GetTranslationString("editReservationView")}[/]" },
+                { 3, $"[blue]{translationService.GetTranslationString("deleteReservationView")}[/]" },
+                { 0, $"[blue]{translationService.GetTranslationString("return")}[/]" }
             };
             
             var option = AnsiConsole.Prompt(
                 new SelectionPrompt<int>()
-                    .Title(((TranslationService) _translationService).GetTranslationString("chooseOption"))
+                    .Title(translationService.GetTranslationString("chooseOption"))
                     .PageSize(10)
                     .AddChoices(options.Keys)
                     .UseConverter(choice => $"{choice}. {options[choice]}")

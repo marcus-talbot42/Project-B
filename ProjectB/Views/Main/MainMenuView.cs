@@ -1,20 +1,15 @@
-using ProjectB.settings;
+using ProjectB.Settings;
 using ProjectB.Views.Debug;
 using ProjectB.Views.Login;
 using ProjectB.Views.Language;
 
-using ProjectB.Models;
-using ProjectB.Repositories;
 using ProjectB.Services;
 using Spectre.Console;
 
 namespace ProjectB.Views.Main;
 
-public class MainMenuView(EmployeeLoginView employeeLoginView, GuestLoginView guestLoginView, LanguageSwitcher languageSwitcher, DebugView debugView) : AbstractView
+public class MainMenuView(EmployeeLoginView employeeLoginView, GuestLoginView guestLoginView, LanguageSwitcher languageSwitcher, DebugView debugView, TranslationService translationService) : AbstractView
 {
-
-    private static IService<Translation, string> _translationService = new TranslationService(new TranslationRepository());
-    
     
     public override void Output()
     {
@@ -23,24 +18,24 @@ public class MainMenuView(EmployeeLoginView employeeLoginView, GuestLoginView gu
             AnsiConsole.Clear();
             
             // Display a status message for 5 seconds
-            AnsiConsole.Status().Start(((TranslationService) _translationService).GetTranslationString("wait"), ctx =>
+            AnsiConsole.Status().Start(translationService.GetTranslationString("wait"), ctx =>
             {
                 ctx.Spinner(Spinner.Known.Material);
-                ctx.Status($"\n {((TranslationService) _translationService).GetTranslationString("loadingData")}");
+                ctx.Status($"\n {translationService.GetTranslationString("loadingData")}");
                 Thread.Sleep(2000);
             });
             
             var options = new Dictionary<int, string>
             {
-                { 1, $"[blue]{((TranslationService) _translationService).GetTranslationString("loginGuest")}[/]"},
-                { 2, $"[blue]{((TranslationService) _translationService).GetTranslationString("loginEmployee")}[/]" },
-                { 3, $"[blue]{((TranslationService) _translationService).GetTranslationString("switchLanguage")}[/]" },
-                { 0, $"[blue]{((TranslationService) _translationService).GetTranslationString("debug")}[/]" }
+                { 1, $"[blue]{translationService.GetTranslationString("loginGuest")}[/]"},
+                { 2, $"[blue]{translationService.GetTranslationString("loginEmployee")}[/]" },
+                { 3, $"[blue]{translationService.GetTranslationString("switchLanguage")}[/]" },
+                { 0, $"[blue]{translationService.GetTranslationString("debug")}[/]" }
             };
             
             var option = AnsiConsole.Prompt(
                 new SelectionPrompt<int>()
-                    .Title(((TranslationService) _translationService).GetTranslationString("chooseOption"))
+                    .Title(translationService.GetTranslationString("chooseOption"))
                     .PageSize(10)
                     .AddChoices(options.Keys)
                     .UseConverter(choice => $"{choice}. {options[choice]}")
