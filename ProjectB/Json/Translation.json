@@ -23,7 +23,7 @@
   {"Id": 21, "Language": 1, "Key" : "lang_name_nl", "Value" : "Nederlands"},
   {"Id": 22, "Language": 1, "Key" : "spotsLeft", "Value" : "spots left."},
   {"Id": 23, "Language": 1, "Key" : "test", "Value" : "This is a test."},
-  {"Id": 24, "Language": 1, "Key" : "loginOption", "Value" : "Chose how you want to login:"},
+  {"Id": 24, "Language": 1, "Key" : "loginOption", "Value" : "Choose how you want to login:"},
   {"Id": 25, "Language": 1, "Key" : "guestLogin", "Value" : "Guest login"},
   {"Id": 26, "Language": 1, "Key" : "employeeLogin", "Value" : "Employee login"},
   {"Id": 27, "Language": 1, "Key" : "switchLanguage", "Value" : "Switch language"},
