@@ -8,7 +8,7 @@ public class ReservationView(
     CreateReservationView createReservationView,
     EditReservationView editReservationView,
     DeleteReservationView deleteReservationView,
-    TranslationService translationService) : AbstractView
+    ITranslationService translationService) : AbstractView
 {
 
     public override void Output()

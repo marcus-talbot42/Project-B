@@ -7,7 +7,7 @@ namespace ProjectB.Services;
 /// <summary>
 /// Represents a service for managing employees.
 /// </summary>
-public class EmployeeService(EmployeeRepository repository) : AbstractService<Employee>(repository), IEmployeeService
+public class EmployeeService(IEmployeeRepository repository) : AbstractService<Employee>(repository), IEmployeeService
 {
     /// <summary>
     /// Finds a valid employee by username.
@@ -17,7 +17,7 @@ public class EmployeeService(EmployeeRepository repository) : AbstractService<Em
     /// <exception cref="EntityNotFoundException">Thrown if an employee with the specified username is not found.</exception>
     public Employee? FindValidEmployeeByUsernameAndPassword(string username, string password)
     {
-        Employee employee = repository.FindByUsernameAndPassword(username, password);
+        Employee? employee = repository.FindByUsernameAndPassword(username, password);
         if (employee == null)
         {
             throw new EntityNotFoundException($"Employee with username {username} not found.");

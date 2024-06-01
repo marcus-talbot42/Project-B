@@ -3,7 +3,7 @@ using ProjectB.Services;
 
 namespace ProjectB.Views.Admin;
 
-public class CreateEmployeeView(EmployeeService employeeService) : AbstractView
+public class CreateEmployeeView(IEmployeeService employeeService) : AbstractView
 {
     public override void Output()
     {

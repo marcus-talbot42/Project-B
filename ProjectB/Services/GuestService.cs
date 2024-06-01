@@ -4,7 +4,7 @@ using ProjectB.Repositories;
 
 namespace ProjectB.Services;
 
-public class GuestService(GuestRepository repository) : AbstractService<Guest>(repository), IGuestService
+public class GuestService(IGuestRepository repository) : AbstractService<Guest>(repository), IGuestService
 {
     public Guest FindValidGuestById(string username)
     {

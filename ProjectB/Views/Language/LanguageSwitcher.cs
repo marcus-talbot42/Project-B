@@ -3,7 +3,7 @@ using Spectre.Console;
 
 namespace ProjectB.Views.Language;
 
-public class LanguageSwitcher(TranslationService translationService) : AbstractView
+public class LanguageSwitcher(ITranslationService translationService) : AbstractView
 {
     public override void Output()
     {
@@ -16,10 +16,10 @@ public class LanguageSwitcher(TranslationService translationService) : AbstractV
 
         var option = AnsiConsole.Prompt(
             new SelectionPrompt<int>()
-                .Title(((TranslationService)translationService).GetTranslationString("chooseOption"))
+                .Title(translationService.GetTranslationString("chooseOption"))
                 .PageSize(10)
                 .AddChoices(options.Keys)
-                .UseConverter(choice => $"{choice}. {((TranslationService)translationService).GetTranslationString("lang_name_" + options[choice].ToString().ToLower())}")
+                .UseConverter(choice => $"{choice}. {translationService.GetTranslationString("lang_name_" + options[choice].ToString().ToLower())}")
         );
 
         try
