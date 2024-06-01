@@ -4,5 +4,5 @@ namespace ProjectB.Services;
 
 public interface IGuestService : IService<Guest>
 {
-    Guest FindValidGuestById(string username);
+    Guest? FindValidGuestById(string username);
 }

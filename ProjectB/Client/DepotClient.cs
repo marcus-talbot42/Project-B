@@ -1,13 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ProjectB.Choices;
 using ProjectB.Database;
-using ProjectB.Exceptions;
 using ProjectB.Models;
 using ProjectB.Services;
 using ProjectB.Settings;
 using Spectre.Console;
-using System.Net;
-using System.Text;
 
 namespace ProjectB.Client
 {
@@ -49,7 +46,7 @@ namespace ProjectB.Client
         public void Run()
         {
 
-            AnsiConsole.Status().Start(Translation.GetTranslationString("wait")!, ctx =>
+            AnsiConsole.Status().Start(Translation.GetTranslationString("wait"), ctx =>
             {
                 ctx.Spinner(Spinner.Known.Material);
                 ctx.Status($"\n {Translation.GetTranslationString("loadingData")}");
@@ -144,7 +141,7 @@ namespace ProjectB.Client
                 string password = Prompts.AskPassword("password");
 
                 Employee = EmployeeService.FindValidEmployeeByUsernameAndPassword(username, password);
-                Console.MarkupLine(Translation.GetTranslationString(Employee == null ? "loginFailed" : "loginSuccess")!);
+                Console.MarkupLine(Translation.GetTranslationString(Employee == null ? "loginFailed" : "loginSuccess"));
             }
 
             if (Employee != null)
