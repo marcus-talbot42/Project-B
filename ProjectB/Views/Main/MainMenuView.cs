@@ -6,7 +6,7 @@ using Spectre.Console;
 
 namespace ProjectB.Views.Main;
 
-public class MainMenuView(EmployeeLoginView employeeLoginView, GuestLoginView guestLoginView, LanguageSwitcher languageSwitcher, DebugView debugView, TranslationService translationService) : AbstractView
+public class MainMenuView(EmployeeLoginView employeeLoginView, GuestLoginView guestLoginView, LanguageSwitcher languageSwitcher, DebugView debugView, ITranslationService translationService) : AbstractView
 {
 
     public override void Output()

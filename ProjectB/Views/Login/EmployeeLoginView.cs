@@ -5,7 +5,7 @@ using ProjectB.Services;
 
 namespace ProjectB.Views.Login;
 
-public class EmployeeLoginView(EmployeeService service) : AbstractView
+public class EmployeeLoginView(IEmployeeService service) : AbstractView
 {
     // LOGIN_TEXT
     private const string LOGIN_TEXT = "Please enter your username and password to log in:";

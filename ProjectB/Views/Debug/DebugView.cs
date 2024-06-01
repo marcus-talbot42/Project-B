@@ -4,7 +4,7 @@ using Spectre.Console;
 
 namespace ProjectB.Views.Debug;
 
-public class DebugView(CreateGuestView createGuestView, CreateEmployeeView createEmployeeView, TranslationService translationService) : AbstractView
+public class DebugView(CreateGuestView createGuestView, CreateEmployeeView createEmployeeView, ITranslationService translationService) : AbstractView
 {
 
     public override void Output()

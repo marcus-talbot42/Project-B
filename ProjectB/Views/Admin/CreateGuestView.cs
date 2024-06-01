@@ -3,7 +3,7 @@ using ProjectB.Services;
 
 namespace ProjectB.Views.Admin;
 
-public class CreateGuestView(GuestService service) : AbstractView
+public class CreateGuestView(IGuestService service) : AbstractView
 {
     public override void Output()
     {

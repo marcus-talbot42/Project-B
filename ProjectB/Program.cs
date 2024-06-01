@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ProjectB.Client;
 using ProjectB.Database;
 using ProjectB.Repositories;
 using ProjectB.Services;
@@ -10,37 +11,50 @@ using ProjectB.Views.Language;
 using ProjectB.Views.Login;
 using ProjectB.Views.Main;
 using ProjectB.Views.Reservation;
+using Spectre.Console;
 
-HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
+namespace ProjectB
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            new DepotClient(GetServices()).Run();
+        }
 
-// Add in-memory database
-builder.Services.AddDbContext<DatabaseContext>(options => options.UseInMemoryDatabase("ProjectBDatabase"));
+        private static IServiceProvider GetServices()
+        {
+            return new ServiceCollection()
+                .AddDbContext<IDatabaseContext, DatabaseContext>(options => options.UseInMemoryDatabase("ProjectBDatabase"))
+                .AddSingleton<IAnsiConsole>(AnsiConsole.Console)
 
-// Repostitories
-builder.Services.AddSingleton<GuestRepository>();
-builder.Services.AddSingleton<EmployeeRepository>();
-builder.Services.AddSingleton<TourRepository>();
-builder.Services.AddSingleton<TranslationRepository>();
+                // Repostitories
+                .AddSingleton<IGuestRepository, GuestRepository>()
+                .AddSingleton<IEmployeeRepository, EmployeeRepository>()
+                .AddSingleton<ITourRepository, TourRepository>()
+                .AddSingleton<ITranslationRepository, TranslationRepository>()
 
-// Services
-builder.Services.AddSingleton<GuestService>();
-builder.Services.AddSingleton<EmployeeService>();
-builder.Services.AddSingleton<TourService>();
-builder.Services.AddSingleton<TranslationService>();
+                // Services
+                .AddSingleton<IDateTimeService, DateTimeService>()
+                .AddSingleton<IEmployeeService, EmployeeService>()
+                .AddSingleton<IGuestService, GuestService>()
+                .AddSingleton<ITourService, TourService>()
+                .AddSingleton<ITranslationService, TranslationService>()
 
-// Views
-builder.Services.AddTransient<CreateReservationView>();
-builder.Services.AddTransient<EditReservationView>();
-builder.Services.AddTransient<DeleteReservationView>();
-builder.Services.AddTransient<ReservationView>();
-builder.Services.AddTransient<EmployeeLoginView>();
-builder.Services.AddTransient<GuestLoginView>();
-builder.Services.AddTransient<CreateGuestView>();
-builder.Services.AddTransient<CreateEmployeeView>();
-builder.Services.AddTransient<DebugView>();
-builder.Services.AddTransient<MainMenuView>();
-builder.Services.AddTransient<LanguageSwitcher>();
+                // Views
+                .AddTransient<CreateReservationView>()
+                .AddTransient<EditReservationView>()
+                .AddTransient<DeleteReservationView>()
+                .AddTransient<ReservationView>()
+                .AddTransient<EmployeeLoginView>()
+                .AddTransient<GuestLoginView>()
+                .AddTransient<CreateGuestView>()
+                .AddTransient<CreateEmployeeView>()
+                .AddTransient<DebugView>()
+                .AddTransient<MainMenuView>()
+                .AddTransient<LanguageSwitcher>()
 
-using IHost host = builder.Build();
-
-host.Services.GetService<MainMenuView>()!.Output();
+                .BuildServiceProvider();
+        }
+    }
+}
