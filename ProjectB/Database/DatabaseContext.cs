@@ -1,6 +1,6 @@
-using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using ProjectB.Models;
+using System.Text.Json;
 
 namespace ProjectB.Database;
 

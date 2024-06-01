@@ -22,7 +22,7 @@ public class ReservationView(
                 { 3, $"[blue]{translationService.GetTranslationString("deleteReservationView")}[/]" },
                 { 0, $"[blue]{translationService.GetTranslationString("return")}[/]" }
             };
-            
+
             var option = AnsiConsole.Prompt(
                 new SelectionPrompt<int>()
                     .Title(translationService.GetTranslationString("chooseOption"))
@@ -30,7 +30,7 @@ public class ReservationView(
                     .AddChoices(options.Keys)
                     .UseConverter(choice => $"{choice}. {options[choice]}")
             );
-            
+
             while (true)
             {
                 switch (option)

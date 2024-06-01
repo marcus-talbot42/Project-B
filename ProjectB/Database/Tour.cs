@@ -1,5 +1,3 @@
-using System.Collections.Immutable;
-
 namespace ProjectB.Models;
 
 public class Tour(DateTime start, int capacity = 13)

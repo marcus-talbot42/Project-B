@@ -1,6 +1,7 @@
 namespace ProjectB.Views;
 
-public interface IView {
+public interface IView
+{
 
     void Output();
 

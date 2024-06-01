@@ -31,15 +31,15 @@ public class UserRepositoryTest
     [DataRow(100)]
     public void FindAllShouldFindNEntities(int amount)
     {
-        ICollection<Employee> users =  EmployeeFixtures.GenerateCollection(amount);
+        ICollection<Employee> users = EmployeeFixtures.GenerateCollection(amount);
         JsonFileWriter<Employee> writer = new();
         writer.WriteObjects(_repository.GetFileLocation(), users);
-        
+
         _repository.Refresh();
         IEnumerable<Employee> result = _repository.FindAll();
-        
+
         Assert.AreEqual(amount, result.Count());
-        
+
         File.Delete(_repository.GetFileLocation());
     }
 
@@ -54,21 +54,21 @@ public class UserRepositoryTest
         {
             _repository.Save(user);
         }
-        
+
         Assert.AreEqual(amount, _repository.Count());
-        
+
         _repository.Persist();
 
         JsonFileReader<Employee> reader = new();
         ICollection<Employee>? result = reader.ReadAllObjects(_repository.GetFileLocation());
-        
+
         Assert.AreEqual(amount, result!.Count);
         foreach (Employee user in result)
         {
-            Assert.AreEqual(_repository.FindById(user.GetId()), user);    
+            Assert.AreEqual(_repository.FindById(user.GetId()), user);
         }
-        
+
         File.Delete(_repository.GetFileLocation());
     }
-    
+
 }

@@ -1,6 +1,5 @@
-using ProjectB.Models;
-using System;
 using ProjectB.Database;
+using ProjectB.Models;
 
 namespace ProjectB.Repositories
 {

@@ -1,29 +1,27 @@
-using ProjectB.Settings;
-using ProjectB.Views.Debug;
-using ProjectB.Views.Login;
-using ProjectB.Views.Language;
-
 using ProjectB.Services;
+using ProjectB.Views.Debug;
+using ProjectB.Views.Language;
+using ProjectB.Views.Login;
 using Spectre.Console;
 
 namespace ProjectB.Views.Main;
 
 public class MainMenuView(EmployeeLoginView employeeLoginView, GuestLoginView guestLoginView, LanguageSwitcher languageSwitcher, DebugView debugView, TranslationService translationService) : AbstractView
 {
-    
+
     public override void Output()
     {
         while (true)
         {
             AnsiConsole.Clear();
-            
+
             // Display a status message for 5 seconds
             AnsiConsole.Status().Start(translationService.GetTranslationString("wait"), ctx =>
             {
                 ctx.Spinner(Spinner.Known.Material);
                 ctx.Status($"\n {translationService.GetTranslationString("loadingData")}");
             });
-            
+
             var options = new Dictionary<int, string>
             {
                 { 1, $"[blue]{translationService.GetTranslationString("loginGuest")}[/]"},
@@ -31,7 +29,7 @@ public class MainMenuView(EmployeeLoginView employeeLoginView, GuestLoginView gu
                 { 3, $"[blue]{translationService.GetTranslationString("switchLanguage")}[/]" },
                 { 0, $"[blue]{translationService.GetTranslationString("debug")}[/]" }
             };
-            
+
             var option = AnsiConsole.Prompt(
                 new SelectionPrompt<int>()
                     .Title(translationService.GetTranslationString("chooseOption"))
@@ -39,7 +37,7 @@ public class MainMenuView(EmployeeLoginView employeeLoginView, GuestLoginView gu
                     .AddChoices(options.Keys)
                     .UseConverter(choice => $"{choice}. {options[choice]}")
             );
-            
+
 
             switch (option)
             {

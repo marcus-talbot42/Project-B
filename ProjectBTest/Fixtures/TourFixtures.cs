@@ -4,12 +4,12 @@ namespace ProjectBTest.Fixtures;
 
 public class TourFixtures
 {
-    
+
     public static ICollection<Tour> GenerateCollection(int amount)
     {
-        
+
         ICollection<Employee> guides = EmployeeFixtures.GenerateGuides(amount);
-        
+
         ICollection<Tour> userList = new HashSet<Tour>();
         for (int i = 0; i < amount; i++)
         {

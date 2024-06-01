@@ -1,12 +1,3 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using ProjectB.Models;
-using ProjectB.Repositories;
-using ProjectB;
-using ProjectB.IO;
-using static Reservation;
-
 namespace ProjectB.Tests
 {
     [TestClass]

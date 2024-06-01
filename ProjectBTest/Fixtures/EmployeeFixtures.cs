@@ -18,7 +18,7 @@ public class EmployeeFixtures
 
         return userList;
     }
-    
+
     public static ICollection<Employee> GenerateGuides(int amount)
     {
         ICollection<Employee> userList = new List<Employee>();
@@ -31,5 +31,5 @@ public class EmployeeFixtures
 
         return userList;
     }
-    
+
 }

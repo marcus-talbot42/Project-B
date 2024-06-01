@@ -1,7 +1,3 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ProjectB.Models;
-using System;
-
 namespace ProjectB.Tests
 {
     [TestClass]

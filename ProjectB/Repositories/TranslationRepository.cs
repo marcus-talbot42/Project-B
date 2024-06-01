@@ -7,6 +7,6 @@ namespace ProjectB.Repositories;
 public class TranslationRepository(DatabaseContext context) : AbstractRepository<Translation>(context)
 {
     public Translation FindByKeyAndLanguage(string key, Language language) => (from translation in DbSet.ToList()
-        where translation.Language == language && translation.Key == key
-        select translation).FirstOrDefault();
+                                                                               where translation.Language == language && translation.Key == key
+                                                                               select translation).FirstOrDefault();
 }

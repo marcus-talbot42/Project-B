@@ -4,7 +4,7 @@ using ProjectB.Models;
 
 namespace ProjectB.Repositories;
 
-public abstract class AbstractRepository<T>(DatabaseContext databaseContext): IRepository<T> where T : AbstractEntity
+public abstract class AbstractRepository<T>(DatabaseContext databaseContext) : IRepository<T> where T : AbstractEntity
 {
 
     protected DbSet<T> DbSet { get; } = databaseContext.GetRelevantDbSet<T>()!;
@@ -18,7 +18,7 @@ public abstract class AbstractRepository<T>(DatabaseContext databaseContext): IR
     public void Remove(long id) => DbSet.Remove(DbSet.Find(id)!);
 
     public void RemoveAll() => DbSet.RemoveRange(DbSet.ToArray());
-    
+
     public int Count() => DbSet.Count();
 
     public bool Exists(T entity) => DbSet.Any(e => e == entity);
