@@ -186,6 +186,7 @@ namespace ProjectB.Client
             DateOnly validForDate = Prompts.AskDate("askValidityDate");
 
             GuestService.Add(new Guest() { Username = ticketNummer, ValidDate = validForDate });
+            GuestService.SaveChanges();
         }
 
         private void ShowCreateEmployee()
