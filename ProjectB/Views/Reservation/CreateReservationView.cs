@@ -1,6 +1,6 @@
-using System.Text;
 using ProjectB.Models;
 using ProjectB.Services;
+using System.Text;
 
 namespace ProjectB.Views.Reservation;
 
@@ -9,12 +9,12 @@ public class CreateReservationView(TourService tourService, GuestService guestSe
     public override void Output()
     {
         var tours = tourService.GetAllToursTodayAfterNow();
-        
+
         // Show all tours, with an index
         PrintAllTours(tours);
 
         // Get user input
-        int option = ReadUserChoice(1, tours.Count(), $"{((TranslationService) translationService).GetTranslationString("choseTour")}\n{PrintAllTours(tours)}");
+        int option = ReadUserChoice(1, tours.Count(), $"{((TranslationService)translationService).GetTranslationString("choseTour")}\n{PrintAllTours(tours)}");
         // AnsiConsole.MarkupLine($"[blue]{((TranslationService) _translationService).GetTranslationString("enterTicketNumber")}[/]");
 
 
@@ -31,7 +31,7 @@ public class CreateReservationView(TourService tourService, GuestService guestSe
         for (int i = 0; i < tours.Count(); i++)
         {
             var tour = tours.ElementAt(i);
-            builder.Append($"{i + 1}. {((TranslationService) translationService).GetTranslationString("time")} {tour.Start.Hour:00}:{tour.Start:00}\t\t{((TranslationService) translationService).GetTranslationString("spots")} {tourService.GetRemainingCapacity(tour)}\n");
+            builder.Append($"{i + 1}. {((TranslationService)translationService).GetTranslationString("time")} {tour.Start.Hour:00}:{tour.Start:00}\t\t{((TranslationService)translationService).GetTranslationString("spots")} {tourService.GetRemainingCapacity(tour)}\n");
         }
 
         return builder.ToString();

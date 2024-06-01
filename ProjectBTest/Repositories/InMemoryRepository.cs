@@ -1,7 +1,3 @@
-using ProjectB.Models;
-using ProjectB.Repositories;
-using System.Collections.Generic;
-
 public class InMemoryRepository<T, TKey> : IRepository<T, TKey> where T : IEntity<TKey> where TKey : class
 {
     private List<T> entities = new List<T>();
@@ -15,7 +11,7 @@ public class InMemoryRepository<T, TKey> : IRepository<T, TKey> where T : IEntit
     {
         entities.RemoveAll(e => e.GetId().Equals(id));
     }
-    
+
     public T FindById(TKey id)
     {
         return entities.Find(e => e.GetId().Equals(id)) ?? default(T);

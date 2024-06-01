@@ -1,11 +1,9 @@
-using ProjectB.Services;
-
 namespace ProjectBTest.Services;
 
 [TestClass]
 public class TourServiceTest
 {
-    
+
     // private TourService _service;
     //
     // [TestMethod]

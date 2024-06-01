@@ -13,5 +13,5 @@ public class TourViewTest
         TourRepository repository = new();
         var tours = TourFixtures.GenerateCollection(100);
     }
-    
+
 }

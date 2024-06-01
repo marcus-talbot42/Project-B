@@ -10,5 +10,5 @@ public class GuestRepository(DatabaseContext context) : AbstractRepository<Guest
         return DbSet.ToList().FirstOrDefault(guest => guest.Username == username && guest.ValidDate == DateOnly.FromDateTime(DateTime.Now));
     }
 
-    
+
 }

@@ -4,7 +4,7 @@ public abstract class AbstractView : IView
 {
 
     private static DateTime _timeSinceLastInput = DateTime.Now;
-    
+
     protected int ReadUserChoice(int min, int max, string invalidChoiceMessage)
     {
         int option;

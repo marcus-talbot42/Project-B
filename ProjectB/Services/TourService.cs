@@ -1,4 +1,3 @@
-using ProjectB.Exceptions;
 using ProjectB.Models;
 using ProjectB.Repositories;
 
@@ -10,9 +9,10 @@ public class TourService(TourRepository repository) : AbstractService<Tour>(repo
     public static readonly int TourDuration = 40;
     public static readonly int DefaultTourInterval = 20;
 
-    public IEnumerable<Tour> GetAllToursTodayAfterNow() {
+    public IEnumerable<Tour> GetAllToursTodayAfterNow()
+    {
         return repository.GetAllToursTodayAfterNow();
-    }    
+    }
 
     public bool RegisterGuestForTour(Guest guest, Tour tour)
     {
@@ -20,7 +20,7 @@ public class TourService(TourRepository repository) : AbstractService<Tour>(repo
         {
             return false;
         }
-        
+
         tour.Participants.Add(guest);
 
         SaveChanges();

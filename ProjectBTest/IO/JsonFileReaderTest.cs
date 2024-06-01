@@ -7,7 +7,7 @@ namespace ProjectBTest.IO;
 [TestClass]
 public class JsonFileReaderTest
 {
-    
+
     [DataTestMethod]
     [DataRow(".//test.json", 1)]
     [DataRow(".//test.json", 10)]
@@ -21,13 +21,13 @@ public class JsonFileReaderTest
         JsonFileReader<Employee> reader = new();
         ICollection<Employee>? result = reader.ReadAllObjects(fileName);
         Assert.IsNotNull(result);
-        
+
         Assert.AreEqual(amount, result.Count);
         foreach (var user in result)
         {
             Assert.IsTrue(userList.Contains(user));
         }
-        
+
         File.Delete(fileName);
     }
 }

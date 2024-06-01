@@ -1,6 +1,3 @@
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using ProjectB.Models;
 
 namespace ProjectBTest.Fixtures

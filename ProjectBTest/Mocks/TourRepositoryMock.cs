@@ -1,5 +1,4 @@
 using ProjectB.Models;
-using ProjectB.Repositories;
 
 namespace ProjectBTest.Mocks;
 
@@ -60,7 +59,7 @@ public class TourRepositoryMock : IRepository<Tour, TourCompositeKey>
         _fileSystem.Clear();
         foreach (var VARIABLE in _repository.Values)
         {
-            _fileSystem.Add(VARIABLE);       
+            _fileSystem.Add(VARIABLE);
         }
     }
 

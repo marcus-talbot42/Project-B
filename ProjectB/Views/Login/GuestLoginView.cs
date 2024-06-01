@@ -11,7 +11,7 @@ public class GuestLoginView(GuestService service, ReservationView guestMenuView,
 {
     public override void Output()
     {
-        AnsiConsole.MarkupLine($"[blue]{((TranslationService) translationService).GetTranslationString("enterTicketNumber")}[/]");
+        AnsiConsole.MarkupLine($"[blue]{((TranslationService)translationService).GetTranslationString("enterTicketNumber")}[/]");
 
         Guest? guest = null;
         do
@@ -27,8 +27,8 @@ public class GuestLoginView(GuestService service, ReservationView guestMenuView,
             {
                 AnsiConsole.Clear();
                 // Console.WriteLine("Dat ticketnummer is niet herkend. Voor alstublieft nogmaals uw ticketnummer in:");
-                AnsiConsole.MarkupLine($"[red]{((TranslationService) translationService).GetTranslationString("ticketNotFound")}[/]");
-                
+                AnsiConsole.MarkupLine($"[red]{((TranslationService)translationService).GetTranslationString("ticketNotFound")}[/]");
+
             }
         } while (guest == null);
 
@@ -37,6 +37,6 @@ public class GuestLoginView(GuestService service, ReservationView guestMenuView,
     private string? GetTicketNumber()
     {
         // return Console.ReadLine();
-        return AnsiConsole.Ask<string>(((TranslationService) translationService).GetTranslationString("ticketNumber"));
+        return AnsiConsole.Ask<string>(((TranslationService)translationService).GetTranslationString("ticketNumber"));
     }
 }

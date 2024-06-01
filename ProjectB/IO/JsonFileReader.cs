@@ -28,7 +28,8 @@ public class JsonFileReader<T> : IFileReader<T>
     /// <returns>A collection containing the deserialized objects.</returns>
     public ICollection<T>? ReadAllObjects(string fileName)
     {
-        if (!File.Exists(fileName)) {
+        if (!File.Exists(fileName))
+        {
             File.Create(fileName).Close();
         }
         using StreamReader reader = new StreamReader(fileName);

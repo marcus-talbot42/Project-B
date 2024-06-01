@@ -1,9 +1,5 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ProjectB.Models;
-using ProjectB.Repositories;
 using ProjectB.Services;
-using System.Collections.Generic;
-using ProjectB.settings;
 
 namespace ProjectB.Tests
 {
