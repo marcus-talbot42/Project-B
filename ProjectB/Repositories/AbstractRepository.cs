@@ -4,7 +4,7 @@ using ProjectB.Models;
 
 namespace ProjectB.Repositories;
 
-public abstract class AbstractRepository<T>(DatabaseContext databaseContext) : IRepository<T> where T : AbstractEntity
+public abstract class AbstractRepository<T>(IDatabaseContext databaseContext) : IRepository<T> where T : AbstractEntity
 {
 
     protected DbSet<T> DbSet { get; } = databaseContext.GetRelevantDbSet<T>()!;

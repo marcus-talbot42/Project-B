@@ -3,7 +3,7 @@ using ProjectB.Models;
 
 namespace ProjectB.Repositories;
 
-public class EmployeeRepository(DatabaseContext context) : AbstractRepository<Employee>(context)
+public class EmployeeRepository(IDatabaseContext context) : AbstractRepository<Employee>(context), IEmployeeRepository
 {
     public Employee? FindByUsernameAndPassword(string username, string password) =>
         (from user in DbSet

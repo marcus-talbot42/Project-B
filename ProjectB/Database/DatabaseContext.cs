@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using ProjectB.Models;
+using System.Data;
 using System.Text.Json;
 
 namespace ProjectB.Database;
 
-public class DatabaseContext : DbContext
+public class DatabaseContext : DbContext, IDatabaseContext
 {
     public DatabaseContext(DbContextOptions options) : base(options)
     {
@@ -39,23 +40,25 @@ public class DatabaseContext : DbContext
 
     public override int SaveChanges()
     {
+        // Save changes to database before persisting to file, otherwise you end up with empty files
+        int changes = base.SaveChanges();
+
         WriteToJson(Employees);
         WriteToJson(Guests);
         WriteToJson(Tours);
         WriteToJson(Translations);
 
-        return base.SaveChanges();
+        return changes;
     }
 
     private IEnumerable<T> ReadFromJson<T>() where T : AbstractEntity
     {
-        return JsonSerializer.Deserialize<IEnumerable<T>>(
-            File.ReadAllText($"Json/{typeof(T).Name}.json"))!;
+        return JsonSerializer.Deserialize<IEnumerable<T>>(File.ReadAllText($"Json/{typeof(T).Name}.json"))!;
     }
 
     private void WriteToJson<T>(IEnumerable<T> entities) where T : AbstractEntity
     {
-        File.WriteAllText($"Json/{typeof(T).Name}.json", JsonSerializer.Serialize(entities, new JsonSerializerOptions { WriteIndented = true }));
+        File.WriteAllText($"Json/{typeof(T).Name}.json", JsonSerializer.Serialize(entities.ToList()));
     }
 
     public DbSet<T>? GetRelevantDbSet<T>() where T : AbstractEntity

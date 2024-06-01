@@ -7,7 +7,7 @@ using Spectre.Console;
 
 namespace ProjectB.Views.Login;
 
-public class GuestLoginView(GuestService service, ReservationView guestMenuView, TranslationService translationService) : AbstractView
+public class GuestLoginView(IGuestService service, ReservationView guestMenuView, ITranslationService translationService) : AbstractView
 {
     public override void Output()
     {

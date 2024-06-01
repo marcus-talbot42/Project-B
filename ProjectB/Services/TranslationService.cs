@@ -3,7 +3,7 @@ using ProjectB.Repositories;
 
 namespace ProjectB.Services;
 
-public class TranslationService(TranslationRepository repository) : AbstractService<Translation>(repository), ITranslationService
+public class TranslationService(ITranslationRepository repository) : AbstractService<Translation>(repository), ITranslationService
 {
     public string? GetTranslationString(string key)
     {

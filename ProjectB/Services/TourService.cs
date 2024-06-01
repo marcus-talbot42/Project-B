@@ -3,7 +3,7 @@ using ProjectB.Repositories;
 
 namespace ProjectB.Services;
 
-public class TourService(TourRepository repository) : AbstractService<Tour>(repository), IService<Tour>
+public class TourService(ITourRepository repository) : AbstractService<Tour>(repository), ITourService
 {
     public static readonly int MaxCapacity = 13;
     public static readonly int TourDuration = 40;

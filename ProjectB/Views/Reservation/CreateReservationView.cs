@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ProjectB.Views.Reservation;
 
-public class CreateReservationView(TourService tourService, GuestService guestService, TranslationService translationService) : AbstractView
+public class CreateReservationView(ITourService tourService, IGuestService guestService, ITranslationService translationService) : AbstractView
 {
     public override void Output()
     {
