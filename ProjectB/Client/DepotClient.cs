@@ -618,7 +618,7 @@ namespace ProjectB.Client
 
         private bool HandleConfirmation()
         {
-            if (Prompts.AskYesNo("confirmYesNo", "yes", "no"))
+            if (!Prompts.AskYesNo("confirmYesNo", "yes", "no"))
             {
                 Prompts.ShowSpinner("returningToMenu", 2000);
                 return false;
@@ -633,7 +633,7 @@ namespace ProjectB.Client
 
         private string TGet(string key, List<string>? replacements = null)
         {
-            return replacements != null ? Translation.Get(key) : Translation.GetReplacement(key, replacements);
+            return replacements == null ? Translation.Get(key) : Translation.GetReplacement(key, replacements);
         }
 
         private T GetFlow<T>() where T : AbstractWorkflow => ServiceProvider.GetService<T>()!;
