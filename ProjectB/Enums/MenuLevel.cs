@@ -4,6 +4,6 @@ namespace ProjectB.Enums
     {
         MainMenu = 1,
         SubMenu = 2,
-        SubSubMenu = 3,
+        ActionsMenu = 3,
     }
 }

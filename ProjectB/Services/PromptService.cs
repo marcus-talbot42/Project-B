@@ -22,6 +22,8 @@ namespace ProjectB.Services
 
         public string AskTicketNumber(string titleKey) => Console.Ask<string>(Translation.Get(titleKey)!);
 
+        public string AskTicketOrEmployeeNumber(string titleKey) => Console.Ask<string>(Translation.Get(titleKey)!);
+
         public string AskPassword(string titleKey) => Console.Prompt(
             new TextPrompt<string>(Translation.Get(titleKey)!).PromptStyle("red").Secret());
 

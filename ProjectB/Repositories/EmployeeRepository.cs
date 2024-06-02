@@ -7,6 +7,6 @@ public class EmployeeRepository(IDatabaseContext context) : AbstractRepository<E
 {
     public Employee? FindByUsernameAndPassword(string username, string password) =>
         (from user in DbSet
-         where user.Username == username && BCrypt.Net.BCrypt.EnhancedVerify(password, user.Password, BCrypt.Net.HashType.SHA384)
+         where (user.Username == username || user.EmployeeNumber == username) && user.Password == password
          select user).FirstOrDefault();
 }

@@ -12,6 +12,7 @@ namespace ProjectB.Services
         string AskPassword(string titleKey);
         UserRole AskRole(string titleKey);
         string AskTicketNumber(string titleKey);
+        string AskTicketOrEmployeeNumber(string titleKey);
         TimeOnly AskTime(string titleKey);
         Tour AskTour(string titleKey, IEnumerable<NamedChoice<Tour>> options);
         string AskUsername(string titleKey);
