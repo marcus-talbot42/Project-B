@@ -1,4 +1,3 @@
-using NuGet.Protocol.Core.Types;
 using ProjectB.Models;
 using ProjectB.Repositories;
 

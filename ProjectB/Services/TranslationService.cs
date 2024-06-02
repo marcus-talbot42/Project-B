@@ -1,6 +1,6 @@
+using ProjectB.Enums;
 using ProjectB.Models;
 using ProjectB.Repositories;
-using ProjectB.Enums;
 
 namespace ProjectB.Services;
 

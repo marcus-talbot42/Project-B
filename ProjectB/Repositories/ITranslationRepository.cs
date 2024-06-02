@@ -1,5 +1,5 @@
-﻿using ProjectB.Models;
-using ProjectB.Enums;
+﻿using ProjectB.Enums;
+using ProjectB.Models;
 
 namespace ProjectB.Repositories
 {

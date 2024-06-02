@@ -8,7 +8,7 @@ namespace ProjectB.Workflows
         {
             var changes = context.SaveChanges();
 
-            return (changes > 0, changes > 0 ?  "changesSaved" : "noChangesToSave");
+            return (changes > 0, changes > 0 ? "changesSaved" : "noChangesToSave");
         }
     }
 }

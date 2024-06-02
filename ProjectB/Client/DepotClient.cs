@@ -1,15 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ProjectB.Choices;
 using ProjectB.Database;
+using ProjectB.Enums;
 using ProjectB.Models;
 using ProjectB.Services;
-using ProjectB.Enums;
-using Spectre.Console;
-using System.Threading.Channels;
-using Microsoft.Extensions.Options;
 using ProjectB.Workflows;
 using ProjectB.Workflows.GuestFlows;
-using Microsoft.Build.Evaluation;
+using Spectre.Console;
 
 namespace ProjectB.Client
 {

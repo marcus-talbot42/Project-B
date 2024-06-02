@@ -1,8 +1,7 @@
 using ProjectB.Choices;
-using ProjectB.Models;
 using ProjectB.Enums;
+using ProjectB.Models;
 using Spectre.Console;
-using ProjectB.Workflows.GuestFlows;
 
 namespace ProjectB.Services
 {
@@ -104,7 +103,7 @@ namespace ProjectB.Services
                     .Title(Translation.Get(titleKey))
                     .PageSize(10)
                     .AddChoices(
-                        new NamedChoice<bool>(Translation.Get(keyYes), true), 
+                        new NamedChoice<bool>(Translation.Get(keyYes), true),
                         new NamedChoice<bool>(Translation.Get(keyNo), false))).Value;
         }
 

@@ -1,5 +1,5 @@
-using System.ComponentModel.DataAnnotations;
 using ProjectB.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProjectB.Models;
 
