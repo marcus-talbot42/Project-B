@@ -140,6 +140,14 @@ namespace ProjectB.Client
 
         private void BeginCreateReservation()
         {
+            var currentTour = TourService.GetTourForGuest(Guest!);
+            if (currentTour != null)
+            {
+                Console.MarkupLine(Translation.Get("alreadyHasReservation"));
+                Prompts.ShowSpinner("returningToMenu", 2000);
+                return;
+            }
+
             var options = TourService.GetAllToursTodayAfterNow().
                 Select(tour => new NamedChoice<Tour>(Translation.GetReplacement("tourOption", new() { tour.Start.ToShortTimeString(), TourService.GetRemainingCapacity(tour).ToString() }), tour));
 
@@ -166,6 +174,13 @@ namespace ProjectB.Client
             if (currentTour == null)
             {
                 Console.MarkupLine(Translation.Get("noReservationFound"));
+                Prompts.ShowSpinner("returningToMenu", 2000);
+                return;
+            }
+
+            if (currentTour.Departed)
+            {
+                Console.MarkupLine(Translation.Get("tourAlreadyDeparted"));
                 Prompts.ShowSpinner("returningToMenu", 2000);
                 return;
             }
@@ -206,6 +221,13 @@ namespace ProjectB.Client
             if (currentTour == null)
             {
                 Console.MarkupLine(Translation.Get("noReservationFound"));
+                Prompts.ShowSpinner("returningToMenu", 2000);
+                return;
+            }
+
+            if (currentTour.Departed)
+            {
+                Console.MarkupLine(Translation.Get("tourAlreadyDeparted"));
                 Prompts.ShowSpinner("returningToMenu", 2000);
                 return;
             }
