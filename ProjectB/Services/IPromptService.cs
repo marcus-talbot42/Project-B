@@ -15,6 +15,8 @@ namespace ProjectB.Services
         TimeOnly AskTime(string titleKey);
         Tour AskTour(string titleKey, IEnumerable<NamedChoice<Tour>> options);
         string AskUsername(string titleKey);
+        bool AskYesNo(string titleKey, string keyYes, string keyNo);
         Action ShowMenu(string titleKey, List<NamedChoice<Action>> navigationItems);
+        void ShowSpinner(string titleKey, int delayInMs);
     }
 }

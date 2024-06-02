@@ -23,7 +23,7 @@ namespace ProjectB.Tests
             var service = new TranslationService(repository);
 
             // Act
-            var result = service.GetTranslationString("test");
+            var result = service.Get("test");
 
             // Assert
             Assert.AreEqual("This is a test.", result);
@@ -39,7 +39,7 @@ namespace ProjectB.Tests
             var service = new TranslationService(repository);
 
             // Act
-            var result = service.GetTranslationString("nonexistent");
+            var result = service.Get("nonexistent");
 
             // Assert
             Assert.AreEqual("Translation not found: nonexistent", result);

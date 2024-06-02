@@ -8,7 +8,7 @@ public class TranslationService(ITranslationRepository repository) : AbstractSer
 {
     public Language Language { get; set; } = Language.NL;
 
-    public string GetTranslationString(string key)
+    public string Get(string key)
     {
         var translation = repository.FindByKeyAndLanguage(key, Language);
 
@@ -16,5 +16,15 @@ public class TranslationService(ITranslationRepository repository) : AbstractSer
             return $"Language not found: {Language}:{key}";
 
         return translation.Value;
+    }
+
+    public string GetReplacement(string key, List<string> replacements)
+    {
+        var translation = Get(key);
+
+        for (var i = 0; i < replacements.Count; i++)
+            translation = translation.Replace($"{{{i}}}", replacements[i]);
+
+        return translation;
     }
 }

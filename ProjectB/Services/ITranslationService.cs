@@ -7,5 +7,7 @@ public interface ITranslationService : IService<Translation>
 {
     public Language Language { get; set; }
 
-    string GetTranslationString(string key);
+    string Get(string key);
+
+    string GetReplacement(string key, List<string> replacements);
 }

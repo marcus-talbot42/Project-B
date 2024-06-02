@@ -5,6 +5,7 @@ using ProjectB.Models;
 using ProjectB.Services;
 using ProjectB.Enums;
 using Spectre.Console;
+using System.Threading.Channels;
 
 namespace ProjectB.Client
 {
@@ -45,11 +46,10 @@ namespace ProjectB.Client
 
         public void Run()
         {
-
-            AnsiConsole.Status().Start(Translation.GetTranslationString("wait"), ctx =>
+            AnsiConsole.Status().Start(Translation.Get("wait"), ctx =>
             {
                 ctx.Spinner(Spinner.Known.Material);
-                ctx.Status($"\n {Translation.GetTranslationString("loadingData")}");
+                ctx.Status($"\n {Translation.Get("loadingData")}");
             });
 
 
@@ -58,10 +58,10 @@ namespace ProjectB.Client
                 AnsiConsole.Clear();
                 var options = new List<NamedChoice<Action>>
                 {
-                    new NamedChoice<Action>($"[blue]{Translation.GetTranslationString("loginGuest")}[/]", ShowGuestLogin),
-                    new NamedChoice<Action>($"[blue]{Translation.GetTranslationString("loginEmployee")}[/]", ShowEmployeeLogin),
-                    new NamedChoice<Action>($"[blue]{Translation.GetTranslationString("switchLanguage")}[/]", ShowLanguageSwitcher),
-                    new NamedChoice<Action>($"[blue]{Translation.GetTranslationString("debug")}[/]", ShowDebugMenu)
+                    new NamedChoice<Action>($"[blue]{Translation.Get("loginGuest")}[/]", ShowGuestLogin),
+                    new NamedChoice<Action>($"[blue]{Translation.Get("loginEmployee")}[/]", ShowEmployeeLogin),
+                    new NamedChoice<Action>($"[blue]{Translation.Get("switchLanguage")}[/]", ShowLanguageSwitcher),
+                    new NamedChoice<Action>($"[blue]{Translation.Get("debug")}[/]", ShowDebugMenu)
                 };
 
                 Prompts.ShowMenu("chooseOption", options).Invoke();
@@ -70,7 +70,7 @@ namespace ProjectB.Client
 
         public void ShowGuestLogin()
         {
-            AnsiConsole.MarkupLine($"[blue]{Translation.GetTranslationString("enterTicketNumber")}[/]");
+            AnsiConsole.MarkupLine($"[blue]{Translation.Get("enterTicketNumber")}[/]");
 
             Guest = null;
             while (Guest == null)
@@ -81,7 +81,7 @@ namespace ProjectB.Client
                 if (Guest == null)
                 {
                     AnsiConsole.Clear();
-                    AnsiConsole.MarkupLine($"[red]{Translation.GetTranslationString("ticketNotFound")}[/]");
+                    AnsiConsole.MarkupLine($"[red]{Translation.Get("ticketNotFound")}[/]");
                 }
             }
 
@@ -93,17 +93,23 @@ namespace ProjectB.Client
         {
             CurrentMenu = MenuLevel.SubMenu;
 
-
             while (IsRunning && CurrentMenu >= MenuLevel.SubMenu)
             {
                 AnsiConsole.Clear();
-                var options = new List<NamedChoice<Action>>
+
+                var options = new List<NamedChoice<Action>>();
+
+                var currentTour = TourService.GetTourForGuest(Guest!);
+                if (currentTour == null)
                 {
-                    new NamedChoice<Action>($"[blue]{Translation.GetTranslationString("createReservationView")}[/]", BeginCreateReservation),
-                    new NamedChoice<Action>($"[blue]{Translation.GetTranslationString("editReservationView")}[/]", BeginEditReservation),
-                    new NamedChoice<Action>($"[blue]{Translation.GetTranslationString("deleteReservationView")}[/]", BeginDeleteReservation),
-                    new NamedChoice<Action>($"[blue]{Translation.GetTranslationString("exit")}[/]", ExitSubMenu)
-                };
+                    options.Add(new NamedChoice<Action>($"[blue]{Translation.Get("createReservationView")}[/]", BeginCreateReservation));
+                }
+                else
+                {
+                    options.Add(new NamedChoice<Action>($"[blue]{Translation.Get("editReservationView")}[/]", BeginEditReservation));
+                    options.Add(new NamedChoice<Action>($"[blue]{Translation.Get("deleteReservationView")}[/]", BeginDeleteReservation));
+                }
+                options.Add(new NamedChoice<Action>($"[blue]{Translation.Get("exit")}[/]", ExitSubMenu));
 
                 Prompts.ShowMenu("chooseOption", options).Invoke();
             }
@@ -112,27 +118,82 @@ namespace ProjectB.Client
         private void BeginCreateReservation()
         {
             var options = TourService.GetAllToursTodayAfterNow().
-                Select(tour => new NamedChoice<Tour>($"{tour.Start.Hour:00}:{tour.Start.Minute:00} - {TourService.GetRemainingCapacity(tour)}", tour));
+                Select(tour => new NamedChoice<Tour>(Translation.GetReplacement("tourOption", new() { tour.Start.ToShortTimeString(), TourService.GetRemainingCapacity(tour).ToString() }), tour));
 
             var selectedTour = Prompts.AskTour("chooseTour", options);
 
-            // Register user for tour
-            TourService.RegisterGuestForTour(GuestService.FindValidGuestById(Guest!.TicketNumber), selectedTour);
+            Console.MarkupLine(Translation.GetReplacement("confirmReservation", new() { selectedTour.Start.ToShortTimeString() }));
+            if (Prompts.AskYesNo("confirmYesNo", "yes", "no"))
+            {
+                if (Guest != null && selectedTour != null)
+                    TourService.RegisterGuestForTour(Guest!, selectedTour);
+            }
+
+            Prompts.ShowSpinner("returningToMenu", 2000);
         }
 
         private void BeginEditReservation()
         {
-            throw new NotImplementedException();
+            var currentTour = TourService.GetTourForGuest(Guest!);
+            if (currentTour == null)
+            {
+                Console.MarkupLine(Translation.Get("noReservationFound"));
+                Prompts.ShowSpinner("returningToMenu", 2000);
+                return;
+            }
+
+            Console.MarkupLine(Translation.GetReplacement("currentReservation", new() { currentTour.Start.ToShortTimeString() }));
+            Console.MarkupLine(Translation.Get("confirmEditReservation"));
+            if (!Prompts.AskYesNo("confirmYesNo", "yes", "no"))
+            {
+                Prompts.ShowSpinner("returningToMenu", 2000);
+                return;
+            }
+
+            var options = TourService.GetAllToursTodayAfterNow().
+                Select(tour => new NamedChoice<Tour>(Translation.GetReplacement("tourOption", new() { tour.Start.ToShortTimeString(), TourService.GetRemainingCapacity(tour).ToString() }), tour));
+
+            var selectedTour = Prompts.AskTour("chooseTour", options);
+
+            Console.MarkupLine(Translation.GetReplacement("confirmEditReservationChoice", new() { selectedTour.Start.ToShortTimeString() }));
+            if (Prompts.AskYesNo("confirmYesNo", "yes", "no"))
+            {
+                if (Guest != null && selectedTour != null)
+                { 
+                    TourService.EditRegistrationGuestForTour(Guest!, selectedTour);
+                }
+            }
+
+            Prompts.ShowSpinner("returningToMenu", 2000);
         }
 
         private void BeginDeleteReservation()
         {
-            throw new NotImplementedException();
+            var currentTour = TourService.GetTourForGuest(Guest!);
+            if (currentTour == null)
+            {
+                Console.MarkupLine(Translation.Get("noReservationFound"));
+                Prompts.ShowSpinner("returningToMenu", 2000);
+                return;
+            }
+
+            Console.MarkupLine(Translation.GetReplacement("currentReservation", new() { currentTour.Start.ToShortTimeString() }));
+            Console.MarkupLine(Translation.Get("confirmDeleteReservation"));
+            if (!Prompts.AskYesNo("confirmYesNo", "yes", "no"))
+            {
+                Prompts.ShowSpinner("returningToMenu", 2000);
+                return;
+            }
+
+            if (Guest != null)
+                TourService.DeleteReservationGuest(Guest!);
+
+            Prompts.ShowSpinner("returningToMenu", 2000);
         }
 
         public void ShowEmployeeLogin()
         {
-            AnsiConsole.MarkupLine($"[blue]{Translation.GetTranslationString("employeeLoginText")}[/]");
+            AnsiConsole.MarkupLine($"[blue]{Translation.Get("employeeLoginText")}[/]");
 
             Employee = null;
             while (Employee == null)
@@ -141,7 +202,7 @@ namespace ProjectB.Client
                 string password = Prompts.AskPassword("password");
 
                 Employee = EmployeeService.FindValidEmployeeByUsernameAndPassword(username, password);
-                Console.MarkupLine(Translation.GetTranslationString(Employee == null ? "loginFailed" : "loginSuccess"));
+                Console.MarkupLine(Translation.Get(Employee == null ? "loginFailed" : "loginSuccess"));
             }
 
             if (Employee != null)
@@ -160,6 +221,8 @@ namespace ProjectB.Client
             Translation.Language = Prompts.AskLanguage("chooseOption");
         }
 
+        #region DebugMenu
+
         public void ShowDebugMenu()
         {
             CurrentMenu = MenuLevel.SubMenu;
@@ -170,11 +233,11 @@ namespace ProjectB.Client
                 AnsiConsole.Clear();
                 var options = new List<NamedChoice<Action>>
                 {
-                    new NamedChoice<Action>($"[blue]{Translation.GetTranslationString("createGuest")}[/]", ShowCreateGuest),
-                    new NamedChoice<Action>($"[blue]{Translation.GetTranslationString("createEmployee")}[/]", ShowCreateEmployee),
-                    new NamedChoice<Action>($"[blue]{Translation.GetTranslationString("createTours")}[/]", ShowCreateTours),
-                    new NamedChoice<Action>($"[blue]{Translation.GetTranslationString("createBulkTickets")}[/]", ShowCreateBulkTickets),
-                    new NamedChoice<Action>($"[blue]{Translation.GetTranslationString("exit")}[/]", ExitSubMenu)
+                    new NamedChoice<Action>($"[blue]{Translation.Get("createGuest")}[/]", ShowCreateGuest),
+                    new NamedChoice<Action>($"[blue]{Translation.Get("createEmployee")}[/]", ShowCreateEmployee),
+                    new NamedChoice<Action>($"[blue]{Translation.Get("createTours")}[/]", ShowCreateTours),
+                    new NamedChoice<Action>($"[blue]{Translation.Get("createBulkTickets")}[/]", ShowCreateBulkTickets),
+                    new NamedChoice<Action>($"[blue]{Translation.Get("exit")}[/]", ExitSubMenu)
                 };
 
                 Prompts.ShowMenu("chooseOption", options).Invoke();
@@ -183,14 +246,14 @@ namespace ProjectB.Client
 
         private void ShowCreateBulkTickets()
         {
-            GuestService.AddRange(new List<int> { 11245178, 12398476, 12439876, 12837465, 12938476, 12948736, 15328746, 15938274, 16749283, 23489716, 27381946, 27639481, 28371946, 35921847, 
-                    39271584, 39421587, 39457821, 45839217, 46827391, 48627193, 48675913, 57214836, 57239186, 57264318, 57936214, 61827394, 62839174, 63821974, 68739214, 73189245, 73918245, 
+            GuestService.AddRange(new List<int> { 11245178, 12398476, 12439876, 12837465, 12938476, 12948736, 15328746, 15938274, 16749283, 23489716, 27381946, 27639481, 28371946, 35921847,
+                    39271584, 39421587, 39457821, 45839217, 46827391, 48627193, 48675913, 57214836, 57239186, 57264318, 57936214, 61827394, 62839174, 63821974, 68739214, 73189245, 73918245,
                     78439215, 79358124, 81479625, 89231546, 89231746, 89237416, 91328746, 91472618, 91572618, 94726183, 18954201, 17541254, 16544824, 13548424, 15426158, 14684472 }
                 .Select(ticket => new Guest() { TicketNumber = ticket.ToString(), Role = UserRole.Guest, ValidDate = DateOnly.FromDateTime(DateTime.Now), Expires = false }).ToList());
             int changes = GuestService.SaveChanges();
 
-            Console.MarkupLine($"{changes}" + Translation.GetTranslationString("changesSaved"));
-            Thread.Sleep(2000);
+            Console.MarkupLine(Translation.GetReplacement("changesSaved", new() { changes.ToString() }));
+            Prompts.ShowSpinner("returningToMenu", 2000);
         }
 
         private void ShowCreateTours()
@@ -201,7 +264,7 @@ namespace ProjectB.Client
             DateOnly endDate = Prompts.AskDate("askEndDate");
             if (startDate > endDate)
             {
-                Console.MarkupLine(Translation.GetTranslationString("startAfterEndDate"));
+                Console.MarkupLine(Translation.Get("startAfterEndDate"));
                 return;
             }
 
@@ -209,7 +272,7 @@ namespace ProjectB.Client
             TimeOnly endTime = Prompts.AskTime("askEndTime");
             if (startTime > endTime)
             {
-                Console.MarkupLine(Translation.GetTranslationString("startAfterEndTime"));
+                Console.MarkupLine(Translation.Get("startAfterEndTime"));
                 return;
             }
 
@@ -225,9 +288,9 @@ namespace ProjectB.Client
                 TourService.AddRange(planning);
                 int changes = TourService.SaveChanges();
 
-                Console.MarkupLine($"{changes}" + Translation.GetTranslationString("changesSaved"));
-                Thread.Sleep(2000);
+                Console.MarkupLine(Translation.GetReplacement("changesSaved", new() { changes.ToString() }));
             }
+            Prompts.ShowSpinner("returningToMenu", 2000);
         }
 
         private void ShowCreateGuest()
@@ -236,7 +299,10 @@ namespace ProjectB.Client
             DateOnly validForDate = Prompts.AskDate("askValidityDate");
 
             GuestService.Add(new Guest() { TicketNumber = ticketNumber, ValidDate = validForDate });
-            GuestService.SaveChanges();
+            int changes = GuestService.SaveChanges();
+
+            Console.MarkupLine(Translation.GetReplacement("changesSaved", new() { changes.ToString() }));
+            Prompts.ShowSpinner("returningToMenu", 2000);
         }
 
         private void ShowCreateEmployee()
@@ -247,8 +313,12 @@ namespace ProjectB.Client
 
             // Create new employee
             EmployeeService.Add(new Employee() { Username = username, Role = role, Password = password });
-            EmployeeService.SaveChanges();
+            int changes = EmployeeService.SaveChanges();
+
+            Console.MarkupLine(Translation.GetReplacement("changesSaved", new() { changes.ToString() }));
+            Prompts.ShowSpinner("returningToMenu", 2000);
         }
+        #endregion
 
         private void ExitSubMenu()
         {

@@ -9,5 +9,8 @@ namespace ProjectB.Repositories
             from tour in DbSet
             where tour.Start.Date == DateTime.Today && tour.Start >= DateTime.Now
             select tour;
+
+        public Tour? GetTourForGuest(Guest guest)
+             => DbSet.FirstOrDefault(tour => tour.Participants.Contains(guest.TicketNumber));
     }
 }

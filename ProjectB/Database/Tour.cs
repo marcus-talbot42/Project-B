@@ -1,10 +1,9 @@
 namespace ProjectB.Models;
 
-public class Tour(DateTime start, int capacity = 13)
-    : AbstractEntity
+public class Tour(DateTime start, int capacity = 13) : AbstractEntity
 {
-    public ICollection<Guest> Participants { get; set; } = new List<Guest>();
+    public List<string> Participants { get; set; } = new List<string>();
     public DateTime Start { get; set; } = start;
     public int Capacity { get; set; } = capacity;
-    public Employee Employee { get; set; }
+    public string? Employee { get; set; }
 }

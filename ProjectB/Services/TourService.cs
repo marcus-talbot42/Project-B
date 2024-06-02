@@ -21,7 +21,39 @@ public class TourService(ITourRepository repository) : AbstractService<Tour>(rep
             return false;
         }
 
-        tour.Participants.Add(guest);
+        tour.Participants.Add(guest.TicketNumber);
+
+        SaveChanges();
+
+        return true;
+    }
+
+    public bool EditRegistrationGuestForTour(Guest guest, Tour tour)
+    {
+        if (GetRemainingCapacity(tour) == 0)
+        {
+            return false;
+        }
+
+        var currentTour = GetTourForGuest(guest);
+        if (currentTour == null)
+            return false;
+
+        currentTour.Participants.Remove(guest.TicketNumber);
+        tour.Participants.Add(guest.TicketNumber);
+
+        SaveChanges();
+
+        return true;
+    }
+
+    public bool DeleteReservationGuest(Guest guest)
+    {
+        var currentTour = GetTourForGuest(guest);
+        if (currentTour == null)
+            return false;
+
+        currentTour.Participants.Remove(guest.TicketNumber);
 
         SaveChanges();
 
@@ -31,5 +63,10 @@ public class TourService(ITourRepository repository) : AbstractService<Tour>(rep
     public int GetRemainingCapacity(Tour tour)
     {
         return MaxCapacity - tour.Participants.Count;
+    }
+
+    public Tour? GetTourForGuest(Guest guest)
+    {
+        return repository.GetTourForGuest(guest);
     }
 }
