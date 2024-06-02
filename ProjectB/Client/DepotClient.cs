@@ -69,7 +69,6 @@ namespace ProjectB.Client
 
                 Prompts.ShowMenu("chooseOption", options).Invoke();
             }
-            AnsiConsole.Clear();
         }
 
         public void ShowGuestLogin()
