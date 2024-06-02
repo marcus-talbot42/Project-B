@@ -53,26 +53,28 @@ namespace ProjectB.Client
                 ctx.Status($"\n {Translation.Get("loadingData")}");
             });
 
-
             while (IsRunning && CurrentMenu >= MenuLevel.MainMenu)
             {
                 AnsiConsole.Clear();
+                AnsiConsole.MarkupLine($"{Translation.Get("welcomeToMuseum")}");
+
                 var options = new List<NamedChoice<Action>>
                 {
-                    new NamedChoice<Action>($"[blue]{Translation.Get("loginGuest")}[/]", ShowGuestLogin),
-                    new NamedChoice<Action>($"[blue]{Translation.Get("loginEmployee")}[/]", ShowEmployeeLogin),
-                    new NamedChoice<Action>($"[blue]{Translation.Get("switchLanguage")}[/]", ShowLanguageSwitcher),
-                    new NamedChoice<Action>($"[blue]{Translation.Get("debug")}[/]", ShowDebugMenu),
-                    new NamedChoice<Action>($"[blue]{Translation.Get("exit")}[/]", () => { IsRunning = false; })
+                    new NamedChoice<Action>($"{Translation.Get("loginGuest")}", ShowGuestLogin),
+                    new NamedChoice<Action>($"{Translation.Get("loginEmployee")}", ShowEmployeeLogin),
+                    new NamedChoice<Action>($"{Translation.Get("switchLanguage")}", ShowLanguageSwitcher),
+                    new NamedChoice<Action>($"{Translation.Get("debug")}", ShowDebugMenu),
+                    new NamedChoice<Action>($"{Translation.Get("exit")}", () => { IsRunning = false; })
                 };
 
                 Prompts.ShowMenu("chooseOption", options).Invoke();
             }
+            AnsiConsole.Clear();
         }
 
         public void ShowGuestLogin()
         {
-            AnsiConsole.MarkupLine($"[blue]{Translation.Get("enterTicketNumber")}[/]");
+            AnsiConsole.MarkupLine($"{Translation.Get("enterTicketNumber")}");
 
             Guest = null;
             while (Guest == null)
@@ -83,7 +85,7 @@ namespace ProjectB.Client
                 if (Guest == null)
                 {
                     AnsiConsole.Clear();
-                    AnsiConsole.MarkupLine($"[red]{Translation.Get("ticketNotFound")}[/]");
+                    AnsiConsole.MarkupLine($"{Translation.Get("ticketNotFound")}");
                 }
             }
 
@@ -93,7 +95,7 @@ namespace ProjectB.Client
 
         public void ShowEmployeeLogin()
         {
-            AnsiConsole.MarkupLine($"[blue]{Translation.Get("employeeLoginText")}[/]");
+            AnsiConsole.MarkupLine($"{Translation.Get("employeeLoginText")}");
 
             Employee = null;
             while (Employee == null)
@@ -124,14 +126,14 @@ namespace ProjectB.Client
                 var currentTour = TourService.GetTourForGuest(Guest!);
                 if (currentTour == null)
                 {
-                    options.Add(new NamedChoice<Action>($"[blue]{Translation.Get("createReservationView")}[/]", BeginCreateReservation));
+                    options.Add(new NamedChoice<Action>($"{Translation.Get("createReservationView")}", BeginCreateReservation));
                 }
                 else
                 {
-                    options.Add(new NamedChoice<Action>($"[blue]{Translation.Get("editReservationView")}[/]", BeginEditReservation));
-                    options.Add(new NamedChoice<Action>($"[blue]{Translation.Get("deleteReservationView")}[/]", BeginDeleteReservation));
+                    options.Add(new NamedChoice<Action>($"{Translation.Get("editReservationView")}", BeginEditReservation));
+                    options.Add(new NamedChoice<Action>($"{Translation.Get("deleteReservationView")}", BeginDeleteReservation));
                 }
-                options.Add(new NamedChoice<Action>($"[blue]{Translation.Get("exit")}[/]", () => { ExitToMenu(MenuLevel.MainMenu); }));
+                options.Add(new NamedChoice<Action>($"{Translation.Get("logout")}", () => { ExitToMenu(MenuLevel.MainMenu); }));
 
                 Prompts.ShowMenu("chooseOption", options).Invoke();
             }
@@ -213,6 +215,7 @@ namespace ProjectB.Client
             Console.MarkupLine(Translation.Get("confirmDeleteReservation"));
             if (!Prompts.AskYesNo("confirmYesNo", "yes", "no"))
             {
+                Console.MarkupLine(Translation.Get("reservationNotDeleted"));
                 Prompts.ShowSpinner("returningToMenu", 2000);
                 return;
             }
@@ -237,7 +240,7 @@ namespace ProjectB.Client
             {
                 AnsiConsole.Clear();
 
-                var options = new List<NamedChoice<Action>> { new NamedChoice<Action>($"[blue]{Translation.Get("exit")}[/]", () => { ExitToMenu(MenuLevel.MainMenu); }) };
+                var options = new List<NamedChoice<Action>> { new NamedChoice<Action>($"{Translation.Get("logout")}", () => { ExitToMenu(MenuLevel.MainMenu); }) };
                 options.AddRange(TourService.GetAllToursTodayAfterNow()
                     .Select(tour =>
                         new NamedChoice<Action>(
@@ -261,13 +264,13 @@ namespace ProjectB.Client
                 var options = new List<NamedChoice<Action>>();
                 if (!tour.Departed)
                 {
-                    options.Add(new NamedChoice<Action>($"[blue]{Translation.Get("startTour")}[/]", () => { BeginStartTour(tour); }));
+                    options.Add(new NamedChoice<Action>($"{Translation.Get("startTour")}", () => { BeginStartTour(tour); }));
                     if(tour.Participants.Count < tour.Capacity)
-                        options.Add(new NamedChoice<Action>($"[blue]{Translation.Get("addGuest")}[/]", () => { BeginAddGuest(tour); }));
+                        options.Add(new NamedChoice<Action>($"{Translation.Get("addGuest")}", () => { BeginAddGuest(tour); }));
                     if(tour.Participants.Count > 0)
-                        options.Add(new NamedChoice<Action>($"[blue]{Translation.Get("removeGuest")}[/]", () => { BeginRemoveGuest(tour); }));
+                        options.Add(new NamedChoice<Action>($"{Translation.Get("removeGuest")}", () => { BeginRemoveGuest(tour); }));
                 }
-                options.Add(new NamedChoice<Action>($"[blue]{Translation.Get("exit")}[/]", () => { ExitToMenu(MenuLevel.SubMenu); }));
+                options.Add(new NamedChoice<Action>($"{Translation.Get("return")}", () => { ExitToMenu(MenuLevel.SubMenu); }));
 
                 Prompts.ShowMenu("chooseOption", options).Invoke();
             }
@@ -520,11 +523,11 @@ namespace ProjectB.Client
                 AnsiConsole.Clear();
                 var options = new List<NamedChoice<Action>>
                 {
-                    new NamedChoice<Action>($"[blue]{Translation.Get("createGuest")}[/]", ShowCreateGuest),
-                    new NamedChoice<Action>($"[blue]{Translation.Get("createEmployee")}[/]", ShowCreateEmployee),
-                    new NamedChoice<Action>($"[blue]{Translation.Get("createTours")}[/]", ShowCreateTours),
-                    new NamedChoice<Action>($"[blue]{Translation.Get("createBulkTickets")}[/]", ShowCreateBulkTickets),
-                    new NamedChoice<Action>($"[blue]{Translation.Get("exit")}[/]", () => { ExitToMenu(MenuLevel.MainMenu); })
+                    new NamedChoice<Action>($"{Translation.Get("createGuest")}", ShowCreateGuest),
+                    new NamedChoice<Action>($"{Translation.Get("createEmployee")}", ShowCreateEmployee),
+                    new NamedChoice<Action>($"{Translation.Get("createTours")}", ShowCreateTours),
+                    new NamedChoice<Action>($"{Translation.Get("createBulkTickets")}", ShowCreateBulkTickets),
+                    new NamedChoice<Action>($"{Translation.Get("logout")}", () => { ExitToMenu(MenuLevel.MainMenu); })
                 };
 
                 Prompts.ShowMenu("chooseOption", options).Invoke();
