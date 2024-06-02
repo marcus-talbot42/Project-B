@@ -9,4 +9,6 @@ public class EmployeeRepository(IDatabaseContext context) : AbstractRepository<E
         (from user in DbSet
          where (user.Username == username || user.EmployeeNumber == username) && user.Password == password
          select user).FirstOrDefault();
+
+    public bool ValidateEmployeeNumber(string employeeNumber) => DbSet.Any(user => user.EmployeeNumber == employeeNumber);
 }

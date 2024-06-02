@@ -8,6 +8,7 @@ namespace ProjectB.Repositories
         public IEnumerable<Tour> GetAllToursTodayAfterNow() =>
             from tour in DbSet
             where tour.Start.Date == DateTime.Today && tour.Start >= DateTime.Now
+            orderby tour.Start ascending
             select tour;
 
         public Tour? GetTourForGuest(Guest guest)

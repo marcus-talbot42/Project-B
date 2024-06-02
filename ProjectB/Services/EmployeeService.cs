@@ -1,3 +1,4 @@
+using NuGet.Protocol.Core.Types;
 using ProjectB.Models;
 using ProjectB.Repositories;
 
@@ -14,4 +15,6 @@ public class EmployeeService(IEmployeeRepository repository) : AbstractService<E
     /// <param name="username">The username of the employee to find.</param>
     /// <returns>The found employee if it exists; otherwise, null.</returns>
     public Employee? FindValidEmployeeByUsernameAndPassword(string username, string password) => repository.FindByUsernameAndPassword(username, password);
+
+    public bool ValidateEmployeeNumber(string employeeNumber) => repository.ValidateEmployeeNumber(employeeNumber);
 }

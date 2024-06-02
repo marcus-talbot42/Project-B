@@ -5,4 +5,5 @@ namespace ProjectB.Services;
 public interface IEmployeeService : IService<Employee>
 {
     Employee? FindValidEmployeeByUsernameAndPassword(string username, string password);
+    bool ValidateEmployeeNumber(string employeeNumber);
 }

@@ -62,7 +62,8 @@ namespace ProjectB.Client
                     new NamedChoice<Action>($"[blue]{Translation.Get("loginGuest")}[/]", ShowGuestLogin),
                     new NamedChoice<Action>($"[blue]{Translation.Get("loginEmployee")}[/]", ShowEmployeeLogin),
                     new NamedChoice<Action>($"[blue]{Translation.Get("switchLanguage")}[/]", ShowLanguageSwitcher),
-                    new NamedChoice<Action>($"[blue]{Translation.Get("debug")}[/]", ShowDebugMenu)
+                    new NamedChoice<Action>($"[blue]{Translation.Get("debug")}[/]", ShowDebugMenu),
+                    new NamedChoice<Action>($"[blue]{Translation.Get("exit")}[/]", () => { IsRunning = false; })
                 };
 
                 Prompts.ShowMenu("chooseOption", options).Invoke();
@@ -146,8 +147,13 @@ namespace ProjectB.Client
             Console.MarkupLine(Translation.GetReplacement("confirmReservation", new() { selectedTour.Start.ToShortTimeString() }));
             if (Prompts.AskYesNo("confirmYesNo", "yes", "no"))
             {
+                Console.MarkupLine(Translation.GetReplacement("reservationSuccess", new() { selectedTour.Start.ToShortTimeString() }));
                 if (Guest != null && selectedTour != null)
                     TourService.RegisterGuestForTour(Guest!, selectedTour);
+            }
+            else
+            {
+                Console.MarkupLine(Translation.Get("reservationCancelled"));
             }
 
             Prompts.ShowSpinner("returningToMenu", 2000);
@@ -181,8 +187,13 @@ namespace ProjectB.Client
             {
                 if (Guest != null && selectedTour != null)
                 {
+                    Console.MarkupLine(Translation.GetReplacement("reservationSuccess", new() { selectedTour.Start.ToShortTimeString() }));
                     TourService.EditRegistrationGuestForTour(Guest!, selectedTour);
                 }
+            }
+            else
+            {
+                Console.MarkupLine(Translation.Get("reservationEditCancelled"));
             }
 
             Prompts.ShowSpinner("returningToMenu", 2000);
@@ -207,13 +218,17 @@ namespace ProjectB.Client
             }
 
             if (Guest != null)
+            {
                 TourService.DeleteReservationGuest(Guest!);
+                Console.MarkupLine(Translation.Get("reservationDeleted"));
+            }
 
             Prompts.ShowSpinner("returningToMenu", 2000);
         }
 
         #endregion
 
+        #region EmployeeMenu
         private void ShowEmployeeMenu()
         {
             CurrentMenu = MenuLevel.SubMenu;
@@ -222,10 +237,13 @@ namespace ProjectB.Client
             {
                 AnsiConsole.Clear();
 
-                var options = TourService.GetAllToursTodayAfterNow(). // TODO: Add filter for employee
-                    Select(tour => new NamedChoice<Action>(Translation.GetReplacement("employeeTourOption", new() { tour.Start.ToShortTimeString(), TourService.GetRemainingCapacity(tour).ToString() }), () => { ShowTourMenu(tour); })).ToList();
-
-                options.Add(new NamedChoice<Action>($"[blue]{Translation.Get("exit")}[/]", () => { ExitToMenu(MenuLevel.MainMenu); }));
+                var options = new List<NamedChoice<Action>> { new NamedChoice<Action>($"[blue]{Translation.Get("exit")}[/]", () => { ExitToMenu(MenuLevel.MainMenu); }) };
+                options.AddRange(TourService.GetAllToursTodayAfterNow()
+                    .Select(tour =>
+                        new NamedChoice<Action>(
+                            Translation.GetReplacement("employeeTourOption", new() { tour.Start.ToShortTimeString(), TourService.GetRemainingCapacity(tour).ToString() }),
+                            () => { ShowTourMenu(tour); }))
+                    .ToList());
 
                 Prompts.ShowMenu("chooseOption", options).Invoke();
             }
@@ -240,13 +258,16 @@ namespace ProjectB.Client
                 AnsiConsole.Clear();
                 Console.MarkupLine(Translation.GetReplacement("tourMenu", new() { tour.Start.ToShortTimeString(), TourService.GetRemainingCapacity(tour).ToString() }));
 
-                var options = new List<NamedChoice<Action>>
+                var options = new List<NamedChoice<Action>>();
+                if (!tour.Departed)
                 {
-                    new NamedChoice<Action>($"[blue]{Translation.Get("startTour")}[/]", () => { BeginStartTour(tour); }),
-                    new NamedChoice<Action>($"[blue]{Translation.Get("addGuest")}[/]", () => { BeginAddGuest(tour); }),
-                    new NamedChoice<Action>($"[blue]{Translation.Get("removeGuest")}[/]", () => { BeginRemoveGuest(tour); }),
-                    new NamedChoice<Action>($"[blue]{Translation.Get("exit")}[/]", () => { ExitToMenu(MenuLevel.SubMenu); })
-                };
+                    options.Add(new NamedChoice<Action>($"[blue]{Translation.Get("startTour")}[/]", () => { BeginStartTour(tour); }));
+                    if(tour.Participants.Count < tour.Capacity)
+                        options.Add(new NamedChoice<Action>($"[blue]{Translation.Get("addGuest")}[/]", () => { BeginAddGuest(tour); }));
+                    if(tour.Participants.Count > 0)
+                        options.Add(new NamedChoice<Action>($"[blue]{Translation.Get("removeGuest")}[/]", () => { BeginRemoveGuest(tour); }));
+                }
+                options.Add(new NamedChoice<Action>($"[blue]{Translation.Get("exit")}[/]", () => { ExitToMenu(MenuLevel.SubMenu); }));
 
                 Prompts.ShowMenu("chooseOption", options).Invoke();
             }
@@ -254,6 +275,13 @@ namespace ProjectB.Client
 
         private void BeginStartTour(Tour tour)
         {
+            if (tour.Departed)
+            {
+                Console.MarkupLine(Translation.Get("tourAlreadyDeparted"));
+                Prompts.ShowSpinner("returningToMenu", 2000);
+                return;
+            }
+
             Console.MarkupLine(Translation.GetReplacement("employeeTourInfo", new() { tour.Start.ToShortTimeString() }));
             Console.WriteLine();
 
@@ -264,11 +292,14 @@ namespace ProjectB.Client
 
             if (tour.EmployeeNumber != Employee!.EmployeeNumber)
             {
-                Console.MarkupLine(Translation.Get("notYourTour"));
-                if (!Prompts.AskYesNo("confirmYesNo", "yes", "no"))
+                if (!string.IsNullOrWhiteSpace(tour.EmployeeNumber))
                 {
-                    Prompts.ShowSpinner("returningToMenu", 2000);
-                    return;
+                    Console.MarkupLine(Translation.Get("notYourTour"));
+                    if (!Prompts.AskYesNo("confirmYesNo", "yes", "no"))
+                    {
+                        Prompts.ShowSpinner("returningToMenu", 2000);
+                        return;
+                    }
                 }
 
                 tour.EmployeeNumber = Employee.EmployeeNumber;
@@ -287,6 +318,12 @@ namespace ProjectB.Client
 
                 if (number < 10000000)
                 {
+                    if (!EmployeeService.ValidateEmployeeNumber(number.ToString()))
+                    {
+                        Console.MarkupLine(Translation.Get("invalidEmployeeNumber"));
+                        continue;
+                    }
+
                     Console.MarkupLine(Translation.Get("finishedScanningQuestion"));
                     if (Prompts.AskYesNo("confirmYesNo", "yes", "no"))
                     {
@@ -295,19 +332,27 @@ namespace ProjectB.Client
                     }
                 }
 
+                if (GuestService.FindValidGuestById(number.ToString()) == null)
+                {
+                    Console.MarkupLine(Translation.Get("invalidTicketNumber"));
+                    continue;
+                }
+
                 if (scannedTickets.Contains(number))
                 {
                     Console.MarkupLine(Translation.Get("ticketAlreadyScanned"));
                     continue;
                 }
-                
-                if(!tour.Participants.Contains(number.ToString()))
+
+                if (!tour.Participants.Contains(number.ToString()))
                 {
                     Console.MarkupLine(Translation.Get("ticketNotInTour"));
                     continue;
                 }
 
                 scannedTickets.Add(number);
+                Console.MarkupLine(Translation.GetReplacement("ticketScanned", new() { number.ToString() }));
+                Affirmation();
             }
 
             Console.MarkupLine(Translation.Get("finishedScanning"));
@@ -315,7 +360,7 @@ namespace ProjectB.Client
             tour.Participants = scannedTickets.Select(number => number.ToString()).ToList();
 
             continueScanning = true;
-            while (tour.Participants.Count < 13 && continueScanning)
+            while (scannedTickets.Count < tour.Capacity && continueScanning)
             {
                 if (!int.TryParse(Prompts.AskTicketOrEmployeeNumber("ticketNumberOrEmployeeNumber"), out int number))
                     continue;
@@ -337,11 +382,21 @@ namespace ProjectB.Client
                 }
 
                 scannedTickets.Add(number);
+                Console.MarkupLine(Translation.GetReplacement("extraTicketScanned", new() { number.ToString() }));
+                Affirmation(); 
             }
 
-            Console.MarkupLine(Translation.Get("finishedScanningExtraTickets"));
+            Prompts.ShowSpinner("finishedScanningExtraTickets", 2000);
+            Console.Clear();
 
             tour.Participants = scannedTickets.Select(number => number.ToString()).ToList();
+
+            Console.MarkupLine(Translation.GetReplacement("employeeTourInfo", new() { tour.Start.ToShortTimeString() }));
+            Console.WriteLine();
+
+            Console.MarkupLine(Translation.Get("registeredGuests"));
+            foreach (var guestNumber in tour.Participants)
+                Console.MarkupLine(Translation.GetReplacement("guestList", new() { guestNumber }));
 
             Console.MarkupLine(Translation.Get("confirmStartTour"));
             if (!Prompts.AskYesNo("confirmYesNo", "yes", "no"))
@@ -358,10 +413,17 @@ namespace ProjectB.Client
 
         private void BeginAddGuest(Tour tour)
         {
+            if (tour.Departed)
+            {
+                Console.MarkupLine(Translation.Get("tourAlreadyDeparted"));
+                Prompts.ShowSpinner("returningToMenu", 2000);
+                return;
+            }
+
             Console.MarkupLine(Translation.GetReplacement("employeeTourInfo", new() { tour.Start.ToShortTimeString() }));
             Console.WriteLine();
 
-            if (tour.Participants.Count == 13)
+            if (tour.Participants.Count == tour.Capacity)
             {
                 Console.MarkupLine(Translation.Get("noSpaceInTour"));
                 Prompts.ShowSpinner("returningToMenu", 2000);
@@ -370,8 +432,14 @@ namespace ProjectB.Client
 
             string ticketNumber = Prompts.AskTicketNumber("ticketNumber");
             var guest = GuestService.FindValidGuestById(ticketNumber);
+            if (guest == null)
+            {
+                Console.MarkupLine(Translation.Get("guestNotFound"));
+                Prompts.ShowSpinner("returningToMenu", 2000);
+                return;
+            }
 
-            var currentTour = TourService.GetTourForGuest(Guest!);
+            var currentTour = TourService.GetTourForGuest(guest);
             if (currentTour != null)
             {
                 Console.MarkupLine(Translation.Get("guestAlreadyHasReservation"));
@@ -391,6 +459,13 @@ namespace ProjectB.Client
 
         private void BeginRemoveGuest(Tour tour)
         {
+            if (tour.Departed)
+            {
+                Console.MarkupLine(Translation.Get("tourAlreadyDeparted"));
+                Prompts.ShowSpinner("returningToMenu", 2000);
+                return;
+            }
+
             Console.MarkupLine(Translation.GetReplacement("employeeTourInfo", new() { tour.Start.ToShortTimeString() }));
             Console.WriteLine();
 
@@ -415,11 +490,12 @@ namespace ProjectB.Client
                 return;
             }
 
-            if (Guest != null)
+            if (guest != null)
                 TourService.DeleteReservationGuest(guest);
 
             Prompts.ShowSpinner("returningToMenu", 2000);
         }
+        #endregion
 
         #region LanguageSwitcher
 
@@ -520,7 +596,7 @@ namespace ProjectB.Client
         {
             string username = Prompts.AskUsername("username");
             string password = Prompts.AskPassword("password");
-            string employeeNumber = Prompts.AskNumber("employeeNumber",1, 9999999).ToString();
+            string employeeNumber = Prompts.AskNumber("employeeNumber", 1, 9999999).ToString();
             UserRole role = Prompts.AskRole("chooseUserRole");
 
             // Create new employee
@@ -537,6 +613,11 @@ namespace ProjectB.Client
         private void ExitToMenu(MenuLevel menuLevel = MenuLevel.MainMenu)
         {
             CurrentMenu = menuLevel;
+        }
+
+        private void Affirmation()
+        {
+            System.Console.Beep(5000, 500);
         }
 
         #endregion
