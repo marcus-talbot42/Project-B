@@ -7,5 +7,6 @@ namespace ProjectB.Models
         public string TicketNumber { get; set; } = "";
         public UserRole Role { get; set; }
         public DateOnly ValidDate { get; set; }
+        public bool Expires { get; set; } = false;
     }
 }
