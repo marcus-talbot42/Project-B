@@ -10,6 +10,8 @@ public interface IRepository<T>
 {
     void Add(T entity);
 
+    void AddRange(List<T> range);
+
     T? Find(long id);
 
     IEnumerable<T> FindAll();
@@ -23,4 +25,5 @@ public interface IRepository<T>
     int Count();
 
     int SaveChanges();
+
 }

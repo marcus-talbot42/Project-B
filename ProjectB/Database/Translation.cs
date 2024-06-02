@@ -1,4 +1,4 @@
-using ProjectB.Settings;
+using ProjectB.Enums;
 
 namespace ProjectB.Models;
 

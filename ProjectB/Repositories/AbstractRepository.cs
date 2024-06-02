@@ -11,6 +11,8 @@ public abstract class AbstractRepository<T>(IDatabaseContext databaseContext) : 
 
     public void Add(T entity) => DbSet.Add(entity: entity);
 
+    public void AddRange(List<T> range) => DbSet.AddRange(range);
+
     public T? Find(long id) => DbSet.Find(id);
 
     public IEnumerable<T> FindAll() => DbSet.ToList();
@@ -24,4 +26,5 @@ public abstract class AbstractRepository<T>(IDatabaseContext databaseContext) : 
     public bool Exists(T entity) => DbSet.Any(e => e == entity);
 
     public int SaveChanges() => databaseContext.SaveChanges();
+
 }

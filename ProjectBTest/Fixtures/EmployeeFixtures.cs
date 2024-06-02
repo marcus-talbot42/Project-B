@@ -1,4 +1,5 @@
 using ProjectB.Models;
+using ProjectB.Enums;
 
 namespace ProjectBTest.Fixtures;
 

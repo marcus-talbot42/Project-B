@@ -10,7 +10,7 @@ namespace ProjectB.Tests
         public void GetTranslationString_ReturnsCorrectTranslation_WhenKeyExists()
         {
             // Arrange
-            var lang = Settings.Language.ToString();
+            var lang = Enums.Language.ToString();
             var translation = new Translation("NL", new Dictionary<string, string> { { "test", "This is a test." } });
             var repository = new InMemoryRepository<Translation, string>();
             repository.Save(translation);

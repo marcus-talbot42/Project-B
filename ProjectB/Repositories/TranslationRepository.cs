@@ -1,6 +1,6 @@
 using ProjectB.Database;
 using ProjectB.Models;
-using ProjectB.Settings;
+using ProjectB.Enums;
 
 namespace ProjectB.Repositories;
 

@@ -1,6 +1,6 @@
 using ProjectB.Choices;
 using ProjectB.Models;
-using ProjectB.Settings;
+using ProjectB.Enums;
 using Spectre.Console;
 
 namespace ProjectB.Services
@@ -31,7 +31,7 @@ namespace ProjectB.Services
         {
             var options = new List<NamedChoice<Language>>();
             foreach (var language in Enum.GetValues(typeof(Language)))
-                options.Add(new NamedChoice<Language>(Translation.GetTranslationString("lang_name_" + language.ToString()!.ToLower())!, (Language)language));
+                options.Add(new NamedChoice<Language>(Translation.GetTranslationString("lang_name_" + language.ToString()!.ToLower()), (Language)language));
 
             return Console.Prompt(
                 new SelectionPrompt<NamedChoice<Language>>()
@@ -55,7 +55,15 @@ namespace ProjectB.Services
             return Console.Prompt(
                 new TextPrompt<DateOnly>(Translation.GetTranslationString(titleKey)!)
                     .PromptStyle("green")
-                    .ValidationErrorMessage(Translation.GetTranslationString("invalidDateOnly")!));
+                    .ValidationErrorMessage(Translation.GetTranslationString("invalidDateOnly")));
+        }
+
+        public TimeOnly AskTime(string titleKey)
+        {
+            return Console.Prompt(
+                new TextPrompt<TimeOnly>(Translation.GetTranslationString(titleKey)!)
+                    .PromptStyle("green")
+                    .ValidationErrorMessage(Translation.GetTranslationString("invalidTimeOnly")));
         }
 
         public Tour AskTour(string titleKey, IEnumerable<NamedChoice<Tour>> options)
@@ -66,6 +74,24 @@ namespace ProjectB.Services
                     .PageSize(10)
                     .MoreChoicesText(Translation.GetTranslationString("moreItems"))
                     .AddChoices(options)).Value;
+        }
+
+        public int AskNumber(string titleKey, int? min = null, int? max = null)
+        {
+            return Console.Prompt(
+                new TextPrompt<int>(Translation.GetTranslationString(titleKey))
+                    .PromptStyle("green")
+                    .ValidationErrorMessage(Translation.GetTranslationString("invalidNumber"))
+                    .Validate(inputNumber =>
+                    {
+                        if (min != null && inputNumber < min)
+                            return ValidationResult.Error(Translation.GetTranslationString("invalidNumberBelowMin"));
+
+                        if (max != null && inputNumber > max)
+                            return ValidationResult.Error(Translation.GetTranslationString("invalidNumberAboveMax"));
+
+                        return ValidationResult.Success();
+                    }));
         }
     }
 }

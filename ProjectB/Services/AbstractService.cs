@@ -12,6 +12,11 @@ namespace ProjectB.Services
             Repository.Add(entity);
         }
 
+        public void AddRange(List<T> range)
+        {
+            Repository.AddRange(range);
+        }
+
         public void Delete(long id)
         {
             Repository.Remove(id);

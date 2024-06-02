@@ -11,8 +11,6 @@ public class DatabaseContext : DbContext, IDatabaseContext
         LoadData();
     }
 
-    public DbSet<AbstractEntity> AbstractEntities { get; set; }
-    public DbSet<AbstractUser> AbstractUsers { get; set; }
     public DbSet<Employee> Employees { get; set; }
     public DbSet<Guest> Guests { get; set; }
     public DbSet<Tour> Tours { get; set; }
