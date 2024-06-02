@@ -1,0 +1,51 @@
+[
+  {
+    "Id": 2863,
+    "EmployeeNumber": "1000100",
+    "Username": "Jeroen",
+    "Password": "Welkom123",
+    "Role": 1
+  },
+  {
+    "Id": 2864,
+    "EmployeeNumber": "1000200",
+    "Username": "Stefhan",
+    "Password": "Welkom123",
+    "Role": 1
+  },
+  {
+    "Id": 2865,
+    "EmployeeNumber": "1000300",
+    "Username": "Marcus",
+    "Password": "Welkom123",
+    "Role": 1
+  },
+  {
+    "Id": 2866,
+    "EmployeeNumber": "1000400",
+    "Username": "Anass",
+    "Password": "Welkom123",
+    "Role": 1
+  },
+  {
+    "Id": 2867,
+    "EmployeeNumber": "1000500",
+    "Username": "Kai",
+    "Password": "Welkom123",
+    "Role": 1
+  },
+  {
+    "Id": 2868,
+    "EmployeeNumber": "1000600",
+    "Username": "Frans",
+    "Password": "Welkom123",
+    "Role": 2
+  },
+  {
+    "Id": 2869,
+    "EmployeeNumber": "1000700",
+    "Username": "TeamB",
+    "Password": "Welkom123",
+    "Role": 2
+  }
+]

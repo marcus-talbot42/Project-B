@@ -6,28 +6,30 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3"/>
-    <PackageReference Include="Common.Logging" Version="3.4.1"/>
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1"/>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0"/>
-    <PackageReference Include="MSTest.TestAdapter" Version="3.2.2"/>
-    <PackageReference Include="MSTest.TestFramework" Version="3.2.2"/>
+    <Compile Remove="Resources\**" />
+    <EmbeddedResource Remove="Resources\**" />
+    <None Remove="Resources\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="Common.Logging" Version="3.4.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.2.2" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.2.2" />
     <PackageReference Include="coverlet.collector" Version="6.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
-    <PackageReference Include="NUnit" Version="4.1.0"/>
+    <PackageReference Include="NUnit" Version="4.1.0" />
     <PackageReference Include="xunit.runner.console" Version="2.7.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Moq" Version="4.20.70"/>
+    <PackageReference Include="Moq" Version="4.20.70" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ProjectB\ProjectB.csproj"/>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\"/>
+    <ProjectReference Include="..\ProjectB\ProjectB.csproj" />
   </ItemGroup>
 </Project>

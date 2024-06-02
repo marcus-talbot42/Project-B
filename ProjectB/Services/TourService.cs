@@ -1,48 +1,72 @@
-using ProjectB.Exceptions;
 using ProjectB.Models;
 using ProjectB.Repositories;
 
 namespace ProjectB.Services;
 
-public class TourService(TourRepository repository) : IService<Tour, long>
+public class TourService(ITourRepository repository) : AbstractService<Tour>(repository), ITourService
 {
-    public void Create(Tour entity)
-    {
-        if (repository.Exists(entity)) {
-            throw new PrimaryKeyConstraintException("Tour with specified primary key already exists.");
-        }
-        repository.Save(entity);
-    }
+    public static readonly int MaxCapacity = 13;
+    public static readonly int TourDuration = 40;
+    public static readonly int DefaultTourInterval = 20;
 
-    public void Delete(long id)
+    public IEnumerable<Tour> GetAllToursTodayAfterNow()
     {
-        repository.Remove(id);
-    }
-    
-    public Tour Read(long id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Update(Tour entity, long id)
-    {
-        repository.Save(entity);
-    }
-
-    public IEnumerable<Tour> GetAllToursTodayAfterNow() {
         return repository.GetAllToursTodayAfterNow();
     }
-    
 
     public bool RegisterGuestForTour(Guest guest, Tour tour)
     {
-        if (tour.GetRemainingCapacity() == 0)
+        if (GetRemainingCapacity(tour) == 0)
         {
             return false;
         }
-        
-        tour.GetParticipants().Add(guest);
-        repository.Save(tour);
+
+        tour.Participants.Add(guest.TicketNumber);
+
+        SaveChanges();
+
         return true;
+    }
+
+    public bool EditRegistrationGuestForTour(Guest guest, Tour tour)
+    {
+        if (GetRemainingCapacity(tour) == 0)
+        {
+            return false;
+        }
+
+        var currentTour = GetTourForGuest(guest);
+        if (currentTour == null)
+            return false;
+
+        currentTour.Participants.Remove(guest.TicketNumber);
+        tour.Participants.Add(guest.TicketNumber);
+
+        SaveChanges();
+
+        return true;
+    }
+
+    public bool DeleteReservationGuest(Guest guest)
+    {
+        var currentTour = GetTourForGuest(guest);
+        if (currentTour == null)
+            return false;
+
+        currentTour.Participants.Remove(guest.TicketNumber);
+
+        SaveChanges();
+
+        return true;
+    }
+
+    public int GetRemainingCapacity(Tour tour)
+    {
+        return MaxCapacity - tour.Participants.Count;
+    }
+
+    public Tour? GetTourForGuest(Guest guest)
+    {
+        return repository.GetTourForGuest(guest);
     }
 }

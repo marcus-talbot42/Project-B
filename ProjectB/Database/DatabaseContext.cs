@@ -1,18 +1,16 @@
-using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using ProjectB.Models;
+using System.Text.Json;
 
 namespace ProjectB.Database;
 
-public class DatabaseContext : DbContext
+public class DatabaseContext : DbContext, IDatabaseContext
 {
     public DatabaseContext(DbContextOptions options) : base(options)
     {
         LoadData();
     }
 
-    public DbSet<AbstractEntity> AbstractEntities { get; set; }
-    public DbSet<AbstractUser> AbstractUsers { get; set; }
     public DbSet<Employee> Employees { get; set; }
     public DbSet<Guest> Guests { get; set; }
     public DbSet<Tour> Tours { get; set; }
@@ -30,43 +28,58 @@ public class DatabaseContext : DbContext
 
     private void LoadData()
     {
-        Employees.AddRange(ReadFromJson<Employee, long>());
-        Guests.AddRange(ReadFromJson<Guest, long>());
-        Tours.AddRange(ReadFromJson<Tour, long>());
-        Translations.AddRange(ReadFromJson<Translation, long>());
+        Employees.AddRange(ReadFromJson<Employee>());
+        Guests.AddRange(ReadFromJson<Guest>());
+        Tours.AddRange(ReadFromJson<Tour>());
+        Translations.AddRange(ReadFromJson<Translation>());
         SaveChanges();
     }
 
-    private IEnumerable<TEntity> ReadFromJson<TEntity, TId>() where TEntity : class, IEntity<TId> where TId : notnull
+    public override int SaveChanges()
     {
-        return JsonSerializer.Deserialize<IEnumerable<TEntity>>(
-            File.ReadAllText($".//../../../Database/{typeof(TEntity).Name}.json"))!;
+        // Save changes to database before persisting to file, otherwise you end up with empty files
+        int changes = base.SaveChanges();
+
+        WriteToJson(Employees);
+        WriteToJson(Guests);
+        WriteToJson(Tours);
+        WriteToJson(Translations);
+
+        return changes;
     }
 
-    public DbSet<TEntity>? GetRelevantDbSet<TEntity, TId>()
-        where TEntity : class, IEntity<TId>
-        where TId : notnull
+    private IEnumerable<T> ReadFromJson<T>() where T : AbstractEntity
     {
-        if (typeof(TEntity) == typeof(Employee))
+        return JsonSerializer.Deserialize<IEnumerable<T>>(File.ReadAllText($"Json/{typeof(T).Name}.json"))!;
+    }
+
+    private void WriteToJson<T>(IEnumerable<T> entities) where T : AbstractEntity
+    {
+        File.WriteAllText($"Json/{typeof(T).Name}.json", JsonSerializer.Serialize(entities.ToList()));
+    }
+
+    public DbSet<T>? GetRelevantDbSet<T>() where T : AbstractEntity
+    {
+        if (typeof(T) == typeof(Employee))
         {
-            return Employees as DbSet<TEntity>;
+            return Employees as DbSet<T>;
         }
 
-        if (typeof(TEntity) == typeof(Guest))
+        if (typeof(T) == typeof(Guest))
         {
-            return Guests as DbSet<TEntity>;
+            return Guests as DbSet<T>;
         }
 
-        if (typeof(TEntity) == typeof(Tour))
+        if (typeof(T) == typeof(Tour))
         {
-            return Tours as DbSet<TEntity>;
-        }
-        
-        if (typeof(TEntity) == typeof(Translation))
-        {
-            return Translations as DbSet<TEntity>;
+            return Tours as DbSet<T>;
         }
 
-        throw new NullReferenceException($"Could not load DbSet<{typeof(TEntity).Name}>...");
+        if (typeof(T) == typeof(Translation))
+        {
+            return Translations as DbSet<T>;
+        }
+
+        throw new NullReferenceException($"Could not load DbSet<{typeof(T).Name}>...");
     }
 }

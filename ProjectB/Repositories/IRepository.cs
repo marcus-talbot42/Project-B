@@ -5,28 +5,25 @@ namespace ProjectB.Repositories;
 /**
  * Base for every repository used in this program.
  */
-public interface IRepository<TEntity, TId>
-    where TEntity : IEntity<TId>
-    where TId : notnull
+public interface IRepository<T>
+    where T : AbstractEntity
 {
+    void Add(T entity);
 
-    
-    void Save(TEntity entity);
-    
-    TEntity? FindById(TId id);
-    
-    IEnumerable<TEntity> FindAll();
+    void AddRange(List<T> range);
 
-    void Remove(TId id);
+    T? Find(long id);
 
-    void Remove(TEntity entity) => Remove(entity.GetId());
+    IEnumerable<T> FindAll();
+
+    void Remove(long id);
+
+    void Remove(T entity) => Remove(entity.Id);
 
     void RemoveAll();
 
-    void Refresh();
-
-    void Persist();
-
     int Count();
-    
+
+    int SaveChanges();
+
 }

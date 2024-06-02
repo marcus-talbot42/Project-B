@@ -3,9 +3,12 @@ using ProjectB.Models;
 
 namespace ProjectB.Repositories;
 
-public class EmployeeRepository(DatabaseContext context) : AbstractRepository<Employee, long>(context)
+public class EmployeeRepository(IDatabaseContext context) : AbstractRepository<Employee>(context), IEmployeeRepository
 {
-    
-    public Employee? FindByUsername(string username) =>
-        (from user in DbSet where user.GetUsername() == username select user).FirstOrDefault();
+    public Employee? FindByUsernameAndPassword(string username, string password) =>
+        (from user in DbSet
+         where (user.Username == username || user.EmployeeNumber == username) && user.Password == password
+         select user).FirstOrDefault();
+
+    public bool ValidateEmployeeNumber(string employeeNumber) => DbSet.Any(user => user.EmployeeNumber == employeeNumber);
 }

@@ -8,6 +8,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Models\**" />
+      <EmbeddedResource Remove="Models\**" />
+      <None Remove="Models\**" />
+    </ItemGroup>
+
+    <ItemGroup>
       <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
       <PackageReference Include="Common.Logging" Version="3.4.1" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.4" />
@@ -38,10 +44,9 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
-      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0-preview.3.24172.9" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
       <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
-      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
       <PackageReference Include="Spectre.Console" Version="0.49.1" />
       <PackageReference Include="Spectre.Console.Cli" Version="0.49.1" />
       <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
@@ -53,6 +58,26 @@
       <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore" Version="8.0.2" />
       <PackageReference Include="Spectre.Console" Version="0.49.1" />
       <PackageReference Include="Spectre.Console.Cli" Version="0.49.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Json\Employee.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Json\Guest.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Json\Tour.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Json\Translation.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Workflows\EmployeeFlows\" />
+      <Folder Include="Workflows\DebugFlows\" />
     </ItemGroup>
 
 </Project>

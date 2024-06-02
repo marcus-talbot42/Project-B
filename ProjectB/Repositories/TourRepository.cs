@@ -1,14 +1,17 @@
-using ProjectB.Models;
-using System;
 using ProjectB.Database;
+using ProjectB.Models;
 
 namespace ProjectB.Repositories
 {
-    public class TourRepository(DatabaseContext context) : AbstractRepository<Tour, long>(context)
+    public class TourRepository(IDatabaseContext context) : AbstractRepository<Tour>(context), ITourRepository
     {
         public IEnumerable<Tour> GetAllToursTodayAfterNow() =>
             from tour in DbSet
-            where tour.GetTourTime().Date == DateTime.Today && tour.GetTourTime().CompareTo(DateTime.Now) > 0
+            where tour.Start.Date == DateTime.Today && tour.Start >= DateTime.Now
+            orderby tour.Start ascending
             select tour;
+
+        public Tour? GetTourForGuest(Guest guest)
+             => DbSet.FirstOrDefault(tour => tour.Participants.Contains(guest.TicketNumber));
     }
 }

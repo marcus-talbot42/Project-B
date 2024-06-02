@@ -2,20 +2,16 @@ using ProjectB.Models;
 
 namespace ProjectB.Services;
 
-public interface IService<TEntity, TId>
-    where TEntity : IEntity<TId>
+public interface IService<T> where T : AbstractEntity
 {
 
-    void Create(TEntity entity);
+    void Add(T entity);
 
-    public void Update(TEntity entity) => Update(entity, entity.GetId());
+    void AddRange(List<T> range);
 
-    void Update(TEntity entity, TId id);
+    void Delete(long id);
 
-    void Delete(TId id);
+    void Delete(T entity) => Delete(entity.Id);
 
-    void Delete(TEntity entity) => Delete(entity.GetId());
-
-    TEntity Read(TId read);
-
+    int SaveChanges();
 }

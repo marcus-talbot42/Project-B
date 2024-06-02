@@ -3,12 +3,10 @@ using ProjectB.Models;
 
 namespace ProjectB.Repositories;
 
-public class GuestRepository(DatabaseContext context) : AbstractRepository<Guest, long>(context)
+public class GuestRepository(IDatabaseContext context) : AbstractRepository<Guest>(context), IGuestRepository
 {
     public Guest? FindValidGuestByUsername(string username)
     {
-        return DbSet.ToList().FirstOrDefault(guest => guest.GetUsername() == username && guest.IsValid());
+        return DbSet.FirstOrDefault(guest => guest.TicketNumber == username && (guest.ValidDate == DateOnly.FromDateTime(DateTime.Now) || !guest.Expires));
     }
-
-    
 }
