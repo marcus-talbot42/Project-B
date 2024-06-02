@@ -4,6 +4,7 @@ using ProjectB.Client;
 using ProjectB.Database;
 using ProjectB.Repositories;
 using ProjectB.Services;
+using ProjectB.Workflows.GuestFlows;
 using Spectre.Console;
 
 namespace ProjectB
@@ -36,6 +37,9 @@ namespace ProjectB
                 .AddSingleton<IPromptService, PromptService>()
 
                 // Flows
+                .AddTransient<CreateReservationFlow>()
+                .AddTransient<EditReservationFlow>()
+                .AddTransient<DeleteReservationFlow>()
 
                 .BuildServiceProvider();
         }
