@@ -22,6 +22,9 @@ public class TranslationService(ITranslationRepository repository) : AbstractSer
     {
         var translation = Get(key);
 
+        if (replacements == null)
+            replacements = new List<string>();
+
         for (var i = 0; i < replacements.Count; i++)
             translation = translation.Replace($"{{{i}}}", replacements[i]);
 
