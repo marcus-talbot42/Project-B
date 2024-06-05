@@ -33,7 +33,7 @@ namespace ProjectB.Workflows.GuestFlows
             if (tour == null)
                 return (false, "tourIsNull");
 
-            if (tour.Participants.Count > tour.Capacity)
+            if (tour.Participants.Count >= tour.Capacity)
                 return (false, "tourFull");
 
             if (tour.Start < DateTime.Now)
