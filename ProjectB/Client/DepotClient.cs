@@ -5,6 +5,7 @@ using ProjectB.Enums;
 using ProjectB.Models;
 using ProjectB.Services;
 using ProjectB.Workflows;
+using ProjectB.Workflows.EmployeeFlows;
 using ProjectB.Workflows.GuestFlows;
 using Spectre.Console;
 
@@ -252,12 +253,7 @@ namespace ProjectB.Client
 
         private void BeginStartTour(Tour tour)
         {
-            if (tour.Departed)
-            {
-                Print("tourAlreadyDeparted");
-                Prompts.ShowSpinner("returningToMenu", 2000);
-                return;
-            }
+            var flow = GetFlow<StartTourFlow>();
 
             Print("employeeTourInfo", new() { tour.Start.ToShortTimeString() });
             Console.WriteLine();
@@ -266,6 +262,9 @@ namespace ProjectB.Client
             foreach (var guestNumber in tour.Participants)
                 Print("guestList", new() { guestNumber });
             Console.WriteLine();
+
+            if (!HandleFlowResult(flow.SetTour(tour)))
+                return;
 
             if (tour.EmployeeNumber != Employee!.EmployeeNumber)
             {
@@ -279,16 +278,13 @@ namespace ProjectB.Client
                     }
                 }
 
-                tour.EmployeeNumber = Employee.EmployeeNumber;
-                TourService.SaveChanges();
+                if (!HandleFlowResult(flow.SetEmployeeNumber(Employee.EmployeeNumber)))
+                    return;
             }
 
             Print("scanAllTickets");
 
-            List<int> scannedTickets = new List<int>();
-
-            bool continueScanning = true;
-            while (scannedTickets.Count != tour.Participants.Count && continueScanning)
+            while (flow.ScannedTickets.Count != tour.Participants.Count && flow.Scanning)
             {
                 if (!int.TryParse(Prompts.AskTicketOrEmployeeNumber("ticketNumberOrEmployeeNumber"), out int number))
                     continue;
@@ -304,40 +300,22 @@ namespace ProjectB.Client
                     Print("finishedScanningQuestion");
                     if (Prompts.AskYesNo("confirmYesNo", "yes", "no"))
                     {
-                        continueScanning = false;
+                        flow.Scanning = false;
                         continue;
                     }
                 }
 
-                if (GuestService.FindValidGuestById(number.ToString()) == null)
-                {
-                    Print("invalidTicketNumber");
-                    continue;
-                }
+                if (!HandleFlowResult(flow.AddGuest(number.ToString())))
+                    return;
 
-                if (scannedTickets.Contains(number))
-                {
-                    Print("ticketAlreadyScanned");
-                    continue;
-                }
-
-                if (!tour.Participants.Contains(number.ToString()))
-                {
-                    Print("ticketNotInTour");
-                    continue;
-                }
-
-                scannedTickets.Add(number);
                 Print("ticketScanned", new() { number.ToString() });
                 Affirmation();
             }
 
             Print("finishedScanning");
 
-            tour.Participants = scannedTickets.Select(number => number.ToString()).ToList();
-
-            continueScanning = true;
-            while (scannedTickets.Count < tour.Capacity && continueScanning)
+            flow.Scanning = true;
+            while (flow.ScannedTickets.Count < tour.Capacity && flow.Scanning)
             {
                 if (!int.TryParse(Prompts.AskTicketOrEmployeeNumber("ticketNumberOrEmployeeNumber"), out int number))
                     continue;
@@ -347,18 +325,14 @@ namespace ProjectB.Client
                     Print("finishedScanningQuestion");
                     if (Prompts.AskYesNo("confirmYesNo", "yes", "no"))
                     {
-                        continueScanning = false;
+                        flow.Scanning = false;
                         continue;
                     }
                 }
 
-                if (scannedTickets.Contains(number))
-                {
-                    Print("ticketAlreadyScanned");
-                    continue;
-                }
+                if (!HandleFlowResult(flow.AddGuest(number.ToString(), true)))
+                    return;
 
-                scannedTickets.Add(number);
                 Print("extraTicketScanned", new() { number.ToString() });
                 Affirmation();
             }
@@ -366,82 +340,47 @@ namespace ProjectB.Client
             Prompts.ShowSpinner("finishedScanningExtraTickets", 2000);
             Console.Clear();
 
-            tour.Participants = scannedTickets.Select(number => number.ToString()).ToList();
-
             Print("employeeTourInfo", new() { tour.Start.ToShortTimeString() });
             Console.WriteLine();
 
             Print("registeredGuests");
-            foreach (var guestNumber in tour.Participants)
+            foreach (var guestNumber in flow.ScannedTickets)
                 Print("guestList", new() { guestNumber });
 
             Print("confirmStartTour");
-            if (!Prompts.AskYesNo("confirmYesNo", "yes", "no"))
-            {
-                Prompts.ShowSpinner("returningToMenu", 2000);
-                return;
-            }
 
-            tour.Departed = true;
-            TourService.SaveChanges();
+            HandleFlowConfirmation(flow,
+                TGet("confirmStartTour"),
+                TGet("startTourSuccess"),
+                TGet("startTourCancelled"));
 
             Prompts.ShowSpinner("returningToMenu", 2000);
         }
 
         private void BeginAddGuest(Tour tour)
         {
-            if (tour.Departed)
-            {
-                Print("tourAlreadyDeparted");
-                Prompts.ShowSpinner("returningToMenu", 2000);
-                return;
-            }
+            var flow = GetFlow<AddGuestFlow>();
 
             Print("employeeTourInfo", new() { tour.Start.ToShortTimeString() });
             Console.WriteLine();
 
-            if (tour.Participants.Count == tour.Capacity)
-            {
-                Print("noSpaceInTour");
-                Prompts.ShowSpinner("returningToMenu", 2000);
+            if (!HandleFlowResult(flow.SetTour(tour)))
                 return;
-            }
 
-            string ticketNumber = Prompts.AskTicketNumber("ticketNumber");
-            var guest = GuestService.FindValidGuestById(ticketNumber);
-            if (guest == null)
-            {
-                Print("guestNotFound");
-                Prompts.ShowSpinner("returningToMenu", 2000);
+            if (!HandleFlowResult(flow.SetGuest(Prompts.AskTicketNumber("scanGuestTicket"))))
                 return;
-            }
 
-            var currentTour = TourService.GetTourForGuest(guest);
-            if (currentTour != null)
-            {
-                Print("guestAlreadyHasReservation");
-                Prompts.ShowSpinner("returningToMenu", 2000);
-                return;
-            }
-
-            Print("confirmAddGuest", new() { tour.Start.ToShortTimeString() });
-            if (Prompts.AskYesNo("confirmYesNo", "yes", "no"))
-            {
-                if (guest != null && tour != null)
-                    TourService.RegisterGuestForTour(guest, tour);
-            }
+            HandleFlowConfirmation(flow,
+                TGet("confirmAddGuest", new() { flow.Guest!.TicketNumber }),
+                TGet("addSuccess", new() { flow.Guest!.TicketNumber }),
+                TGet("addCancelled"));
 
             Prompts.ShowSpinner("returningToMenu", 2000);
         }
 
         private void BeginRemoveGuest(Tour tour)
         {
-            if (tour.Departed)
-            {
-                Print("tourAlreadyDeparted");
-                Prompts.ShowSpinner("returningToMenu", 2000);
-                return;
-            }
+            var flow = GetFlow<RemoveGuestFlow>();
 
             Print("employeeTourInfo", new() { tour.Start.ToShortTimeString() });
             Console.WriteLine();
@@ -451,24 +390,16 @@ namespace ProjectB.Client
                 Print("guestList", new() { guestNumber });
             Console.WriteLine();
 
-            string ticketNumber = Prompts.AskTicketNumber("ticketNumberToRemove");
-            var guest = GuestService.FindValidGuestById(ticketNumber);
-            if (guest == null || !tour.Participants.Contains(guest.TicketNumber))
-            {
-                Print("guestNotFoundInTour");
-                Prompts.ShowSpinner("returningToMenu", 2000);
+            if (!HandleFlowResult(flow.SetTour(tour)))
                 return;
-            }
 
-            Print("confirmGuestRemoval");
-            if (!Prompts.AskYesNo("confirmYesNo", "yes", "no"))
-            {
-                Prompts.ShowSpinner("returningToMenu", 2000);
+            if (!HandleFlowResult(flow.SetGuest(Prompts.AskTicketNumber("scanGuestTicket"))))
                 return;
-            }
 
-            if (guest != null)
-                TourService.DeleteReservationGuest(guest);
+            HandleFlowConfirmation(flow,
+                TGet("confirmGuestRemoval", new() { flow.Guest!.TicketNumber }),
+                TGet("removeSuccess", new() { flow.Guest!.TicketNumber }),
+                TGet("removeCancelled"));
 
             Prompts.ShowSpinner("returningToMenu", 2000);
         }

@@ -77,7 +77,6 @@
 
     <ItemGroup>
       <Folder Include="Workflows\EmployeeFlows\" />
-      <Folder Include="Workflows\DebugFlows\" />
     </ItemGroup>
 
 </Project>
