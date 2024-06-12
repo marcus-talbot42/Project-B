@@ -95,7 +95,7 @@
   {"Language": 0, "Key" : "wait", "Value" : "Even geduld a.u.b..."},
   {"Language": 0, "Key" : "welcomeToMuseum", "Value" : "[bold olive]Welkom bij het museum! Ontdek hier ons hoofdmenu en geniet van een boeiend bezoek.[/]"},
   {"Language": 0, "Key" : "yes", "Value": "Ja"},
-  {"Language": 1, "Key" : "addGuest", "Value" : "Add guest"},'
+  {"Language": 1, "Key" : "addGuest", "Value" : "Add guest"},
   {"Language": 1, "Key" : "addCancelled", "Value" : "Adding a guest has been cancelled"},
   {"Language": 1, "Key" : "addSuccess", "Value" : "Guest ticket {0} added succesfully"},
   {"Language": 1, "Key" : "askEndDate", "Value" : "Enter the end date:"},
