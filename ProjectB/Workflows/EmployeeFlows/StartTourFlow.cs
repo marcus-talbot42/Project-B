@@ -28,7 +28,7 @@ namespace ProjectB.Workflows.EmployeeFlows
             if (Tour == null)
                 return (false, "tourIsNull");
 
-            if (Tour.Participants.Contains(ticketNumber.ToString()) && !extra)
+            if (!Tour.Participants.Contains(ticketNumber.ToString()) && !extra)
                 return (false, "ticketNotInTour");
 
             ScannedTickets.Add(ticketNumber);

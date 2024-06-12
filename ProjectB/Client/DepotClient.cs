@@ -284,6 +284,7 @@ namespace ProjectB.Client
 
             Print("scanAllTickets");
 
+            flow.Scanning = true;
             while (flow.ScannedTickets.Count != tour.Participants.Count && flow.Scanning)
             {
                 if (!int.TryParse(Prompts.AskTicketOrEmployeeNumber("ticketNumberOrEmployeeNumber"), out int number))
@@ -346,8 +347,6 @@ namespace ProjectB.Client
             Print("registeredGuests");
             foreach (var guestNumber in flow.ScannedTickets)
                 Print("guestList", new() { guestNumber });
-
-            Print("confirmStartTour");
 
             HandleFlowConfirmation(flow,
                 TGet("confirmStartTour"),
